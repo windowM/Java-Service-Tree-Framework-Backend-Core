@@ -19,7 +19,9 @@ import com.egovframework.ple.treeframework.validation.group.*;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -77,6 +79,25 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", list);
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getNodesWithoutRoot.do", method = RequestMethod.GET)
+    public ModelAndView getNodesWithoutRoot(V treeSearchEntity) throws Exception {
+        treeSearchEntity.setOrder(Order.desc("c_id"));
+        Criterion criterion = Restrictions.not(
+                // replace "id" below with property name, depending on what you're filtering against
+                Restrictions.in("c_id", new Object[] {new Long(1), new Long(2)})
+        );
+        treeSearchEntity.getCriterions().add(criterion);
+        List<V> list = treeService.getChildNode(treeSearchEntity);
+
+        ModelAndView modelAndView = new ModelAndView("jsonView");
+        HashMap<String, Object> resultMap = Maps.newHashMap();
+        resultMap.put("paginationInfo", treeSearchEntity.getPaginationInfo());
+        resultMap.put("result", list);
+        modelAndView.addObject("result", resultMap);
         return modelAndView;
     }
 

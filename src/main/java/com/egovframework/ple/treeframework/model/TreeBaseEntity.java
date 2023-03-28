@@ -95,9 +95,7 @@ public abstract class TreeBaseEntity implements Serializable {
 
     private long id;
 
-    @JsonIgnore
     private final HashMap<String, String> attr = new HashMap<String, String>();;
-
 
     @Transient
     public Long getC_id() {
@@ -220,11 +218,11 @@ public abstract class TreeBaseEntity implements Serializable {
         String returnCode = new String();
 
         if (getChildcount() == null || getChildcount().equals(" ")) {
-            returnCode = "closed";
+            returnCode = "update status";
         } else if (getChildcount().equals("InChild")) {
-            returnCode = "opened";
-        } else {
             returnCode = "closed";
+        } else {
+            returnCode = "opened";
         }
         return returnCode;
     }
