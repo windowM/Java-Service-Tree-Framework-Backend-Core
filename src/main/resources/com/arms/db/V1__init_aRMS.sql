@@ -1176,10 +1176,10 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQCOMMENT_LOG` (
     `c_version_link`            bigint(20) NULL,
     `c_req_link`                bigint(20) NULL,
 
-    `c_req_sender`              text NULL,
+    `c_req_comment_sender`      text NULL,
     `c_req_comment_date`        text NULL,
-    `c_req_comment`             text NULL,
-    `c_req_etc`                 text NULL
+    `c_req_comment_contents`    text NULL,
+    `c_req_comment_etc`         text NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 커멘트 트리거 로그';
 
@@ -1199,10 +1199,10 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQCOMMENT` (
     `c_version_link`            bigint(20) NULL,
     `c_req_link`                bigint(20) NULL,
 
-    `c_req_sender`              text NULL,
+    `c_req_comment_sender`      text NULL,
     `c_req_comment_date`        text NULL,
-    `c_req_comment`             text NULL,
-    `c_req_etc`                 text NULL
+    `c_req_comment_contents`    text NULL,
+    `c_req_comment_etc`         text NULL
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 커멘트';
 
@@ -1268,11 +1268,13 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQREVIEW_LOG` (
     `c_version_link`            bigint(20) NULL,
     `c_req_link`                bigint(20) NULL,
 
-    `c_review_sender`           text NULL,
-    `c_review_responder`        text NULL,
-    `c_review_creat_date`       text NULL,
-    `c_review_result_state`     text NULL,
-    `c_review_result_date`      text NULL
+    `c_req_review_sender`       text NULL,
+    `c_req_review_responder`    text NULL,
+    `c_req_review_creat_date`   text NULL,
+    `c_req_review_update_date`  text NULL,
+    `c_req_review_status`       text NULL,
+    `c_req_review_contents`     longtext NULL,
+    `c_req_review_etc`          text NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 리뷰 트리거 로그';
 
@@ -1296,11 +1298,13 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQREVIEW` (
     `c_version_link`            bigint(20) NULL,
     `c_req_link`                bigint(20) NULL,
 
-    `c_review_sender`           text NULL,
-    `c_review_responder`        text NULL,
-    `c_review_creat_date`       text NULL,
-    `c_review_result_state`     text NULL,
-    `c_review_result_date`      text NULL
+    `c_req_review_sender`       text NULL,
+    `c_req_review_responder`    text NULL,
+    `c_req_review_creat_date`   text NULL,
+    `c_req_review_update_date`  text NULL,
+    `c_req_review_status`       text NULL,
+    `c_req_review_contents`     longtext NULL,
+    `c_req_review_etc`          text NULL
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 리뷰';
 
@@ -1454,38 +1458,71 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQSTATUS_LOG` (
     `c_state`                   text NULL COMMENT '노드 상태값 ( 이전인지. 이후인지)',
     `c_date`                    date NULL COMMENT '노드 변경 시',
 
-    `c_pdservice_link`          bigint(20) NULL,
-    `c_pdservice_name`          text NULL,
+    -- 제품 서비스
+    `c_pdservice_link`              bigint(20) NULL,
+    `c_pdservice_name`              text NULL,
 
-    `c_pds_version_link`        bigint(20) NULL,
-    `c_pds_version_name`        text NULL,
+    -- 제품 서비스 버전
+    `c_pds_version_link`            bigint(20) NULL,
+    `c_pds_version_name`            text NULL,
 
-    `c_jira_link`               bigint(20) NULL,
-    `c_jira_name`               text NULL,
-    `c_jira_key`                text NULL,
-    `c_jira_url`                text NULL,
+    -- 제품 서비스 연결 지라 프로젝트
+    `c_jira_link`                   bigint(20) NULL,
+    `c_jira_key`                    text NULL,
+    `c_jira_url`                    text NULL,
 
-    `c_jira_verison_link`       bigint(20) NULL,
-    `c_jira_verison_name`       text NULL,
-    `c_jira_verison_url`        text NULL,
+    -- 제품 서비스 연결 지라 프로젝트 버전
+    `c_jira_verison_link`           bigint(20) NULL,
+    `c_jira_verison_name`           text NULL,
+    `c_jira_verison_url`            text NULL,
 
-    `c_req_link`                bigint(20) NULL,
-    `c_req_name`                text NULL,
+    -- 요구사항
+    `c_req_link`                    bigint(20) NULL,
+    `c_req_name`                    text NULL,
 
-    `c_req_priority_link`       bigint(20) NULL,
-    `c_req_priority_name`       text NULL,
+    -- 요구사항 우선 순위
+    `c_req_priority_link`           bigint(20) NULL,
+    `c_req_priority_name`           text NULL,
 
-    `c_req_status_link`         bigint(20) NULL,
-    `c_req_status_name`         text NULL,
+    -- 요구사항 상태
+    `c_req_status_link`             bigint(20) NULL,
+    `c_req_status_name`             text NULL,
 
-    `c_req_issue_id`            text NULL,
-    `c_req_issue_url`           text NULL,
+    -- 요구사항 이슈
+    `c_issue_link`                  bigint(20) NULL,
+    `c_issue_key`                   text NULL,
+    `c_issue_summery`               text NULL,
+    `c_issue_url`                   text NULL,
 
-    `c_req_issue_status_name`   text NULL,
-    `c_req_issue_status_url`    text NULL,
+    -- 요구사항 이슈 우선순위
+    `c_issue_priority_link`         bigint(20) NULL,
+    `c_issue_priority_name`         text NULL,
+    `c_issue_priority_url`          text NULL,
 
-    `c_req_rel_issue`           text NULL,
-    `c_req_sub_issue`           text NULL
+    -- 요구사항 이슈 상태
+    `c_issue_status_link`           bigint(20) NULL,
+    `c_issue_status_name`           text NULL,
+    `c_issue_status_url`            text NULL,
+
+    -- 요구사항 이슈 해결책
+    `c_issue_resolution_link`       bigint(20) NULL,
+    `c_issue_resolution_name`       text NULL,
+    `c_issue_resolution_url`        text NULL,
+
+    -- 요구사항 리뷰 상황
+    `c_req_review_status`           text NULL,
+
+    -- 요구사항 생성자
+    `c_writer`                      text NULL,
+    `c_create_date`                 date NUlL,
+
+    -- 요구사항 이슈 연관, 서브 이슈 서머리
+    `c_issue_link_issue_summary`    text NULL,
+    `c_issue_sub_issue_summary`     text NULL,
+
+    -- 기타
+    `c_req_status_etc`              text NULL,
+    `c_req_status_contents`         text NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 - 이슈 결과 장표 트리거 로그';
 
@@ -1501,38 +1538,71 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQSTATUS` (
     `c_title`                   VARCHAR(255) COMMENT '노드 명',
     `c_type`                    VARCHAR(255) COMMENT '노드 타입',
 
-    `c_pdservice_link`          bigint(20) NULL,
-    `c_pdservice_name`          text NULL,
+    -- 제품 서비스
+    `c_pdservice_link`              bigint(20) NULL,
+    `c_pdservice_name`              text NULL,
 
-    `c_pds_version_link`        bigint(20) NULL,
-    `c_pds_version_name`        text NULL,
+    -- 제품 서비스 버전
+    `c_pds_version_link`            bigint(20) NULL,
+    `c_pds_version_name`            text NULL,
 
-    `c_jira_link`               bigint(20) NULL,
-    `c_jira_name`               text NULL,
-    `c_jira_key`                text NULL,
-    `c_jira_url`                text NULL,
+    -- 제품 서비스 연결 지라 프로젝트
+    `c_jira_link`                   bigint(20) NULL,
+    `c_jira_key`                    text NULL,
+    `c_jira_url`                    text NULL,
 
-    `c_jira_verison_link`       bigint(20) NULL,
-    `c_jira_verison_name`       text NULL,
-    `c_jira_verison_url`        text NULL,
+    -- 제품 서비스 연결 지라 프로젝트 버전
+    `c_jira_verison_link`           bigint(20) NULL,
+    `c_jira_verison_name`           text NULL,
+    `c_jira_verison_url`            text NULL,
 
-    `c_req_link`                bigint(20) NULL,
-    `c_req_name`                text NULL,
+    -- 요구사항
+    `c_req_link`                    bigint(20) NULL,
+    `c_req_name`                    text NULL,
 
-    `c_req_priority_link`       bigint(20) NULL,
-    `c_req_priority_name`       text NULL,
+    -- 요구사항 우선 순위
+    `c_req_priority_link`           bigint(20) NULL,
+    `c_req_priority_name`           text NULL,
 
-    `c_req_status_link`         bigint(20) NULL,
-    `c_req_status_name`         text NULL,
+    -- 요구사항 상태
+    `c_req_status_link`             bigint(20) NULL,
+    `c_req_status_name`             text NULL,
 
-    `c_req_issue_id`            text NULL,
-    `c_req_issue_url`           text NULL,
+    -- 요구사항 이슈
+    `c_issue_link`                  bigint(20) NULL,
+    `c_issue_key`                   text NULL,
+    `c_issue_summery`               text NULL,
+    `c_issue_url`                   text NULL,
 
-    `c_req_issue_status_name`   text NULL,
-    `c_req_issue_status_url`    text NULL,
+    -- 요구사항 이슈 우선순위
+    `c_issue_priority_link`         bigint(20) NULL,
+    `c_issue_priority_name`         text NULL,
+    `c_issue_priority_url`          text NULL,
 
-    `c_req_rel_issue`           text NULL,
-    `c_req_sub_issue`           text NULL
+    -- 요구사항 이슈 상태
+    `c_issue_status_link`           bigint(20) NULL,
+    `c_issue_status_name`           text NULL,
+    `c_issue_status_url`            text NULL,
+
+    -- 요구사항 이슈 해결책
+    `c_issue_resolution_link`       bigint(20) NULL,
+    `c_issue_resolution_name`       text NULL,
+    `c_issue_resolution_url`        text NULL,
+
+    -- 요구사항 리뷰 상황
+    `c_req_review_status`           text NULL,
+
+    -- 요구사항 생성자
+    `c_writer`                      text NULL,
+    `c_create_date`                 date NUlL,
+
+    -- 요구사항 이슈 연관, 서브 이슈 서머리
+    `c_issue_link_issue_summary`    text NULL,
+    `c_issue_sub_issue_summary`     text NULL,
+
+    -- 기타
+    `c_req_status_etc`              text NULL,
+    `c_req_status_contents`         text NULL
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 - 이슈 결과 장표';
 

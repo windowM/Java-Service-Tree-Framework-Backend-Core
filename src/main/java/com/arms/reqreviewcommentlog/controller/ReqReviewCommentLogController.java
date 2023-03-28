@@ -1,7 +1,7 @@
 /*
  * @author Dongmin.lee
- * @since 2023-03-21
- * @version 23.03.21
+ * @since 2023-03-28
+ * @version 23.03.28
  * @see <pre>
  *  Copyright (C) 2007 by 313 DEV GRP, Inc - All Rights Reserved
  *  Unauthorized copying of this file, via any medium is strictly prohibited
@@ -9,7 +9,7 @@
  *  Written by 313 developer group <313@313.co.kr>, December 2010
  * </pre>
  */
-package com.arms.jiraissuestate.controller;
+package com.arms.reqreviewcommentlog.controller;
 
 import com.egovframework.ple.treeframework.controller.TreeAbstractController;
 import com.egovframework.ple.treeframework.util.FileHandler;
@@ -35,21 +35,21 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 
-import com.arms.jiraissuestate.model.JiraIssueStateEntity;
-import com.arms.jiraissuestate.service.JiraIssueState;
+import com.arms.reqreviewcommentlog.model.ReqReviewCommentLogEntity;
+import com.arms.reqreviewcommentlog.service.ReqReviewCommentLog;
 
 @Slf4j
 @Controller
-@RequestMapping(value = {"/arms/jiraIssueState"})
-public class JiraIssueStateController extends TreeAbstractController<JiraIssueState, JiraIssueStateEntity> {
+@RequestMapping(value = {"/arms/reqReviewCommentLog"})
+public class ReqReviewCommentLogController extends TreeAbstractController<ReqReviewCommentLog, ReqReviewCommentLogEntity> {
 
     @Autowired
-    @Qualifier("jiraIssueState")
-    private JiraIssueState jiraIssueState;
+    @Qualifier("reqReviewCommentLog")
+    private ReqReviewCommentLog reqReviewCommentLog;
 
     @PostConstruct
     public void initialize() {
-        setTreeService(jiraIssueState);
+        setTreeService(reqReviewCommentLog);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

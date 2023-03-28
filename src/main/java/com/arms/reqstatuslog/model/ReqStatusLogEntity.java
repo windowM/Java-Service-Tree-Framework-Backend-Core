@@ -55,7 +55,6 @@ public class ReqStatusLogEntity extends TreeLogBaseEntity implements Serializabl
 
     //@Getter @Setter
 
-
     @Column(name = "c_pdservice_link")
     private Long c_pdservice_link;
 
@@ -63,18 +62,108 @@ public class ReqStatusLogEntity extends TreeLogBaseEntity implements Serializabl
     @Type(type="text")
     private String c_pdservice_name;
 
-    @Column(name = "c_pdserviceversion_link")
+
+    @Column(name = "c_pds_version_link")
     private Long c_version_link;
+
+    @Column(name = "c_pds_version_name")
+    @Type(type="text")
+    private String c_pds_version_name;
+
 
     @Column(name = "c_jira_link")
     private Long c_jira_link;
 
-    @Column(name = "c_jira_ver_link")
-    private Long c_jira_ver_link;
+    @Column(name = "c_jira_key")
+    @Type(type="text")
+    private String c_jira_key;
+
+    @Column(name = "c_jira_url")
+    @Type(type="text")
+    private String c_jira_url;
+
+
+
+    @Column(name = "c_jira_version_link")
+    private Long c_jira_version_link;
+
+    @Column(name = "c_jira_version_name")
+    @Type(type="text")
+    private String c_jira_version_name;
+
+    @Column(name = "c_jira_version_url")
+    @Type(type="text")
+    private String c_jira_version_url;
+
+
 
     //ReqStatus Issue Link
     @Column(name = "c_issue_link")
     private Long c_issue_link;
+
+    @Column(name = "c_issue_summery")
+    @Type(type="text")
+    private String c_issue_summery;
+
+    @Column(name = "c_issue_url")
+    @Type(type="text")
+    private String c_issue_url;
+
+
+    @Column(name = "c_issue_priority_link")
+    private Long c_issue_priority_link;
+
+    @Column(name = "c_issue_priority_name")
+    @Type(type="text")
+    private String c_issue_priority_name;
+
+    @Column(name = "c_issue_priority_url")
+    @Type(type="text")
+    private String c_issue_priority_url;
+
+
+    @Column(name = "c_issue_status_link")
+    private Long c_issue_status_link;
+
+    @Column(name = "c_issue_status_name")
+    @Type(type="text")
+    private String c_issue_status_name;
+
+    @Column(name = "c_issue_status_url")
+    @Type(type="text")
+    private String c_issue_status_url;
+
+    @Column(name = "c_issue_resolution_link")
+    private Long c_issue_resolution_link;
+
+    @Column(name = "c_issue_resolution_name")
+    @Type(type="text")
+    private String c_issue_resolution_name;
+
+    @Column(name = "c_issue_resolution_url")
+    @Type(type="text")
+    private String c_issue_resolution_url;
+
+    @Column(name = "c_req_link")
+    private Long c_req_link;
+
+    @Column(name = "c_req_name")
+    @Type(type="text")
+    private String c_req_name;
+
+    @Column(name = "c_req_priority_link")
+    private Long c_req_priority_link;
+
+    @Column(name = "c_req_priority_name")
+    @Type(type="text")
+    private String c_req_priority_name;
+
+    @Column(name = "c_req_status_link")
+    private Long c_req_status_link;
+
+    @Column(name = "c_req_status_name")
+    @Type(type="text")
+    private String c_req_status_name;
 
     @Column(name = "c_reviewer01")
     @Type(type="text")
@@ -123,17 +212,22 @@ public class ReqStatusLogEntity extends TreeLogBaseEntity implements Serializabl
     @Type(type="text")
     private String c_writer_date;
 
-    @Column(name = "c_priority")
+    @Column(name = "c_issue_link_issue_summary")
     @Type(type="text")
-    private Long c_priority;
+    private String c_issue_link_issue_summary;
 
-    @Column(name = "c_req_status")
+    @Column(name = "c_issue_sub_issue_summary")
     @Type(type="text")
-    private String c_req_status;
+    private String c_issue_sub_issue_summary;
+
+    @Column(name = "c_req_status_etc")
+    @Type(type="text")
+    private String c_req_status_etc;
 
     @Lob
-    @Column(name = "c_contents")
-    private String c_contents;
+    @Column(name = "c_req_status_contents")
+    private String c_req_status_contents;
+
 
     /*
      * Extend Bean Field

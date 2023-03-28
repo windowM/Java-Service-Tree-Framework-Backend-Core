@@ -1,7 +1,7 @@
 /*
  * @author Dongmin.lee
- * @since 2023-03-21
- * @version 23.03.21
+ * @since 2023-03-28
+ * @version 23.03.28
  * @see <pre>
  *  Copyright (C) 2007 by 313 DEV GRP, Inc - All Rights Reserved
  *  Unauthorized copying of this file, via any medium is strictly prohibited
@@ -9,7 +9,7 @@
  *  Written by 313 developer group <313@313.co.kr>, December 2010
  * </pre>
  */
-package com.arms.jiraissuestatelog.model;
+package com.arms.jiraissuestatuslog.model;
 
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeLogBaseEntity;
@@ -29,18 +29,18 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "T_ARMS_JIRAISSUESTATE_LOG")
+@Table(name = "T_ARMS_JIRAISSUESTATUSLOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class JiraIssueStateLogEntity extends TreeLogBaseEntity implements Serializable {
+public class JiraIssueStatusLogEntity extends TreeLogBaseEntity implements Serializable {
 
-    public JiraIssueStateLogEntity() {
+    public JiraIssueStatusLogEntity() {
         super();
     }
 
-    public JiraIssueStateLogEntity(Boolean copyBooleanValue) {
+    public JiraIssueStatusLogEntity(Boolean copyBooleanValue) {
         super();
         this.copyBooleanValue = copyBooleanValue;
     }
@@ -54,7 +54,6 @@ public class JiraIssueStateLogEntity extends TreeLogBaseEntity implements Serial
     }
 
     //@Getter @Setter
-
     @Column(name = "c_issue_status_id")
     @Type(type="text")
     private String c_issue_status_id;
@@ -70,7 +69,6 @@ public class JiraIssueStateLogEntity extends TreeLogBaseEntity implements Serial
     @Column(name = "c_issue_status_url")
     @Type(type="text")
     private String c_issue_status_url;
-
     /*
      * Extend Bean Field
      */

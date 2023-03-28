@@ -1,7 +1,7 @@
 /*
  * @author Dongmin.lee
- * @since 2023-03-21
- * @version 23.03.21
+ * @since 2023-03-28
+ * @version 23.03.28
  * @see <pre>
  *  Copyright (C) 2007 by 313 DEV GRP, Inc - All Rights Reserved
  *  Unauthorized copying of this file, via any medium is strictly prohibited
@@ -9,7 +9,7 @@
  *  Written by 313 developer group <313@313.co.kr>, December 2010
  * </pre>
  */
-package com.arms.jiraissuestate.service;
+package com.arms.jiraserverlog.service;
 
 import com.egovframework.ple.treeframework.service.TreeServiceImpl;
 import org.hibernate.criterion.Criterion;
@@ -24,10 +24,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.AllArgsConstructor;
 
+
 @AllArgsConstructor
-@Service("jiraIssueState")
-public class JiraIssueStateImpl extends TreeServiceImpl implements JiraIssueState{
+@Service("jiraServerLog")
+public class JiraServerLogImpl extends TreeServiceImpl implements JiraServerLog{
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
 }

@@ -1,7 +1,7 @@
 /*
  * @author Dongmin.lee
- * @since 2023-03-21
- * @version 23.03.21
+ * @since 2023-03-28
+ * @version 23.03.28
  * @see <pre>
  *  Copyright (C) 2007 by 313 DEV GRP, Inc - All Rights Reserved
  *  Unauthorized copying of this file, via any medium is strictly prohibited
@@ -9,7 +9,7 @@
  *  Written by 313 developer group <313@313.co.kr>, December 2010
  * </pre>
  */
-package com.arms.jiraissuestate.model;
+package com.arms.reqreviewcommentlog.model;
 
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
@@ -28,18 +28,18 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "T_ARMS_JIRAISSUESTATE")
+@Table(name = "T_ARMS_REQREVIEWCOMMENT_LOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class JiraIssueStateEntity extends TreeSearchEntity implements Serializable {
+public class ReqReviewCommentLogEntity extends TreeSearchEntity implements Serializable {
 
-    public JiraIssueStateEntity() {
+    public ReqReviewCommentLogEntity() {
         super();
     }
 
-    public JiraIssueStateEntity(Boolean copyBooleanValue) {
+    public ReqReviewCommentLogEntity(Boolean copyBooleanValue) {
         super();
         this.copyBooleanValue = copyBooleanValue;
     }
@@ -51,25 +51,35 @@ public class JiraIssueStateEntity extends TreeSearchEntity implements Serializab
     public Long getC_id() {
         return super.getC_id();
     }
-    
+
     //@Getter @Setter
+    @Column(name = "c_pdservice_link")
+    private Long c_pdservice_link;
 
-    @Column(name = "c_issue_status_id")
+    @Column(name = "c_version_link")
+    private Long c_version_link;
+
+    @Column(name = "c_req_link")
+    private Long c_req_link;
+
+    @Column(name = "c_req_review_link")
+    private Long c_req_review_link;
+
+    @Column(name = "c_req_review_comment_sender")
     @Type(type="text")
-    private String c_issue_status_id;
+    private String c_req_review_sender;
 
-    @Column(name = "c_issue_status_desc")
+    @Column(name = "c_req_review_comment_date")
     @Type(type="text")
-    private String c_issue_status_desc;
+    private String c_req_review_comment_date;
 
-    @Column(name = "c_issue_status_name")
+    @Column(name = "c_req_review_comment_contents")
     @Type(type="text")
-    private String c_issue_status_name;
+    private String c_req_review_comment;
 
-    @Column(name = "c_issue_status_url")
+    @Column(name = "c_req_review_comment_etc")
     @Type(type="text")
-    private String c_issue_status_url;
-
+    private String c_req_review_etc;
     /*
      * Extend Bean Field
      */

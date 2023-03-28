@@ -62,25 +62,33 @@ public class ReqReviewEntity extends TreeSearchEntity implements Serializable {
     @Column(name = "c_req_link")
     private Long c_req_link;
 
-    @Column(name = "c_review_sender")
+    @Column(name = "c_req_review_sender")
     @Type(type="text")
-    private String c_review_sender;
+    private String c_req_review_sender;
 
-    @Column(name = "c_review_responder")
+    @Column(name = "c_req_review_responder")
     @Type(type="text")
-    private String c_review_responder;
+    private String c_req_review_responder;
 
-    @Column(name = "c_review_creat_date")
+    @Column(name = "c_req_review_creat_date")
     @Type(type="text")
-    private String c_review_creat_date;
+    private String c_req_review_creat_date;
 
-    @Column(name = "c_review_result_state")
+    @Column(name = "c_req_review_update_date")
     @Type(type="text")
-    private String c_review_result_state;
+    private String c_req_review_update_date;
 
-    @Column(name = "c_review_result_date")
+    @Column(name = "c_req_review_status")
     @Type(type="text")
-    private String c_review_result_date;
+    private String c_req_review_status;
+
+    @Lob
+    @Column(name = "c_req_review_contents")
+    private String c_req_review_contents;
+
+    @Column(name = "c_req_review_etc")
+    @Type(type="text")
+    private String c_req_review_etc;
 
     /*
      * Extend Bean Field

@@ -1,7 +1,7 @@
 /*
  * @author Dongmin.lee
- * @since 2023-03-21
- * @version 23.03.21
+ * @since 2023-03-28
+ * @version 23.03.28
  * @see <pre>
  *  Copyright (C) 2007 by 313 DEV GRP, Inc - All Rights Reserved
  *  Unauthorized copying of this file, via any medium is strictly prohibited
@@ -9,10 +9,9 @@
  *  Written by 313 developer group <313@313.co.kr>, December 2010
  * </pre>
  */
-package com.arms.reqcommentlog.model;
+package com.arms.jiraissuestatus.model;
 
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeLogBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,18 +28,18 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "T_ARMS_REQCOMMENTLOG")
+@Table(name = "T_ARMS_JIRAISSUESTATUS")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ReqCommentLogEntity extends TreeLogBaseEntity implements Serializable {
+public class JiraIssueStatusEntity extends TreeSearchEntity implements Serializable {
 
-    public ReqCommentLogEntity() {
+    public JiraIssueStatusEntity() {
         super();
     }
 
-    public ReqCommentLogEntity(Boolean copyBooleanValue) {
+    public JiraIssueStatusEntity(Boolean copyBooleanValue) {
         super();
         this.copyBooleanValue = copyBooleanValue;
     }
@@ -54,33 +53,21 @@ public class ReqCommentLogEntity extends TreeLogBaseEntity implements Serializab
     }
 
     //@Getter @Setter
-
-    @Column(name = "c_pdservice_link")
-    private Long c_pdservice_link;
-
-    @Column(name = "c_version_link")
-    private Long c_version_link;
-
-    @Column(name = "c_req_link")
-    private Long c_req_link;
-
-
-    @Column(name = "c_req_comment_sender")
+    @Column(name = "c_issue_status_id")
     @Type(type="text")
-    private String c_req_comment_sender;
+    private String c_issue_status_id;
 
-    @Column(name = "c_req_comment_date")
+    @Column(name = "c_issue_status_desc")
     @Type(type="text")
-    private String c_req_comment_date;
+    private String c_issue_status_desc;
 
-    @Column(name = "c_req_comment_contents")
+    @Column(name = "c_issue_status_name")
     @Type(type="text")
-    private String c_req_comment_contents;
+    private String c_issue_status_name;
 
-    @Column(name = "c_req_comment_etc")
+    @Column(name = "c_issue_status_url")
     @Type(type="text")
-    private String c_req_comment_etc;
-
+    private String c_issue_status_url;
     /*
      * Extend Bean Field
      */

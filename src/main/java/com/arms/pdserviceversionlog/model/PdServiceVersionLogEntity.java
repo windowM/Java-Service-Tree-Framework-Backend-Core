@@ -52,6 +52,7 @@ public class PdServiceVersionLogEntity extends TreeLogBaseEntity implements Seri
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
 
     @Column(name = "c_pdservice_link")
