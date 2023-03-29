@@ -88,6 +88,16 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
         } else {
             pdServiceEntity.setC_title(Util_TitleChecker.StringReplace(pdServiceEntity.getC_title()));
 
+            //Default Version 생성
+            PdServiceVersionEntity pdServiceVersionEntity = new PdServiceVersionEntity();
+            pdServiceVersionEntity.setRef(2L);
+            pdServiceVersionEntity.setC_title("BaseVersion");
+            pdServiceVersionEntity.setC_type("default");
+            //pdServiceVersionEntity.setC_pdservice_link(addedNode.getC_id());
+            PdServiceVersionEntity tree = pdServiceVersion.addNode(pdServiceVersionEntity);
+
+            pdServiceEntity.setC_id(tree);
+
             //제품(서비스) 데이터 등록
             PdServiceEntity addedNode = pdService.addNode(pdServiceEntity);
 
@@ -98,14 +108,6 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             //C_ETC 컬럼에 요구사항 테이블 이름 기입
             addedNode.setC_pdservice_etc(REQ_PREFIX_TABLENAME_BY_PDSERVICE + addedNode.getC_id().toString());
             pdService.updateNode(addedNode);
-
-            //Default Version 생성
-            PdServiceVersionEntity pdServiceVersionEntity = new PdServiceVersionEntity();
-            pdServiceVersionEntity.setRef(2L);
-            pdServiceVersionEntity.setC_title("BaseVersion");
-            pdServiceVersionEntity.setC_type("default");
-            pdServiceVersionEntity.setC_pdservice_link(addedNode.getC_id());
-            pdServiceVersion.addNode(pdServiceVersionEntity);
 
             ModelAndView modelAndView = new ModelAndView("jsonView");
             modelAndView.addObject("result", addedNode);

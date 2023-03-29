@@ -51,8 +51,13 @@ public class MapReqNJiraStatusEntity extends TreeSearchEntity implements Seriali
     public Long getC_id() {
         return super.getC_id();
     }
-    //@Getter @Setter
 
+    //@Getter @Setter
+    @Column(name = "c_req_status_link")
+    private Long c_req_status_link;
+
+    @Column(name = "c_jira_status_link")
+    private Long c_jira_status_link;
     /*
      * Extend Bean Field
      */

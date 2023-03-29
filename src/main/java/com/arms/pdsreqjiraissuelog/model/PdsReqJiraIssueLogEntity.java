@@ -1,7 +1,7 @@
 /*
  * @author Dongmin.lee
- * @since 2023-03-26
- * @version 23.03.26
+ * @since 2023-03-29
+ * @version 23.03.29
  * @see <pre>
  *  Copyright (C) 2007 by 313 DEV GRP, Inc - All Rights Reserved
  *  Unauthorized copying of this file, via any medium is strictly prohibited
@@ -9,7 +9,7 @@
  *  Written by 313 developer group <313@313.co.kr>, December 2010
  * </pre>
  */
-package com.arms.mapreqnjirapriority.model;
+package com.arms.pdsreqjiraissuelog.model;
 
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
@@ -28,18 +28,18 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "T_ARMS_MAPREQNJIRAPRIORITY")
+@Table(name = "T_ARMS_PDSREQJIRAISSUELOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class MapReqNJiraPriorityEntity extends TreeSearchEntity implements Serializable {
+public class PdsReqJiraIssueLogEntity extends TreeSearchEntity implements Serializable {
 
-    public MapReqNJiraPriorityEntity() {
+    public PdsReqJiraIssueLogEntity() {
         super();
     }
 
-    public MapReqNJiraPriorityEntity(Boolean copyBooleanValue) {
+    public PdsReqJiraIssueLogEntity(Boolean copyBooleanValue) {
         super();
         this.copyBooleanValue = copyBooleanValue;
     }
@@ -51,13 +51,7 @@ public class MapReqNJiraPriorityEntity extends TreeSearchEntity implements Seria
     public Long getC_id() {
         return super.getC_id();
     }
-
     //@Getter @Setter
-    @Column(name = "c_req_priority_link")
-    private Long c_req_priority_link;
-
-    @Column(name = "c_jira_priority_link")
-    private Long c_jira_priority_link;
 
     /*
      * Extend Bean Field

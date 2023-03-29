@@ -51,7 +51,13 @@ public class MapPdServiceNJiraEntity extends TreeSearchEntity implements Seriali
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
+    @Column(name = "c_pdservice_link")
+    private Long c_pdservice_link;
+
+    @Column(name = "c_jira_project_link")
+    private Long c_jira_project_link;
 
     /*
      * Extend Bean Field

@@ -51,7 +51,13 @@ public class MapReqNFileEntity extends TreeSearchEntity implements Serializable 
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
+    @Column(name = "c_reqadd_link")
+    private Long c_reqadd_link;
+
+    @Column(name = "c_filerepository_link")
+    private Long c_filerepository_link;
 
     /*
      * Extend Bean Field

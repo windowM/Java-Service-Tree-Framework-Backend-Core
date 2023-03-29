@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @MappedSuperclass
-public abstract class TreeBaseEntity implements Serializable {
+public abstract class TreeBaseEntity {
 
     /** 노드의 고유 id, 1부터 시작(Root Node) */
     private Long c_id;

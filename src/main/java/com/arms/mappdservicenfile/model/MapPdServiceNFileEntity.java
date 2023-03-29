@@ -51,7 +51,14 @@ public class MapPdServiceNFileEntity extends TreeSearchEntity implements Seriali
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
+
+    @Column(name = "c_pdservice_link")
+    private Long c_pdservice_link;
+
+    @Column(name = "c_filerepository_link")
+    private Long c_filerepository_link;
 
     /*
      * Extend Bean Field

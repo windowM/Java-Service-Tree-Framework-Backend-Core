@@ -58,6 +58,10 @@ logging:
         type:
           descriptor:
             sql: trace
+    org.springframework.web: debug
+    sql: error
+    jdbc: off
+    jdbc.sqlonly: debug
 
 server:
   port: 31313

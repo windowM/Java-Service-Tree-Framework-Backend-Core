@@ -11,14 +11,26 @@
  */
 package com.arms.pdservice.model;
 
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -33,6 +45,7 @@ import java.io.Serializable;
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NoArgsConstructor
 public class PdServiceEntity extends TreeSearchEntity implements Serializable {
 
     @Override
@@ -78,6 +91,11 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     @Column(name="c_pdservice_writer")
     @Type(type="text")
     private String c_pdservice_writer;
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "c_id")
+    private PdServiceVersionEntity c_id;
 
     /*
      * Extend Bean Field

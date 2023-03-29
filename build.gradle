@@ -12,8 +12,8 @@ plugins {
     id 'maven-publish'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 import org.apache.tools.ant.taskdefs.condition.Os
 ext {
