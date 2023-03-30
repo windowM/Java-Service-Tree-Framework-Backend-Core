@@ -91,12 +91,15 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             //Default Version 생성
             PdServiceVersionEntity pdServiceVersionEntity = new PdServiceVersionEntity();
             pdServiceVersionEntity.setRef(2L);
-            pdServiceVersionEntity.setC_title("BaseVersion");
+            pdServiceVersionEntity.setC_title("test");
             pdServiceVersionEntity.setC_type("default");
-            //pdServiceVersionEntity.setC_pdservice_link(addedNode.getC_id());
-            PdServiceVersionEntity tree = pdServiceVersion.addNode(pdServiceVersionEntity);
+            pdServiceVersionEntity.setC_pds_version_start_date("start");
+            pdServiceVersionEntity.setC_pds_version_end_date("end");
+            pdServiceVersionEntity.setC_pds_version_contents("contents");
+            pdServiceVersionEntity.setC_pds_version_etc("etc");
+            PdServiceVersionEntity versionTreeNode = pdServiceVersion.addNode(pdServiceVersionEntity);
 
-            pdServiceEntity.setC_id(tree);
+            pdServiceEntity.setPdServiceVersionEntity(versionTreeNode);
 
             //제품(서비스) 데이터 등록
             PdServiceEntity addedNode = pdService.addNode(pdServiceEntity);

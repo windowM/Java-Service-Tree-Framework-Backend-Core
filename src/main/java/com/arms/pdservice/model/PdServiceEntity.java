@@ -16,6 +16,7 @@ import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,6 +47,7 @@ import java.io.Serializable;
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NoArgsConstructor
+@AllArgsConstructor
 public class PdServiceEntity extends TreeSearchEntity implements Serializable {
 
     @Override
@@ -92,10 +94,18 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     @Type(type="text")
     private String c_pdservice_writer;
 
+    // -- 1:1 table 연계
+    private PdServiceVersionEntity pdServiceVersionEntity;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "c_id")
-    private PdServiceVersionEntity c_id;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "c_pdservice_version_link")
+    public PdServiceVersionEntity getPdServiceVersionEntity() {
+        return pdServiceVersionEntity;
+    }
+
+    public void setPdServiceVersionEntity(PdServiceVersionEntity pdServiceVersionEntity) {
+        this.pdServiceVersionEntity = pdServiceVersionEntity;
+    }
 
     /*
      * Extend Bean Field

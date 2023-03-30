@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 
 @MappedSuperclass
-public abstract class TreePaginatedEntity extends TreeBaseEntity {
+public abstract class TreePaginatedEntity extends TreeBaseEntity implements Serializable {
 
     /** 검색조건 */
     @JsonIgnore

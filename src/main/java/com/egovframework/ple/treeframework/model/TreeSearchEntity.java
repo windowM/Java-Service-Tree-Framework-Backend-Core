@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @MappedSuperclass
-public abstract class TreeSearchEntity extends TreePaginatedEntity {
+public abstract class TreeSearchEntity extends TreePaginatedEntity implements Serializable {
 
     @JsonIgnore
     private List<Order> order = new ArrayList<>();
