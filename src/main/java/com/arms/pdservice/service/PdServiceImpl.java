@@ -11,19 +11,25 @@
  */
 package com.arms.pdservice.service;
 
+import com.arms.dynamicdbmaker.service.DynamicDBMaker;
+import com.arms.filerepository.service.FileRepository;
 import com.arms.pdservice.model.PdServiceEntity;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
+import com.arms.pdserviceversion.service.PdServiceVersion;
 import com.egovframework.ple.treeframework.service.TreeServiceImpl;
+import com.egovframework.ple.treeframework.util.Util_TitleChecker;
 import lombok.AllArgsConstructor;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @AllArgsConstructor
 @Service("pdService")
@@ -35,6 +41,18 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
     private static final String NODE_TYPE = new String("default");
     private static final String REQ_PREFIX_TABLENAME_BY_PDSERVICE = new String("T_ARMS_REQADD_");
     private static final String REQ_PREFIX_TABLENAME_BY_PDSERVICE_STATUS = new String("T_ARMS_REQSTATUS_");
+
+    @Autowired
+    @Qualifier("fileRepository")
+    private FileRepository fileRepository;
+
+    @Autowired
+    @Qualifier("pdServiceVersion")
+    private PdServiceVersion pdServiceVersion;
+
+    @Autowired
+    @Qualifier("dynamicDBMaker")
+    private DynamicDBMaker dynamicDBMaker;
 
     @Override
     public List<PdServiceEntity> getNodesWithoutRoot(PdServiceEntity pdServiceEntity) throws Exception {
@@ -71,5 +89,52 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         pdServiceEntity.setC_type(NODE_TYPE);
 
         return this.addNode(pdServiceEntity);
+    }
+
+    @Override
+    @Transactional
+    public PdServiceEntity addPdServiceAndVersion(PdServiceEntity pdServiceEntity) throws Exception {
+        pdServiceEntity.setC_title(Util_TitleChecker.StringReplace(pdServiceEntity.getC_title()));
+
+        //Default Version 생성
+        PdServiceVersionEntity baseVerNode = new PdServiceVersionEntity();
+        baseVerNode.setRef(2L);
+        baseVerNode.setC_title("BaseVersion");
+        baseVerNode.setC_type("default");
+        baseVerNode.setC_pds_version_start_date("start");
+        baseVerNode.setC_pds_version_end_date("end");
+        baseVerNode.setC_pds_version_contents("contents");
+        baseVerNode.setC_pds_version_etc("etc");
+        PdServiceVersionEntity baseNode = pdServiceVersion.addNode(baseVerNode);
+
+        PdServiceVersionEntity defaultVerNode = new PdServiceVersionEntity();
+        defaultVerNode.setRef(2L);
+        defaultVerNode.setC_title("BaseVersion");
+        defaultVerNode.setC_type("default");
+        defaultVerNode.setC_pds_version_start_date("start");
+        defaultVerNode.setC_pds_version_end_date("end");
+        defaultVerNode.setC_pds_version_contents("contents");
+        defaultVerNode.setC_pds_version_etc("etc");
+        PdServiceVersionEntity defaultNode = pdServiceVersion.addNode(defaultVerNode);
+
+
+        Set<PdServiceVersionEntity> treeset = new HashSet<>();
+        treeset.add(baseNode);
+        treeset.add(defaultNode);
+
+        pdServiceEntity.setPdServiceVersionEntities(treeset);
+
+        //제품(서비스) 데이터 등록
+        PdServiceEntity addedNode = this.addNode(pdServiceEntity);
+
+        //제품(서비스) 생성시 - 요구사항 TABLE 생성
+        //제품(서비스) 생성시 - 요구사항 STATUS TABLE 생성
+        dynamicDBMaker.createSchema(addedNode.getC_id().toString());
+
+        //C_ETC 컬럼에 요구사항 테이블 이름 기입
+        addedNode.setC_pdservice_etc(REQ_PREFIX_TABLENAME_BY_PDSERVICE + addedNode.getC_id().toString());
+        this.updateNode(addedNode);
+
+        return addedNode;
     }
 }

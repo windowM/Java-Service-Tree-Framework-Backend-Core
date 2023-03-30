@@ -22,4 +22,6 @@ public interface PdService extends TreeService {
 
     public PdServiceEntity addNodeToEndPosition(PdServiceEntity pdServiceEntity) throws Exception;
 
+    public PdServiceEntity addPdServiceAndVersion(PdServiceEntity pdServiceEntity) throws Exception;
+
 }

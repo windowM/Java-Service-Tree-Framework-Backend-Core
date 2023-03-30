@@ -41,7 +41,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
@@ -86,34 +88,9 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
         if (bindingResult.hasErrors()) {
             throw new RuntimeException();
         } else {
-            pdServiceEntity.setC_title(Util_TitleChecker.StringReplace(pdServiceEntity.getC_title()));
-
-            //Default Version 생성
-            PdServiceVersionEntity pdServiceVersionEntity = new PdServiceVersionEntity();
-            pdServiceVersionEntity.setRef(2L);
-            pdServiceVersionEntity.setC_title("test");
-            pdServiceVersionEntity.setC_type("default");
-            pdServiceVersionEntity.setC_pds_version_start_date("start");
-            pdServiceVersionEntity.setC_pds_version_end_date("end");
-            pdServiceVersionEntity.setC_pds_version_contents("contents");
-            pdServiceVersionEntity.setC_pds_version_etc("etc");
-            PdServiceVersionEntity versionTreeNode = pdServiceVersion.addNode(pdServiceVersionEntity);
-
-            pdServiceEntity.setPdServiceVersionEntity(versionTreeNode);
-
-            //제품(서비스) 데이터 등록
-            PdServiceEntity addedNode = pdService.addNode(pdServiceEntity);
-
-            //제품(서비스) 생성시 - 요구사항 TABLE 생성
-            //제품(서비스) 생성시 - 요구사항 STATUS TABLE 생성
-            dynamicDBMaker.createSchema(addedNode.getC_id().toString());
-
-            //C_ETC 컬럼에 요구사항 테이블 이름 기입
-            addedNode.setC_pdservice_etc(REQ_PREFIX_TABLENAME_BY_PDSERVICE + addedNode.getC_id().toString());
-            pdService.updateNode(addedNode);
 
             ModelAndView modelAndView = new ModelAndView("jsonView");
-            modelAndView.addObject("result", addedNode);
+            modelAndView.addObject("result", pdService.addPdServiceAndVersion(pdServiceEntity));
             return modelAndView;
         }
     }

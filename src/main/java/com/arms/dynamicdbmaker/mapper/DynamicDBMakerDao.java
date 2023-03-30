@@ -13,6 +13,10 @@ public interface DynamicDBMakerDao {
     public void dmlOrgExecute1(DynamicDBMakerEntity dynamicDBMakerEntity);
     public void dmlOrgExecute2(DynamicDBMakerEntity dynamicDBMakerEntity);
 
-    public void triggerExecute(DynamicDBMakerEntity dynamicDBMakerEntity);
+    public void triggerInsertExecute(DynamicDBMakerEntity dynamicDBMakerEntity);
+
+    public void triggerUpdateExecute(DynamicDBMakerEntity dynamicDBMakerEntity);
+
+    public void triggerDeleteExecute(DynamicDBMakerEntity dynamicDBMakerEntity);
 
 }

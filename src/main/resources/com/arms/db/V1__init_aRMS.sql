@@ -1,4 +1,22 @@
 --
+-- Table structure for table `GLOBAL_TREE_MAP`
+--
+CREATE TABLE IF NOT EXISTS `aRMS`.`GLOBAL_TREE_MAP` (
+
+    `filerepository_link`                   bigint(20) default NULL COMMENT '파일',
+
+    `jiraconnectinfo_link`                   bigint(20) default NULL COMMENT '파일',
+    `jiraissue_link`                            bigint(20) default NULL COMMENT '파일',
+    `jiraissuepriority_link`                   bigint(20) default NULL COMMENT '파일',
+
+    `pdservice_link`                        bigint(20) default NULL COMMENT '제품(서비스)',
+    `pdserviceversion_link`                 bigint(20) default NULL COMMENT '제품(서비스) 버전'
+
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='트리 맵';
+
+
+
+--
 -- Table structure for table `T_ARMS_FILEREPOSITORY`
 --
 CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_FILEREPOSITORY_LOG` (
@@ -213,9 +231,7 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_PDSERVICE_LOG` (
     `c_pdservice_reviewer03`    text NULL,
     `c_pdservice_reviewer04`    text NULL,
     `c_pdservice_reviewer05`    text NULL,
-    `c_pdservice_writer`        text NULL,
-
-    `c_pdservice_version_link`          bigint(20) NULL
+    `c_pdservice_writer`        text NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='제품(서비스) 트리거 로그';
 
@@ -240,12 +256,7 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_PDSERVICE` (
     `c_pdservice_reviewer03`    text NULL,
     `c_pdservice_reviewer04`    text NULL,
     `c_pdservice_reviewer05`    text NULL,
-    `c_pdservice_writer`        text NULL,
-
-    `c_pdservice_version_link`     bigint(20) NULL,
-
-    KEY `FK_ARMS_PDSERVICE` (`c_pdservice_version_link`),
-    CONSTRAINT `FK_ARMS_PDSERVICE` FOREIGN KEY (`c_pdservice_version_link`) REFERENCES `T_ARMS_PDSERVICEVERSION` (`c_id`)
+    `c_pdservice_writer`        text NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='제품(서비스)';
 

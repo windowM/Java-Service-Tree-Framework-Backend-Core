@@ -15,6 +15,7 @@ import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +38,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -95,16 +97,23 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     private String c_pdservice_writer;
 
     // -- 1:1 table 연계
-    private PdServiceVersionEntity pdServiceVersionEntity;
+    private Set<PdServiceVersionEntity> pdServiceVersionEntities;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "c_pdservice_version_link")
-    public PdServiceVersionEntity getPdServiceVersionEntity() {
-        return pdServiceVersionEntity;
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "pdservice_link"),
+            inverseJoinColumns = @JoinColumn(name = "pdserviceversion_link")
+    )
+    @WhereJoinTable( clause = "filerepository_link is null and jiraconnectinfo_link is null")
+    public Set<PdServiceVersionEntity> getPdServiceVersionEntities() {
+        return pdServiceVersionEntities;
     }
 
-    public void setPdServiceVersionEntity(PdServiceVersionEntity pdServiceVersionEntity) {
-        this.pdServiceVersionEntity = pdServiceVersionEntity;
+    public void setPdServiceVersionEntities(Set<PdServiceVersionEntity> pdServiceVersionEntities) {
+        this.pdServiceVersionEntities = pdServiceVersionEntities;
     }
 
     /*

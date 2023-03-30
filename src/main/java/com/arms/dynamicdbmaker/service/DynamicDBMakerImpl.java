@@ -46,7 +46,9 @@ public class DynamicDBMakerImpl extends TreeServiceImpl implements DynamicDBMake
 		dynamicDBMakerDao.dmlOrgExecute1(dynamicDBMakerEntity);
 		dynamicDBMakerDao.dmlOrgExecute2(dynamicDBMakerEntity);
 
-		dynamicDBMakerDao.triggerExecute(dynamicDBMakerEntity);
+		dynamicDBMakerDao.triggerInsertExecute(dynamicDBMakerEntity);
+		dynamicDBMakerDao.triggerUpdateExecute(dynamicDBMakerEntity);
+		dynamicDBMakerDao.triggerDeleteExecute(dynamicDBMakerEntity);
 
 		dynamicDBMakerEntity.setC_title(REQ_PREFIX_TABLENAME_BY_PDSERVICE_STATUS + tableNumber);
 
@@ -59,7 +61,9 @@ public class DynamicDBMakerImpl extends TreeServiceImpl implements DynamicDBMake
 		dynamicDBMakerDao.dmlOrgExecute2(dynamicDBMakerEntity);
 
 
-		dynamicDBMakerDao.triggerExecute(dynamicDBMakerEntity);
+		dynamicDBMakerDao.triggerInsertExecute(dynamicDBMakerEntity);
+		dynamicDBMakerDao.triggerUpdateExecute(dynamicDBMakerEntity);
+		dynamicDBMakerDao.triggerDeleteExecute(dynamicDBMakerEntity);
 
 		return makeResult;
 	}
