@@ -32,6 +32,8 @@ public interface TreeService {
 
     public <T extends TreeSearchEntity> T addNode(T treeSearchEntity) throws Exception;
 
+    public <T extends TreeSearchEntity> int overwriteNode(T toEntity,T fromEntity) throws Exception;
+
     public <T extends TreeSearchEntity> int removeNode(T treeSearchEntity) throws Exception;
 
     public <T extends TreeSearchEntity> int alterNode(T treeSearchEntity) throws Exception;

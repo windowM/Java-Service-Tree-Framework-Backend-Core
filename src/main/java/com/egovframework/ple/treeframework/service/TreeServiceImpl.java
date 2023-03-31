@@ -168,6 +168,37 @@ public class TreeServiceImpl implements TreeService {
         return treeSearchEntity;
     }
 
+    @Override
+    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
+    public <T extends TreeSearchEntity> int overwriteNode( T toEntity ,T fromEntity) throws Exception {
+
+        treeDao.setClazz(toEntity.getClass());
+        treeDao.getCurrentSession().setCacheMode(CacheMode.IGNORE);
+        T alterTargetNode = (T) treeDao.getUnique(toEntity.getC_id());
+
+        for (Field toField : ReflectionUtils.getAllFields(toEntity.getClass())) {
+
+            toField.setAccessible(true);
+
+            Field fromField = ReflectionUtils.getFieldWithName(fromEntity.getClass(),
+                    toField.getName(), false);
+
+            fromField.setAccessible(true);
+
+            Object fromValue = fromField.get(fromEntity);
+
+            if (!ObjectUtils.isEmpty(fromValue)) {
+                toField.setAccessible(true);
+                toField.set(alterTargetNode, fromValue);
+            }
+
+        }
+        treeDao.update(alterTargetNode);
+
+        return 1;
+
+    }
+
     @SuppressWarnings("unchecked")
     public <T extends TreeSearchEntity> void stretchLeftRightForMyselfFromTree(long spaceOfTargetNode,
                                                                             long rightPositionFromNodeByRef, long copy, Collection<Long> c_idsByChildNodeFromNodeById,
