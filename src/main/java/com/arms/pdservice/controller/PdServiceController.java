@@ -90,7 +90,8 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
         } else {
 
             ModelAndView modelAndView = new ModelAndView("jsonView");
-            modelAndView.addObject("result", pdService.addPdServiceAndVersion(pdServiceEntity));
+            modelAndView.addObject("result", pdService.addPdServiceAndVersion2(pdServiceEntity));
+            logger.info("--------------------------test2------------------------");
             return modelAndView;
         }
     }

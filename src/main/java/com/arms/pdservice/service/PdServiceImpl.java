@@ -137,4 +137,54 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         return addedNode;
     }
+
+    @Override
+    @Transactional
+    public PdServiceEntity addPdServiceAndVersion2(PdServiceEntity pdServiceEntity) throws Exception {
+        pdServiceEntity.setC_title(Util_TitleChecker.StringReplace(pdServiceEntity.getC_title()));
+
+        //Default Version 생성
+        PdServiceVersionEntity baseVerNode = new PdServiceVersionEntity();
+        baseVerNode.setRef(2L);
+        baseVerNode.setC_title("BaseVersion");
+        baseVerNode.setC_type("default");
+        baseVerNode.setC_pds_version_start_date("start");
+        baseVerNode.setC_pds_version_end_date("end");
+        baseVerNode.setC_pds_version_contents("contents");
+        baseVerNode.setC_pds_version_etc("etc");
+        PdServiceVersionEntity baseNode = pdServiceVersion.addNode(baseVerNode);
+
+        PdServiceVersionEntity defaultVerNode = new PdServiceVersionEntity();
+        defaultVerNode.setRef(2L);
+        defaultVerNode.setC_title("BaseVersion");
+        defaultVerNode.setC_type("default");
+        defaultVerNode.setC_pds_version_start_date("start");
+        defaultVerNode.setC_pds_version_end_date("end");
+        defaultVerNode.setC_pds_version_contents("contents");
+        defaultVerNode.setC_pds_version_etc("etc");
+        PdServiceVersionEntity defaultNode = pdServiceVersion.addNode(defaultVerNode);
+
+
+        Set<PdServiceVersionEntity> treeset = new HashSet<>();
+        treeset.add(baseNode);
+        treeset.add(defaultNode);
+
+        //pdServiceEntity.setPdServiceVersionEntities(treeset);
+
+        //제품(서비스) 데이터 등록
+        PdServiceEntity addedNode = this.addNode(pdServiceEntity);
+
+        //제품(서비스) 생성시 - 요구사항 TABLE 생성
+        //제품(서비스) 생성시 - 요구사항 STATUS TABLE 생성
+        dynamicDBMaker.createSchema(addedNode.getC_id().toString());
+
+        //C_ETC 컬럼에 요구사항 테이블 이름 기입
+        addedNode.setC_pdservice_etc(REQ_PREFIX_TABLENAME_BY_PDSERVICE + addedNode.getC_id().toString());
+
+        addedNode.setPdServiceVersionEntities(treeset);
+
+        this.updateNode(addedNode);
+
+        return addedNode;
+    }
 }

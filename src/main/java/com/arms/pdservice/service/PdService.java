@@ -24,4 +24,6 @@ public interface PdService extends TreeService {
 
     public PdServiceEntity addPdServiceAndVersion(PdServiceEntity pdServiceEntity) throws Exception;
 
+    public PdServiceEntity addPdServiceAndVersion2(PdServiceEntity pdServiceEntity) throws Exception;
+
 }
