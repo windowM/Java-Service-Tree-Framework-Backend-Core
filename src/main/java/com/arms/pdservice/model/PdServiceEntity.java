@@ -11,16 +11,15 @@
  */
 package com.arms.pdservice.model;
 
+import com.arms.filerepository.model.FileRepositoryEntity;
+import com.arms.filerepository.service.FileRepository;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -43,6 +42,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_PDSERVICE")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
@@ -96,7 +96,7 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     @Type(type="text")
     private String c_pdservice_writer;
 
-    // -- 1:1 table 연계
+    // -- 1:N table 연계
     private Set<PdServiceVersionEntity> pdServiceVersionEntities;
 
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -115,6 +115,27 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     public void setPdServiceVersionEntities(Set<PdServiceVersionEntity> pdServiceVersionEntities) {
         this.pdServiceVersionEntities = pdServiceVersionEntities;
     }
+
+    // -- 1:N table 연계
+    private Set<FileRepositoryEntity> fileRepositoryEntities;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "pdservice_link"),
+            inverseJoinColumns = @JoinColumn(name = "filerepository_link")
+    )
+    @WhereJoinTable( clause = "jiraconnectinfo_link is null")
+    public Set<FileRepositoryEntity> getFileRepositoryEntities() {
+        return fileRepositoryEntities;
+    }
+
+    public void setFileRepositoryEntities(Set<FileRepositoryEntity> fileRepositoryEntities) {
+        this.fileRepositoryEntities = fileRepositoryEntities;
+    }
+
 
     /*
      * Extend Bean Field

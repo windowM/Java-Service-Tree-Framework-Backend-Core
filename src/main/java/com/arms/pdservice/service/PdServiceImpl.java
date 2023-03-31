@@ -12,7 +12,9 @@
 package com.arms.pdservice.service;
 
 import com.arms.dynamicdbmaker.service.DynamicDBMaker;
+import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
+import com.arms.filerepository.service.FileRepositoryImpl;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
@@ -143,6 +145,16 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
     public PdServiceEntity addPdServiceAndVersion2(PdServiceEntity pdServiceEntity) throws Exception {
         pdServiceEntity.setC_title(Util_TitleChecker.StringReplace(pdServiceEntity.getC_title()));
 
+        //Default File 생성
+        FileRepositoryEntity fileNode = new FileRepositoryEntity();
+        fileNode.setRef(2L);
+        fileNode.setC_title("DefaultFile");
+        fileNode.setC_type("default");
+        FileRepositoryEntity fileRepoNode = fileRepository.addNode(fileNode);
+
+        Set<FileRepositoryEntity> fileset = new HashSet<>();
+        fileset.add(fileRepoNode);
+
         //Default Version 생성
         PdServiceVersionEntity baseVerNode = new PdServiceVersionEntity();
         baseVerNode.setRef(2L);
@@ -182,6 +194,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         addedNode.setC_pdservice_etc(REQ_PREFIX_TABLENAME_BY_PDSERVICE + addedNode.getC_id().toString());
 
         addedNode.setPdServiceVersionEntities(treeset);
+        addedNode.setFileRepositoryEntities(fileset);
 
         this.updateNode(addedNode);
 
