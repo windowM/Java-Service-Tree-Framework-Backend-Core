@@ -37,6 +37,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -97,7 +98,7 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     private String c_pdservice_writer;
 
     // -- 1:N table 연계
-    private Set<PdServiceVersionEntity> pdServiceVersionEntities;
+    private List<PdServiceVersionEntity> pdServiceVersionEntities;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
@@ -108,16 +109,16 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "pdserviceversion_link")
     )
     @WhereJoinTable( clause = "filerepository_link is null and jiraconnectinfo_link is null")
-    public Set<PdServiceVersionEntity> getPdServiceVersionEntities() {
+    public List<PdServiceVersionEntity> getPdServiceVersionEntities() {
         return pdServiceVersionEntities;
     }
 
-    public void setPdServiceVersionEntities(Set<PdServiceVersionEntity> pdServiceVersionEntities) {
+    public void setPdServiceVersionEntities(List<PdServiceVersionEntity> pdServiceVersionEntities) {
         this.pdServiceVersionEntities = pdServiceVersionEntities;
     }
 
     // -- 1:N table 연계
-    private Set<FileRepositoryEntity> fileRepositoryEntities;
+    private List<FileRepositoryEntity> files;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
@@ -128,13 +129,14 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "filerepository_link")
     )
     @WhereJoinTable( clause = "jiraconnectinfo_link is null")
-    public Set<FileRepositoryEntity> getFileRepositoryEntities() {
-        return fileRepositoryEntities;
+    public List<FileRepositoryEntity> getFiles() {
+        return files;
     }
 
-    public void setFileRepositoryEntities(Set<FileRepositoryEntity> fileRepositoryEntities) {
-        this.fileRepositoryEntities = fileRepositoryEntities;
+    public void setFiles(List<FileRepositoryEntity> files) {
+        this.files = files;
     }
+
 
 
     /*

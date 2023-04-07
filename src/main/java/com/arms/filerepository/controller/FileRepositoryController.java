@@ -13,6 +13,8 @@ package com.arms.filerepository.controller;
 
 import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
+import com.arms.pdservice.model.PdServiceEntity;
+import com.arms.pdservice.service.PdService;
 import com.egovframework.ple.treeframework.controller.TreeAbstractController;
 import com.egovframework.ple.treeframework.util.PropertiesReader;
 import com.egovframework.ple.treeframework.util.ParameterParser;
@@ -33,8 +35,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -44,6 +49,10 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     @Autowired
     @Qualifier("fileRepository")
     private FileRepository fileRepository;
+
+    @Autowired
+    @Qualifier("pdService")
+    private PdService pdService;
 
     @PostConstruct
     public void initialize() {
@@ -58,12 +67,13 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
 
         ParameterParser parser = new ParameterParser(request);
 
-        fileRepositoryEntity.setWhere("fileIdLink", parser.getLong("fileIdlink"));
-        fileRepositoryEntity.setWhere("c_title", fileRepositoryEntity.getC_title());
-        List<FileRepositoryEntity> list = fileRepository.getChildNode(fileRepositoryEntity);
+        PdServiceEntity pdServiceEntity = new PdServiceEntity();
+        pdServiceEntity.setC_id(parser.getLong("fileIdLink"));
+        PdServiceEntity node = pdService.getNode(pdServiceEntity);
 
+        List<FileRepositoryEntity> files = node.getFiles();
         HashMap<String, List<FileRepositoryEntity>> map = new HashMap();
-        map.put("files", list);
+        map.put("files", files);
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", map);

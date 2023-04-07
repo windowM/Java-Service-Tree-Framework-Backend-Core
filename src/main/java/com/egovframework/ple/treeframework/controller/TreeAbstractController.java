@@ -53,7 +53,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
         ParameterParser parser = new ParameterParser(request);
 
         if (parser.getInt("c_id") <= 0) {
-            throw new RuntimeException();
+            throw new RuntimeException("c_id is minus value");
         }
 
         V returnVO = treeService.getNode(treeSearchEntity);
@@ -71,7 +71,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
         ParameterParser parser = new ParameterParser(request);
 
         if (parser.getInt("c_id") <= 0) {
-            throw new RuntimeException();
+            throw new RuntimeException("c_id is minus value");
         }
 
         treeSearchEntity.setWhere("c_parentid", new Long(parser.get("c_id")));
@@ -130,7 +130,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
         ParameterParser parser = new ParameterParser(request);
 
         if (!StringUtils.hasText(request.getParameter("searchString"))) {
-            throw new RuntimeException();
+            throw new RuntimeException("searchString is null");
         }
 
         treeSearchEntity.setWhereLike("c_title", parser.get("parser"));
@@ -145,7 +145,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     public ModelAndView addNode(@Validated(value = AddNode.class) V treeSearchEntity,
                                 BindingResult bindingResult, ModelMap model) throws Exception {
         if (bindingResult.hasErrors())
-            throw new RuntimeException();
+            throw new RuntimeException("binding error : " + bindingResult.toString());
 
         treeSearchEntity.setC_title(Util_TitleChecker.StringReplace(treeSearchEntity.getC_title()));
 
@@ -159,7 +159,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     public ModelAndView removeNode(@Validated(value = RemoveNode.class) V treeSearchEntity,
                                    BindingResult bindingResult, ModelMap model) throws Exception {
         if (bindingResult.hasErrors())
-            throw new RuntimeException();
+            throw new RuntimeException("binding error : " + bindingResult.toString());
 
         treeSearchEntity.setStatus(treeService.removeNode(treeSearchEntity));
         setJsonDefaultSetting(treeSearchEntity);
@@ -185,7 +185,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
                                    BindingResult bindingResult, HttpServletRequest request, ModelMap model) throws Exception {
 
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
+            throw new RuntimeException("binding error : " + bindingResult.toString());
         }
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
@@ -198,7 +198,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     public ModelAndView alterNode(@Validated(value = AlterNode.class) V treeSearchEntity,
                                   BindingResult bindingResult, ModelMap model) throws Exception {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
+            throw new RuntimeException("binding error : " + bindingResult.toString());
         }
 
         treeSearchEntity.setC_title(Util_TitleChecker.StringReplace(treeSearchEntity.getC_title()));
@@ -216,7 +216,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     public ModelAndView alterNodeType(@Validated(value = AlterNodeType.class) V treeSearchEntity,
                                       BindingResult bindingResult, ModelMap model) throws Exception {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
+            throw new RuntimeException("binding error : " + bindingResult.toString());
         }
 
         treeService.alterNodeType(treeSearchEntity);
@@ -231,7 +231,7 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     public ModelAndView moveNode(@Validated(value = MoveNode.class) V treeSearchEntity,
                                  BindingResult bindingResult, ModelMap model, HttpServletRequest request) throws Exception {
         if (bindingResult.hasErrors())
-            throw new RuntimeException();
+            throw new RuntimeException("binding error : " + bindingResult.toString());
 
         treeService.moveNode(treeSearchEntity, request);
         setJsonDefaultSetting(treeSearchEntity);

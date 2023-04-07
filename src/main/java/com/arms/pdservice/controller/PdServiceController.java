@@ -12,6 +12,7 @@
 package com.arms.pdservice.controller;
 
 import com.arms.dynamicdbmaker.service.DynamicDBMaker;
+import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdservice.service.PdService;
@@ -90,8 +91,7 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
         } else {
 
             ModelAndView modelAndView = new ModelAndView("jsonView");
-            modelAndView.addObject("result", pdService.addPdServiceAndVersion2(pdServiceEntity));
-            logger.info("--------------------------test2------------------------");
+            modelAndView.addObject("result", pdService.addPdServiceAndVersion(pdServiceEntity));
             return modelAndView;
         }
     }
@@ -123,11 +123,17 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
                                          HttpServletRequest request, Model model) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
-        String c_title = "pdService";
+        long param_c_id = parser.getLong("pdservice_link");
 
-        HashMap<String, List<EgovFormBasedFileVo>> map = FileHandler.upload(multiRequest, c_title, fileRepository, logger);
+        if (param_c_id == 0L) {
+            ModelAndView modelAndView = new ModelAndView("jsonView");
+            modelAndView.addObject("result", "c_id is empty");
+
+            return modelAndView;
+        }
+
         ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", map);
+        modelAndView.addObject("result", pdService.uploadFileTo(param_c_id, multiRequest));
 
         return modelAndView;
     }

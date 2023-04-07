@@ -6,11 +6,13 @@ import org.slf4j.Logger;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FileHandler {
 
-    public static HashMap<String, List<EgovFormBasedFileVo>> upload(MultipartHttpServletRequest multiRequest,
+    public static Set<FileRepositoryEntity> upload(MultipartHttpServletRequest multiRequest,
                                                                     String c_title,
                                                                     FileRepository fileRepository,
                                                                     Logger logger) throws Exception {
@@ -25,6 +27,8 @@ public class FileHandler {
         String uploadDir = propertiesReader.getProperty("Globals.fileStorePath");
         long maxFileSize = new Long(313);
         List<EgovFormBasedFileVo> list = EgovFileUploadUtil.uploadFiles(multiRequest, uploadDir, maxFileSize);
+
+        Set<FileRepositoryEntity> fileRepositoryEntities = new HashSet<>();
 
         for (EgovFormBasedFileVo egovFormBasedFileVo : list) {
 
@@ -55,14 +59,17 @@ public class FileHandler {
 
             fileRepository.updateNode(fileRepositoryEntity);
 
+            fileRepositoryEntities.add(fileRepositoryEntity);
+
             egovFormBasedFileVo.setUrl("/auth-user/api/arms/fileRepository" + "/downloadFileByNode/" + returnFileRepositoryEntity.getId());
             egovFormBasedFileVo.setThumbnailUrl("/auth-user/api/arms/fileRepository" + "/thumbnailUrlFileToNode/" + returnFileRepositoryEntity.getId());
             egovFormBasedFileVo.setDelete_url("/auth-user/api/arms/fileRepository" + "/deleteFileByNode/" + returnFileRepositoryEntity.getId());
 
         }
 
-        HashMap<String, List<EgovFormBasedFileVo>> map = new HashMap();
-        map.put("files", list);
-        return map;
+        //HashMap<String, List<EgovFormBasedFileVo>> map = new HashMap();
+        //map.put("files", list);
+        //return map;
+        return fileRepositoryEntities;
     }
 }

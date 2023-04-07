@@ -27,7 +27,7 @@ spring:
       username: mysqluser
       password: mysqluserpassword
   flyway:
-    enabled: true
+    enabled: false
     url: jdbc:mysql://192.168.25.46:3306/aRMS?characterEncoding=UTF-8&useLegacyDatetimeCode=false
     user: mysqluser
     password: mysqluserpassword

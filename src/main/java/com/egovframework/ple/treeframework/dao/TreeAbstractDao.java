@@ -22,6 +22,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Serializable> extends HibernateDaoSupport {
@@ -64,10 +65,11 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         detachedCriteria.add(criterion);
         List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
-        if (list.isEmpty()) {
+        List<T> distictList = list.stream().distinct().collect(Collectors.toList());
+        if (distictList.isEmpty()) {
             return null;
         }
-        return (T) list.get(0);
+        return (T) distictList.get(0);
     }
 
     public T getUnique(T treeSearchEntity) {
@@ -76,10 +78,11 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
             detachedCriteria.add(c);
         }
         List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
-        if (list.isEmpty()) {
+        List<T> distictList = list.stream().distinct().collect(Collectors.toList());
+        if (distictList.isEmpty()) {
             return null;
         }
-        return (T) list.get(0);
+        return (T) distictList.get(0);
     }
 
     public T getUnique(Criterion... criterions) {
@@ -109,10 +112,11 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     public List<T> getList() {
         DetachedCriteria criteria = DetachedCriteria.forClass(getEntityClass());
         List<T> list = (List<T>) getHibernateTemplate().findByCriteria(criteria);
-        if (list.isEmpty()) {
-            return null;
+        List<T> distictList = list.stream().distinct().collect(Collectors.toList());
+        if (distictList.isEmpty()) {
+            return new ArrayList<>();
         }
-        return list;
+        return distictList;
     }
 
     public List<T> getList(DetachedCriteria detachedCriteria, int limit, int offset) {
@@ -129,10 +133,11 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         }
         List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria, treeSearchEntity.getFirstIndex(),
                 treeSearchEntity.getLastIndex());
-        if (list.isEmpty()) {
+        List<T> distictList = list.stream().distinct().collect(Collectors.toList());
+        if (distictList.isEmpty()) {
             return new ArrayList<>();
         }
-        return list;
+        return distictList;
     }
 
     public List<T> getList(T treeSearchEntity, Criterion... criterion) {
@@ -247,7 +252,9 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         for (Criterion criterion : treeSearchEntity.getCriterions()) {
             detachedCriteria.add(criterion);
         }
-        return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
+        List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
+        List<T> distictList = list.stream().distinct().collect(Collectors.toList());
+        return distictList;
     }
 
     public List<T> getListWithoutPaging(Order order, Criterion... criterion) {
@@ -261,7 +268,9 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     }
 
     public List<T> getListWithoutPaging(DetachedCriteria detachedCriteria) {
-        return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
+        List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
+        List<T> distictList = list.stream().distinct().collect(Collectors.toList());
+        return distictList;
     }
 
     public int getCount(Criterion... criterions) {
@@ -289,9 +298,9 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
             detachedCriteria.add(c);
         }
 
+        detachedCriteria.setProjection(Projections.distinct(Projections.property("c_id")));
         detachedCriteria.setProjection(Projections.rowCount());
         List<?> l = getHibernateTemplate().findByCriteria(detachedCriteria);
-
         if (null == l || l.size() == 0) {
             return 0;
         }

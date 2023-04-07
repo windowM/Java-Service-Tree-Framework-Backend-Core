@@ -240,7 +240,10 @@ public abstract class TreeBaseEntity implements Serializable {
     @Transient
     @ApiModelProperty(hidden = true)
     public String getChildcount() {
-        if((getC_right() - getC_left())>1){
+        if( getC_right() == null || getC_left() == null ){
+            return "Dummy Instance";
+        }
+        else if((getC_right() - getC_left())>1){
             return "InChild";
         }
         return "NoChild";
