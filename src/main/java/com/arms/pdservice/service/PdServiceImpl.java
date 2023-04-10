@@ -136,7 +136,9 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         PdServiceEntity pdServiceNode = this.getNode(pdServiceEntity);
         Set<PdServiceVersionEntity> versionNodes = pdServiceNode.getPdServiceVersionEntities();
+        Set<FileRepositoryEntity> fileNodes = pdServiceNode.getFiles();
 
+        pdServiceNode.setFiles(fileNodes);
         pdServiceNode.setPdServiceVersionEntities(new HashSet<>());
         this.updateNode(pdServiceNode);
 
@@ -144,16 +146,22 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         Set<PdServiceVersionEntity> addedNode = new HashSet<>();
         for( PdServiceVersionEntity versionEntity : targetVersionNode ){
 
+            String compareTitle = versionEntity.getC_title();
+            Optional<PdServiceVersionEntity> searching = versionNodes.stream().filter(node -> StringUtils.equalsIgnoreCase(compareTitle, node.getC_title())).findFirst();
 
+            if( searching.isEmpty()){
+                PdServiceVersionEntity addedVersion = pdServiceVersion.addNode(versionEntity);
+                addedNode.add(addedVersion);
+            }
 
-            PdServiceVersionEntity addedVersion = pdServiceVersion.addNode(versionEntity);
-            addedNode.add(addedVersion);
         }
 
         Set<PdServiceVersionEntity> mergedSet = new HashSet<>();
         mergedSet.addAll(versionNodes);
         mergedSet.addAll(addedNode);
 
+
+        pdServiceNode.setFiles(fileNodes);
         pdServiceNode.setPdServiceVersionEntities(mergedSet);
 
         this.updateNode(pdServiceNode);
