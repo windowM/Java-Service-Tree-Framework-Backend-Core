@@ -28,6 +28,8 @@ public interface TreeService {
 
     public <T extends TreeSearchEntity> List<T> getPaginatedChildNode(T treeSearchEntity) throws Exception;
 
+    public <T extends TreeSearchEntity> List<T> getNodesWithoutRoot(T treeSearchEntity) throws Exception;
+
     public <T extends TreeSearchEntity> List<String> searchNode(T treeSearchEntity) throws Exception;
 
     public <T extends TreeSearchEntity> T addNode(T treeSearchEntity) throws Exception;

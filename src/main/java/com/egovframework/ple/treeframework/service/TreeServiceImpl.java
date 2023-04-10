@@ -39,6 +39,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
+
 @Service("treeService")
 public class TreeServiceImpl implements TreeService {
 
@@ -100,6 +102,20 @@ public class TreeServiceImpl implements TreeService {
         treeSearchEntity.setOrder(Order.desc("c_left"));
         List<T> list = treeDao.getList(treeSearchEntity);
         list.stream().forEach(data -> data.getPaginationInfo().setTotalRecordCount(totalCount));
+        return list;
+    }
+
+    @Override
+    public <T extends TreeSearchEntity> List<T> getNodesWithoutRoot(T treeSearchEntity) throws Exception {
+
+        treeSearchEntity.setOrder(Order.desc("c_id"));
+        Criterion criterion = Restrictions.not(
+                // replace "id" below with property name, depending on what you're filtering against
+                Restrictions.in("c_id", new Object[] {new Long(1), new Long(2)})
+        );
+        treeSearchEntity.getCriterions().add(criterion);
+        List<T> list = getChildNode(treeSearchEntity);
+
         return list;
     }
 
