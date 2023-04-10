@@ -62,7 +62,7 @@ public class PdServiceVersionEntity extends TreeSearchEntity implements Serializ
             joinColumns = @JoinColumn(name = "pdserviceversion_link"),
             inverseJoinColumns = @JoinColumn(name = "pdservice_link")
     )
-    @WhereJoinTable( clause = "filerepository_link is null and jiraconnectinfo_link is null")
+    @WhereJoinTable( clause = "pdservice_link is not null")
     public PdServiceEntity getPdServiceEntity() {
         return pdServiceEntity;
     }
