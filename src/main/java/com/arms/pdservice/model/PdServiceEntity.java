@@ -98,7 +98,7 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     private String c_pdservice_writer;
 
     // -- 1:N table 연계
-    private List<PdServiceVersionEntity> pdServiceVersionEntities;
+    private Set<PdServiceVersionEntity> pdServiceVersionEntities;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
@@ -109,16 +109,16 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "pdserviceversion_link")
     )
     @WhereJoinTable( clause = "filerepository_link is null and jiraconnectinfo_link is null")
-    public List<PdServiceVersionEntity> getPdServiceVersionEntities() {
+    public Set<PdServiceVersionEntity> getPdServiceVersionEntities() {
         return pdServiceVersionEntities;
     }
 
-    public void setPdServiceVersionEntities(List<PdServiceVersionEntity> pdServiceVersionEntities) {
+    public void setPdServiceVersionEntities(Set<PdServiceVersionEntity> pdServiceVersionEntities) {
         this.pdServiceVersionEntities = pdServiceVersionEntities;
     }
 
     // -- 1:N table 연계
-    private List<FileRepositoryEntity> files;
+    private Set<FileRepositoryEntity> files;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
@@ -129,11 +129,11 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "filerepository_link")
     )
     @WhereJoinTable( clause = "jiraconnectinfo_link is null")
-    public List<FileRepositoryEntity> getFiles() {
+    public Set<FileRepositoryEntity> getFiles() {
         return files;
     }
 
-    public void setFiles(List<FileRepositoryEntity> files) {
+    public void setFiles(Set<FileRepositoryEntity> files) {
         this.files = files;
     }
 

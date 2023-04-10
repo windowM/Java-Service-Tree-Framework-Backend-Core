@@ -11,8 +11,10 @@
  */
 package com.arms.filerepository.model;
 
+import com.arms.pdservice.model.PdServiceEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -43,6 +45,21 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
     }
 
     //@Getter @Setter
+
+    private PdServiceEntity pdServiceEntity;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "filerepository_link"),
+            inverseJoinColumns = @JoinColumn(name = "pdservice_link")
+    )
+    @WhereJoinTable( clause = "jiraconnectinfo_link is null")
+    public PdServiceEntity getPdServiceEntity() {
+        return pdServiceEntity;
+    }
+
     //필드명과 컬럼명이 다를 경우는 하기와 같이 처리.
     private String fileName;
     private String contentType;

@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Api("TreeFramework")
-public abstract class TreeAbstractController<T extends TreeService, V extends TreeSearchEntity> extends TreeSupportController {
+public abstract class TreeAbstractController<T extends TreeService, V extends TreeSearchEntity> {
 
     private T treeService;
     private V returnVO;

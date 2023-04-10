@@ -117,6 +117,7 @@ public abstract class TreeSearchEntity extends TreePaginatedEntity implements Se
         }
     }
 
+    @JsonIgnore
     public void setWhereOr(Criterion... criterions) {
         Disjunction or = Restrictions.disjunction();
         for (Criterion criterion : criterions) {
@@ -125,6 +126,7 @@ public abstract class TreeSearchEntity extends TreePaginatedEntity implements Se
         this.criterions.add(or);
     }
 
+    @JsonIgnore
     public void setWhereOr(List<Criterion> criterions) {
         Disjunction or = Restrictions.disjunction();
         for (Criterion criterion : criterions) {
@@ -133,10 +135,12 @@ public abstract class TreeSearchEntity extends TreePaginatedEntity implements Se
         this.criterions.add(or);
     }
 
+    @JsonIgnore
     public void setWhere(Criterion criterion) {
         criterions.add(criterion);
     }
 
+    @JsonIgnore
     public void setWhere(Projection projection) {
         this.projection = projection;
     }
@@ -147,20 +151,24 @@ public abstract class TreeSearchEntity extends TreePaginatedEntity implements Se
         return projection;
     }
 
+    @JsonIgnore
     public void setWhereBetween(String propertyName, Object lo, Object hi) {
         if (null != lo && null != hi) {
             criterions.add(Restrictions.between(propertyName, lo, hi));
         }
     }
 
+    @JsonIgnore
     public void setWhereIn(String propertyName, Collection<?> values) {
         criterions.add(Restrictions.in(propertyName, values));
     }
 
+    @JsonIgnore
     public void setWhereIn(String propertyName, Object[] values) {
         criterions.add(Restrictions.in(propertyName, values));
     }
 
+    @JsonIgnore
     public void setWhereIp(String propertyName, String value, String propertyIpStartName, String propertyIpEndName) {
         if (null == value) {
             return;

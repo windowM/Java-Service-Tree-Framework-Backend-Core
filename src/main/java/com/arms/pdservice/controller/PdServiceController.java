@@ -18,6 +18,7 @@ import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdservice.service.PdService;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
+import com.egovframework.ple.treeframework.controller.CommonResponse;
 import com.egovframework.ple.treeframework.controller.TreeAbstractController;
 import com.egovframework.ple.treeframework.util.*;
 import com.egovframework.ple.treeframework.validation.group.AddNode;
@@ -27,15 +28,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,6 +93,20 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             modelAndView.addObject("result", pdService.addPdServiceAndVersion(pdServiceEntity));
             return modelAndView;
         }
+    }
+
+    @RequestMapping(
+            value = {"/addVersionToNode.do"},
+            method = {RequestMethod.POST}
+    )
+    public ResponseEntity<?>  addVersionToNode(@RequestBody PdServiceEntity pdServiceEntity,
+                                              BindingResult bindingResult, ModelMap model) throws Exception {
+
+        if (bindingResult.hasErrors()) {
+            throw new RuntimeException(bindingResult.toString());
+        }
+
+        return ResponseEntity.ok(CommonResponse.success(pdService.addPdServiceVersion(pdServiceEntity)));
     }
 
     @ResponseBody

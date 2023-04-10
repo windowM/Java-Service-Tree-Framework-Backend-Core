@@ -14,7 +14,10 @@ package com.arms.pdserviceversion.model;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.Cache;
@@ -25,6 +28,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -48,8 +53,23 @@ public class PdServiceVersionEntity extends TreeSearchEntity implements Serializ
     }
 
     //@Getter @Setter
-    @Column(name = "c_pdservice_link")
-    private Long c_pdservice_link;
+    private PdServiceEntity pdServiceEntity;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "pdserviceversion_link"),
+            inverseJoinColumns = @JoinColumn(name = "pdservice_link")
+    )
+    @WhereJoinTable( clause = "filerepository_link is null and jiraconnectinfo_link is null")
+    public PdServiceEntity getPdServiceEntity() {
+        return pdServiceEntity;
+    }
+
+    public void setPdServiceEntity(PdServiceEntity pdServiceEntity) {
+        this.pdServiceEntity = pdServiceEntity;
+    }
 
     @Type(type="text")
     @Column(name = "c_pds_version_start_date")

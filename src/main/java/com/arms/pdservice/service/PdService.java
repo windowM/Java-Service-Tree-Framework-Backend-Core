@@ -13,6 +13,7 @@ package com.arms.pdservice.service;
 
 import com.arms.pdservice.model.PdServiceEntity;
 import com.egovframework.ple.treeframework.service.TreeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface PdService extends TreeService {
     public PdServiceEntity addNodeToEndPosition(PdServiceEntity pdServiceEntity) throws Exception;
 
     public PdServiceEntity addPdServiceAndVersion(PdServiceEntity pdServiceEntity) throws Exception;
+
+    public PdServiceEntity addPdServiceVersion(PdServiceEntity pdServiceEntity) throws Exception;
 
     public PdServiceEntity uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception;
 

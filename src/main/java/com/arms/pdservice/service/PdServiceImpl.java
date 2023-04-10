@@ -14,7 +14,6 @@ package com.arms.pdservice.service;
 import com.arms.dynamicdbmaker.service.DynamicDBMaker;
 import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
-import com.arms.filerepository.service.FileRepositoryImpl;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
@@ -28,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -111,7 +111,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         baseVerNode.setC_pds_version_etc("etc");
         PdServiceVersionEntity baseNode = pdServiceVersion.addNode(baseVerNode);
 
-        List<PdServiceVersionEntity> treeset = new ArrayList<>();
+        Set<PdServiceVersionEntity> treeset = new HashSet<>();
         treeset.add(baseNode);
 
         pdServiceEntity.setPdServiceVersionEntities(treeset);
@@ -132,9 +132,40 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
     @Override
     @Transactional
+    public PdServiceEntity addPdServiceVersion(PdServiceEntity pdServiceEntity) throws Exception {
+
+        PdServiceEntity pdServiceNode = this.getNode(pdServiceEntity);
+        Set<PdServiceVersionEntity> versionNodes = pdServiceNode.getPdServiceVersionEntities();
+
+        pdServiceNode.setPdServiceVersionEntities(new HashSet<>());
+        this.updateNode(pdServiceNode);
+
+        Set<PdServiceVersionEntity> targetVersionNode = pdServiceEntity.getPdServiceVersionEntities();
+        Set<PdServiceVersionEntity> addedNode = new HashSet<>();
+        for( PdServiceVersionEntity versionEntity : targetVersionNode ){
+
+
+
+            PdServiceVersionEntity addedVersion = pdServiceVersion.addNode(versionEntity);
+            addedNode.add(addedVersion);
+        }
+
+        Set<PdServiceVersionEntity> mergedSet = new HashSet<>();
+        mergedSet.addAll(versionNodes);
+        mergedSet.addAll(addedNode);
+
+        pdServiceNode.setPdServiceVersionEntities(mergedSet);
+
+        this.updateNode(pdServiceNode);
+
+        return pdServiceNode;
+    }
+
+    @Override
+    @Transactional
     public PdServiceEntity uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception {
 
-        List<FileRepositoryEntity> fileEntitySet = upload(multiRequest, "test", fileRepository, logger);
+        Set<FileRepositoryEntity> fileEntitySet = upload(multiRequest, "test", fileRepository, logger);
 
         PdServiceEntity paramPdServiceNode = new PdServiceEntity();
         paramPdServiceNode.setC_id(param_c_id);
@@ -149,7 +180,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         return updateTarget;
     }
 
-    public List<FileRepositoryEntity> upload(MultipartHttpServletRequest multiRequest,
+    public Set<FileRepositoryEntity> upload(MultipartHttpServletRequest multiRequest,
                                                    String c_title,
                                                    FileRepository fileRepository,
                                                    Logger logger) throws Exception {
@@ -165,7 +196,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         long maxFileSize = new Long(313);
         List<EgovFormBasedFileVo> list = EgovFileUploadUtil.uploadFiles(multiRequest, uploadDir, maxFileSize);
 
-        List<FileRepositoryEntity> fileRepositoryEntities = new ArrayList<>();
+        Set<FileRepositoryEntity> fileRepositoryEntities = new HashSet<>();
 
         for (EgovFormBasedFileVo egovFormBasedFileVo : list) {
 
