@@ -179,10 +179,18 @@ public abstract class TreeBaseEntity implements Serializable {
         return c_title;
     }
 
+    public void setData(String data) {
+        System.out.println("dummy setter");
+    }
+
     @Transient
     @ApiModelProperty(hidden = true)
     public boolean isCopied() {
         return this.getCopy() == 1;
+    }
+
+    public void setCopied(boolean copied){
+        System.out.println("dummy setter");
     }
 
     @Transient
@@ -225,6 +233,10 @@ public abstract class TreeBaseEntity implements Serializable {
             returnCode = "opened";
         }
         return returnCode;
+    }
+
+    public void setState(String state){
+        System.out.println("dummy setter");
     }
 
     @Transient

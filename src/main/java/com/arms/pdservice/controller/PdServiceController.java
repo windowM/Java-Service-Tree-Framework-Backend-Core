@@ -56,43 +56,20 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
     @Qualifier("pdService")
     private PdService pdService;
 
-    @Autowired
-    @Qualifier("fileRepository")
-    private FileRepository fileRepository;
-
-    @Autowired
-    @Qualifier("pdServiceVersion")
-    private PdServiceVersion pdServiceVersion;
-
-    @Autowired
-    @Qualifier("dynamicDBMaker")
-    private DynamicDBMaker dynamicDBMaker;
-
     @PostConstruct
     public void initialize() {
         setTreeService(pdService);
     }
-
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private static final String REQ_PREFIX_TABLENAME_BY_PDSERVICE = new String("T_ARMS_REQADD_");
 
     @ResponseBody
     @RequestMapping(
             value = {"/addPdServiceNode.do"},
             method = {RequestMethod.POST}
     )
-    public ModelAndView addPdServiceNode(@Validated({AddNode.class}) PdServiceEntity pdServiceEntity,
+    public ResponseEntity<?> addPdServiceNode(@RequestBody @Validated({AddNode.class}) PdServiceEntity pdServiceEntity,
                                          BindingResult bindingResult, ModelMap model) throws Exception {
-
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
-        } else {
-
-            ModelAndView modelAndView = new ModelAndView("jsonView");
-            modelAndView.addObject("result", pdService.addPdServiceAndVersion(pdServiceEntity));
-            return modelAndView;
-        }
+        log.info("PdServiceController :: addPdServiceNode");
+        return ResponseEntity.ok(CommonResponse.success(pdService.addPdServiceAndVersion(pdServiceEntity)));
     }
 
     @RequestMapping(
@@ -102,24 +79,14 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
     public ResponseEntity<?>  addVersionToNode(@RequestBody PdServiceEntity pdServiceEntity,
                                               BindingResult bindingResult, ModelMap model) throws Exception {
 
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException(bindingResult.toString());
-        }
-
         return ResponseEntity.ok(CommonResponse.success(pdService.addPdServiceVersion(pdServiceEntity)));
     }
 
     @ResponseBody
     @RequestMapping(value = "/addEndNodeByRoot.do", method = RequestMethod.POST)
-    public ModelAndView addEndNodeByRoot(PdServiceEntity pdServiceEntity,
+    public ResponseEntity<?> addEndNodeByRoot(@RequestBody PdServiceEntity pdServiceEntity,
                                          BindingResult bindingResult) throws Exception {
-        if (bindingResult.hasErrors())
-            throw new RuntimeException();
-
-        ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", pdService.addNodeToEndPosition(pdServiceEntity));
-
-        return modelAndView;
+        return ResponseEntity.ok(CommonResponse.success(pdService.addNodeToEndPosition(pdServiceEntity)));
     }
 
     /**
@@ -132,23 +99,13 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
      */
     @ResponseBody
     @RequestMapping(value="/uploadFileToNode.do", method = RequestMethod.POST)
-    public ModelAndView uploadFileToNode(final MultipartHttpServletRequest multiRequest,
+    public ResponseEntity<?> uploadFileToNode(final MultipartHttpServletRequest multiRequest,
                                          HttpServletRequest request, Model model) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
         long param_c_id = parser.getLong("pdservice_link");
 
-        if (param_c_id == 0L) {
-            ModelAndView modelAndView = new ModelAndView("jsonView");
-            modelAndView.addObject("result", "c_id is empty");
-
-            return modelAndView;
-        }
-
-        ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", pdService.uploadFileTo(param_c_id, multiRequest));
-
-        return modelAndView;
+        return ResponseEntity.ok(CommonResponse.success(pdService.uploadFileTo(param_c_id, multiRequest)));
     }
 
     @ResponseBody
@@ -156,11 +113,9 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             value = {"/getPdServiceMonitor.do"},
             method = {RequestMethod.GET}
     )
-    public ModelAndView getPdServiceMonitor(PdServiceEntity pdServiceEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> getPdServiceMonitor(PdServiceEntity pdServiceEntity, ModelMap model, HttpServletRequest request) throws Exception {
 
-        ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", pdService.getNodesWithoutRoot(pdServiceEntity));
-        return modelAndView;
+        return ResponseEntity.ok(CommonResponse.success(pdService.getNodesWithoutRoot(pdServiceEntity)));
 
     }
 

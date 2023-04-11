@@ -3,6 +3,7 @@
 --
 CREATE TABLE IF NOT EXISTS `aRMS`.`GLOBAL_TREE_MAP` (
 
+    `map_key`                               bigint(20) AUTO_INCREMENT primary key COMMENT '키',
     `filerepository_link`                   bigint(20) default NULL COMMENT '파일',
 
     `jiraconnectinfo_link`                   bigint(20) default NULL COMMENT '파일',
