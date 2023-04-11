@@ -128,7 +128,7 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
             joinColumns = @JoinColumn(name = "pdservice_link"),
             inverseJoinColumns = @JoinColumn(name = "filerepository_link")
     )
-    @WhereJoinTable( clause = "filerepository_link is null")
+    @WhereJoinTable( clause = "filerepository_link is not null")
     public Set<FileRepositoryEntity> getFiles() {
         return files;
     }

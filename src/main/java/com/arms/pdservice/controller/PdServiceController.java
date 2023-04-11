@@ -66,7 +66,7 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             value = {"/addPdServiceNode.do"},
             method = {RequestMethod.POST}
     )
-    public ResponseEntity<?> addPdServiceNode(@RequestBody @Validated({AddNode.class}) PdServiceEntity pdServiceEntity,
+    public ResponseEntity<?> addPdServiceNode(@Validated({AddNode.class}) PdServiceEntity pdServiceEntity,
                                          BindingResult bindingResult, ModelMap model) throws Exception {
         log.info("PdServiceController :: addPdServiceNode");
         return ResponseEntity.ok(CommonResponse.success(pdService.addPdServiceAndVersion(pdServiceEntity)));
