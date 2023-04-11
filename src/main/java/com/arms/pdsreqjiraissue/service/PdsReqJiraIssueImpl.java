@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.AllArgsConstructor;
-import com.arms.pdsreqjiraissue.dao.PdsReqJiraIssueRepository;
 
 
 @AllArgsConstructor
@@ -31,7 +30,5 @@ import com.arms.pdsreqjiraissue.dao.PdsReqJiraIssueRepository;
 public class PdsReqJiraIssueImpl extends TreeServiceImpl implements PdsReqJiraIssue{
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	private final PdsReqJiraIssueRepository pdsReqJiraIssueRepository;
 
 }

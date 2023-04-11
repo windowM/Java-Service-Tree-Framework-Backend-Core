@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Properties;
 import javax.sql.DataSource;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
@@ -36,17 +38,14 @@ public class SpringDataConfig {
     private final JpaProperties jpaProperties;
     private final HibernateProperties hibernateProperties;
 
-
-    @Bean(name = "jpaDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource onlyJpaDataSource() {
-        return new DriverManagerDataSource();
-    }
+    @Autowired
+    @Qualifier("onlyJpaDataSource")
+    DataSource onlyJpaDataSource;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerJpaFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(onlyJpaDataSource());
+        em.setDataSource(onlyJpaDataSource);
         em.setPackagesToScan(new String[] { "com.egovframework.ple.treeframework.**.model", "com.arms.**.model"});
         em.setJpaPropertyMap(jpaProperties.getProperties());
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
@@ -63,7 +62,7 @@ public class SpringDataConfig {
     @Bean(name = "sessionJpaFactory")
     public LocalSessionFactoryBean sessionJpaFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(onlyJpaDataSource());
+        sessionFactory.setDataSource(onlyJpaDataSource);
         sessionFactory.setPackagesToScan(new String[] { "com.egovframework.ple.treeframework.**.model", "com.arms.**.model" });
         Map<String, Object> hibernateProps
                 = hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
