@@ -11,6 +11,8 @@
  */
 package com.arms.pdserviceversion.service;
 
+import com.arms.pdservice.model.PdServiceEntity;
+import com.arms.pdservice.service.PdService;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.service.TreeServiceImpl;
 import org.hibernate.criterion.Criterion;
@@ -18,9 +20,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service("pdServiceVersion")
 public class PdServiceVersionImpl extends TreeServiceImpl implements PdServiceVersion{
@@ -51,4 +57,5 @@ public class PdServiceVersionImpl extends TreeServiceImpl implements PdServiceVe
 
         return pdServiceVersionEntities;
     }
+
 }

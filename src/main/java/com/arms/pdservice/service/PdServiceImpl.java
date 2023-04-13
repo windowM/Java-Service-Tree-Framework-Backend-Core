@@ -248,4 +248,26 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         //return map;
         return fileRepositoryEntities;
     }
+
+    @Override
+    @Transactional
+    public PdServiceVersionEntity removeVersionNode(long param_c_id, PdServiceVersionEntity pdServiceVersionEntity) throws Exception {
+        PdServiceEntity pdServiceEntity = new PdServiceEntity();
+        pdServiceEntity.setC_id(param_c_id);
+        PdServiceEntity pdNode = this.getNode(pdServiceEntity);
+
+        Set<PdServiceVersionEntity> versionSet = pdNode.getPdServiceVersionEntities();
+        for ( PdServiceVersionEntity verNode : versionSet){
+
+            if ( verNode.getC_id() == pdServiceVersionEntity.getC_id() ) {
+                versionSet.remove(verNode);
+            }
+        }
+
+        pdNode.setPdServiceVersionEntities(versionSet);
+        this.updateNode(pdNode);
+
+        pdServiceVersion.removeNode(pdServiceVersionEntity);
+        return pdServiceVersionEntity;
+    }
 }

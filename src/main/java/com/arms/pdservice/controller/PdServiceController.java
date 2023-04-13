@@ -119,4 +119,15 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
 
     }
 
+    @RequestMapping(value="/removeVersion.do", method= RequestMethod.DELETE)
+    public ModelAndView removeVersion(PdServiceVersionEntity treeSearchEntity, HttpServletRequest request) throws Exception {
+
+        ParameterParser parser = new ParameterParser(request);
+        long param_c_id = parser.getLong("pdservice_cid");
+
+        ModelAndView modelAndView = new ModelAndView("jsonView");
+        modelAndView.addObject("result", pdService.removeVersionNode(param_c_id, treeSearchEntity));
+        return modelAndView;
+    }
+
 }

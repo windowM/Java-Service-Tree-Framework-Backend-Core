@@ -21,4 +21,5 @@ public interface PdServiceVersion extends TreeService {
     public List<PdServiceVersionEntity> getVersionListByPdService(PdServiceVersionEntity pdServiceVersionEntity) throws Exception;
 
     public List<PdServiceVersionEntity> getVersionListByCids(List<Long> pdServiceVersionDTO) throws Exception;
+
 }

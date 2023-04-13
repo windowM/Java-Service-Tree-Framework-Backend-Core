@@ -11,11 +11,14 @@
  */
 package com.arms.pdserviceversion.controller;
 
+import com.arms.pdservice.model.PdServiceEntity;
+import com.arms.pdservice.service.PdService;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
 import com.egovframework.ple.treeframework.controller.TreeAbstractController;
 import com.egovframework.ple.treeframework.util.StringUtility;
 import com.egovframework.ple.treeframework.util.ParameterParser;
+import com.egovframework.ple.treeframework.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,8 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 
 @Slf4j
@@ -42,6 +47,10 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
     @Autowired
     @Qualifier("pdServiceVersion")
     private PdServiceVersion pdServiceVersion;
+
+    @Autowired
+    @Qualifier("pdService")
+    private PdService pdService;
 
     @PostConstruct
     public void initialize() {

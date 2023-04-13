@@ -75,7 +75,7 @@ public class ErrorControllerAdvice {
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<?> onException(Exception e) {
-        return newResponse(ErrorCode.COMMON_SYSTEM_ERROR,HttpStatus.INTERNAL_SERVER_ERROR);
+        return newResponse(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
     /**
      * http status: 200 AND result: FAIL
