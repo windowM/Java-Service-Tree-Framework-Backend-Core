@@ -1,6 +1,6 @@
 package com.egovframework.ple.treemap.dao;
 
-import com.egovframework.ple.treemap.model.GlobalTreeMap;
+import com.egovframework.ple.treemap.model.GlobalTreeMapEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -17,9 +16,9 @@ public class GlobalTreeMapRepository {
 
     private final GlobalTreeMapJpaRepository globalTreeMapJpaRepository;
 
-    public GlobalTreeMap save(GlobalTreeMap globalTreeMap) {
-        GlobalTreeMap savedGlobalTreeMap = globalTreeMapJpaRepository.save(globalTreeMap);
-        return savedGlobalTreeMap;
+    public GlobalTreeMapEntity save(GlobalTreeMapEntity globalTreeMapEntity) {
+        GlobalTreeMapEntity savedGlobalTreeMapEntity = globalTreeMapJpaRepository.save(globalTreeMapEntity);
+        return savedGlobalTreeMapEntity;
     }
 
     public Long delete(Long map_key) {
@@ -27,16 +26,16 @@ public class GlobalTreeMapRepository {
         return map_key;
     }
 
-    public GlobalTreeMap findById(Long map_key) {
+    public GlobalTreeMapEntity findById(Long map_key) {
         return globalTreeMapJpaRepository.findById(map_key)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<GlobalTreeMap> findAllBy(Specification<GlobalTreeMap> specification){
+    public List<GlobalTreeMapEntity> findAllBy(Specification<GlobalTreeMapEntity> specification){
         return globalTreeMapJpaRepository.findAll(specification);
     }
 
-    public Page<GlobalTreeMap> findAllBy(Specification<GlobalTreeMap> specification, Pageable pageable){
+    public Page<GlobalTreeMapEntity> findAllBy(Specification<GlobalTreeMapEntity> specification, Pageable pageable){
         return globalTreeMapJpaRepository.findAll(specification,pageable);
     }
 }

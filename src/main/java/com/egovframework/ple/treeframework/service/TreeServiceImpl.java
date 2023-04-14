@@ -391,6 +391,25 @@ public class TreeServiceImpl implements TreeService {
 
     }
 
+    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
+    public <T extends TreeSearchEntity> List<T> saveOrUpdateList(List<T> entities) throws Exception {
+
+        List<T> resultHostEntities = new ArrayList<>();
+
+        for (T entity : entities) {
+            T oneBy = this.getNode(entity);
+            if(oneBy==null){
+                entity.setRef(2L);
+                entity.setC_type("default");
+                this.addNode(entity);
+            }else{
+                this.overwriteNode(oneBy,entity);
+            }
+            resultHostEntities.add(oneBy);
+        }
+        return resultHostEntities;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)

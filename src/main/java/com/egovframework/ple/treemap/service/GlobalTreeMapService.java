@@ -1,18 +1,20 @@
 package com.egovframework.ple.treemap.service;
 
-import com.egovframework.ple.treemap.model.GlobalTreeMap;
+import com.egovframework.ple.treemap.model.GlobalTreeMapEntity;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
 public interface GlobalTreeMapService {
 
-    GlobalTreeMap save(GlobalTreeMap globalTreeMap);
+    GlobalTreeMapEntity save(GlobalTreeMapEntity globalTreeMapEntity);
 
-    GlobalTreeMap update(GlobalTreeMap globalTreeMap);
+    GlobalTreeMapEntity update(GlobalTreeMapEntity globalTreeMapEntity);
 
-    Long delete(GlobalTreeMap globalTreeMap);
+    Long delete(GlobalTreeMapEntity globalTreeMapEntity);
 
-    List<GlobalTreeMap> findAllBy(Specification<GlobalTreeMap> specification);
+    List<GlobalTreeMapEntity> findAllBy(GlobalTreeMapEntity globalTreeMapEntity);
+
+    GlobalTreeMapEntity findById(GlobalTreeMapEntity globalTreeMapEntity);
 
 }
