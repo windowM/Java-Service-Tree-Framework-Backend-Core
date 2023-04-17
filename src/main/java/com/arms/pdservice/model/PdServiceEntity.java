@@ -11,6 +11,7 @@
  */
 package com.arms.pdservice.model;
 
+import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
@@ -36,7 +37,7 @@ import java.util.Set;
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 @NoArgsConstructor
 @AllArgsConstructor
 public class PdServiceEntity extends TreeSearchEntity implements Serializable {
@@ -103,6 +104,17 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
 
     public void setPdServiceVersionEntities(Set<PdServiceVersionEntity> pdServiceVersionEntities) {
         this.pdServiceVersionEntities = pdServiceVersionEntities;
+    }
+
+    private Set<FileRepositoryEntity> fileRepositoryEntities;
+
+    @Transient
+    public Set<FileRepositoryEntity> getFileRepositoryEntities() {
+        return fileRepositoryEntities;
+    }
+
+    public void setFileRepositoryEntities(Set<FileRepositoryEntity> fileRepositoryEntities) {
+        this.fileRepositoryEntities = fileRepositoryEntities;
     }
 
     /*

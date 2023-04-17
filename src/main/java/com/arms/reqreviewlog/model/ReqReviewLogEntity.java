@@ -33,7 +33,7 @@ import java.io.Serializable;
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class ReqReviewLogEntity extends TreeLogBaseEntity implements Serializable {
 
     public ReqReviewLogEntity() {

@@ -33,7 +33,7 @@ import java.util.Date;
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class ReqStatusEntity extends TreeSearchEntity implements Serializable {
 
     public ReqStatusEntity() {

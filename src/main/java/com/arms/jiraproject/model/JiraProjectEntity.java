@@ -38,7 +38,7 @@ import java.util.Set;
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 @NoArgsConstructor
 @AllArgsConstructor
 public class JiraProjectEntity extends TreeSearchEntity implements Serializable {

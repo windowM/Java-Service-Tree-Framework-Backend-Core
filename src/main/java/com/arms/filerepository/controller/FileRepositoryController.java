@@ -19,6 +19,10 @@ import com.egovframework.ple.treeframework.controller.TreeAbstractController;
 import com.egovframework.ple.treeframework.util.PropertiesReader;
 import com.egovframework.ple.treeframework.util.ParameterParser;
 import com.egovframework.ple.treeframework.util.EgovFormBasedFileUtil;
+import com.egovframework.ple.treemap.model.GlobalTreeMapEntity;
+import com.egovframework.ple.treemap.service.GlobalTreeMapService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +39,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -53,6 +56,9 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     @Autowired
     @Qualifier("pdService")
     private PdService pdService;
+
+    @Autowired
+    private GlobalTreeMapService globalTreeMapService;
 
     @PostConstruct
     public void initialize() {
@@ -71,9 +77,21 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
         pdServiceEntity.setC_id(parser.getLong("fileIdLink"));
         PdServiceEntity node = pdService.getNode(pdServiceEntity);
 
-        //Set<FileRepositoryEntity> files = node.getFiles();
+        GlobalTreeMapEntity globalTreeMap = new GlobalTreeMapEntity();
+        globalTreeMap.setPdservice_link(parser.getLong("fileIdLink"));
+        List<GlobalTreeMapEntity> mapList = globalTreeMapService.findAllBy(globalTreeMap);
+
+        Set<FileRepositoryEntity> files = new HashSet<>();
         HashMap<String, Set<FileRepositoryEntity>> map = new HashMap();
-        //map.put("files", files);
+        for( GlobalTreeMapEntity row : mapList ){
+            if ( row.getFilerepository_link() != null ){
+                logger.info("row.getFilerepository_link() = " + row.getFilerepository_link());
+                FileRepositoryEntity entity = new FileRepositoryEntity();
+                entity.setC_id(row.getFilerepository_link());
+                files.add(fileRepository.getNode(entity));
+            }
+        }
+        map.put("files", files);
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", map);

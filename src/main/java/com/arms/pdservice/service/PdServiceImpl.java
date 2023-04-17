@@ -19,6 +19,8 @@ import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
 import com.egovframework.ple.treeframework.service.TreeServiceImpl;
 import com.egovframework.ple.treeframework.util.*;
+import com.egovframework.ple.treemap.model.GlobalTreeMapEntity;
+import com.egovframework.ple.treemap.service.GlobalTreeMapService;
 import lombok.AllArgsConstructor;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -56,6 +58,9 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
     @Autowired
     @Qualifier("dynamicDBMaker")
     private DynamicDBMaker dynamicDBMaker;
+
+    @Autowired
+    private GlobalTreeMapService globalTreeMapService;
 
     @Override
     public List<PdServiceEntity> getNodesWithoutRoot(PdServiceEntity pdServiceEntity) throws Exception {
@@ -175,15 +180,38 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         Set<FileRepositoryEntity> fileEntitySet = upload(multiRequest, "test", fileRepository, logger);
 
+        Set<Long> fileCids = new HashSet<>();
+
+        for ( FileRepositoryEntity file : fileEntitySet ){
+
+            GlobalTreeMapEntity globalTreeMap = new GlobalTreeMapEntity();
+            globalTreeMap.setPdservice_link(param_c_id);
+            globalTreeMap.setFilerepository_link(file.getC_id());
+            List<GlobalTreeMapEntity> searchList = globalTreeMapService.findAllBy(globalTreeMap);
+            if ( searchList == null || searchList.isEmpty() ){
+                GlobalTreeMapEntity savedMap = globalTreeMapService.save(globalTreeMap);
+                fileCids.add(savedMap.getFilerepository_link());
+            } else {
+                logger.info("already registe PdService = " + param_c_id + " & FileRepo = " + globalTreeMap.getFilerepository_link());
+                fileCids.add(globalTreeMap.getFilerepository_link());
+            }
+
+        }
+
+        Set<FileRepositoryEntity> returnSet = new HashSet<>();
+        for (Long fileCid : fileCids ) {
+
+            FileRepositoryEntity entity = new FileRepositoryEntity();
+            entity.setC_id(fileCid);
+            returnSet.add(fileRepository.getNode(entity));
+
+        }
+
         PdServiceEntity paramPdServiceNode = new PdServiceEntity();
         paramPdServiceNode.setC_id(param_c_id);
-
         PdServiceEntity updateTarget = this.getNode(paramPdServiceNode);
 
-        String c_title = "pdService";
-
-        //updateTarget.setFiles(fileEntitySet);
-        this.updateNode(updateTarget);
+        updateTarget.setFileRepositoryEntities(returnSet);
 
         return updateTarget;
     }
