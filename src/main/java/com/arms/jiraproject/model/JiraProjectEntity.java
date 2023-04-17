@@ -11,38 +11,37 @@
  */
 package com.arms.jiraproject.model;
 
+import com.arms.jiraprojectversion.model.JiraProjectVersionEntity;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
+@Data
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_JIRAPROJECT")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class JiraProjectEntity extends TreeSearchEntity implements Serializable {
-
-    public JiraProjectEntity() {
-        super();
-    }
-
-    public JiraProjectEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
 
  	@Override
     @Id
@@ -111,6 +110,26 @@ public class JiraProjectEntity extends TreeSearchEntity implements Serializable 
     @Type(type="text")
     private String c_jira_category_desc;
 
+
+    // -- 1:N table 연계
+    private Set<JiraProjectVersionEntity> jiraProjectVersionEntities;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "pdservice_link"),
+            inverseJoinColumns = @JoinColumn(name = "pdserviceversion_link")
+    )
+    @WhereJoinTable( clause = "pdserviceversion_link is not null")
+    public Set<JiraProjectVersionEntity> getJiraProjectVersionEntities() {
+        return jiraProjectVersionEntities;
+    }
+
+    public void setJiraProjectVersionEntities(Set<JiraProjectVersionEntity> jiraProjectVersionEntities) {
+        this.jiraProjectVersionEntities = jiraProjectVersionEntities;
+    }
 
     /*
      * Extend Bean Field

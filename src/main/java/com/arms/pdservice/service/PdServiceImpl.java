@@ -136,9 +136,9 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         PdServiceEntity pdServiceNode = this.getNode(pdServiceEntity);
         Set<PdServiceVersionEntity> versionNodes = pdServiceNode.getPdServiceVersionEntities();
-        Set<FileRepositoryEntity> fileNodes = pdServiceNode.getFiles();
+        //Set<FileRepositoryEntity> fileNodes = pdServiceNode.getFiles();
 
-        pdServiceNode.setFiles(fileNodes);
+        //pdServiceNode.setFiles(fileNodes);
         pdServiceNode.setPdServiceVersionEntities(new HashSet<>());
         this.updateNode(pdServiceNode);
 
@@ -161,7 +161,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         mergedSet.addAll(addedNode);
 
 
-        pdServiceNode.setFiles(fileNodes);
+        //pdServiceNode.setFiles(fileNodes);
         pdServiceNode.setPdServiceVersionEntities(mergedSet);
 
         this.updateNode(pdServiceNode);
@@ -182,7 +182,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         String c_title = "pdService";
 
-        updateTarget.setFiles(fileEntitySet);
+        //updateTarget.setFiles(fileEntitySet);
         this.updateNode(updateTarget);
 
         return updateTarget;
@@ -251,12 +251,14 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
     @Override
     @Transactional
-    public PdServiceVersionEntity removeVersionNode(long param_c_id, PdServiceVersionEntity pdServiceVersionEntity) throws Exception {
-        PdServiceEntity pdServiceEntity = new PdServiceEntity();
-        pdServiceEntity.setC_id(param_c_id);
-        PdServiceEntity pdNode = this.getNode(pdServiceEntity);
+    public PdServiceVersionEntity removeVersionNode(PdServiceVersionEntity pdServiceVersionEntity) throws Exception {
 
-        Set<PdServiceVersionEntity> versionSet = pdNode.getPdServiceVersionEntities();
+        PdServiceVersionEntity versionEntity = pdServiceVersion.getNode(pdServiceVersionEntity);
+        PdServiceEntity pdServiceNode = versionEntity.getPdServiceEntity();
+        Set<PdServiceVersionEntity> versionSet = pdServiceNode.getPdServiceVersionEntities();
+
+        Set<PdServiceVersionEntity> updateSet = new HashSet<>();
+
         for ( PdServiceVersionEntity verNode : versionSet){
 
             if ( verNode.getC_id() == pdServiceVersionEntity.getC_id() ) {
@@ -264,8 +266,10 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
             }
         }
 
-        pdNode.setPdServiceVersionEntities(versionSet);
-        this.updateNode(pdNode);
+
+
+        pdServiceNode.setPdServiceVersionEntities(versionSet);
+        this.updateNode(pdServiceNode);
 
         pdServiceVersion.removeNode(pdServiceVersionEntity);
         return pdServiceVersionEntity;

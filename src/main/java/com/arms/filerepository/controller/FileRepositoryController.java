@@ -71,9 +71,9 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
         pdServiceEntity.setC_id(parser.getLong("fileIdLink"));
         PdServiceEntity node = pdService.getNode(pdServiceEntity);
 
-        Set<FileRepositoryEntity> files = node.getFiles();
+        //Set<FileRepositoryEntity> files = node.getFiles();
         HashMap<String, Set<FileRepositoryEntity>> map = new HashMap();
-        map.put("files", files);
+        //map.put("files", files);
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", map);

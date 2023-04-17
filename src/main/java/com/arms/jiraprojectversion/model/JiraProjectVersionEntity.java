@@ -15,8 +15,7 @@ import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -26,23 +25,18 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Data
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_JIRAPROJECTVERSION")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class JiraProjectVersionEntity extends TreeSearchEntity implements Serializable {
-
-    public JiraProjectVersionEntity() {
-        super();
-    }
-
-    public JiraProjectVersionEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
 
  	@Override
     @Id

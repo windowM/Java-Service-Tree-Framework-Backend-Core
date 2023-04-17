@@ -11,8 +11,6 @@
  */
 package com.arms.pdservice.model;
 
-import com.arms.filerepository.model.FileRepositoryEntity;
-import com.arms.filerepository.service.FileRepository;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
@@ -24,20 +22,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -116,28 +104,6 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
     public void setPdServiceVersionEntities(Set<PdServiceVersionEntity> pdServiceVersionEntities) {
         this.pdServiceVersionEntities = pdServiceVersionEntities;
     }
-
-    // -- 1:N table 연계
-    private Set<FileRepositoryEntity> files;
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "GLOBAL_TREE_MAP",
-            joinColumns = @JoinColumn(name = "pdservice_link"),
-            inverseJoinColumns = @JoinColumn(name = "filerepository_link")
-    )
-    @WhereJoinTable( clause = "filerepository_link is not null")
-    public Set<FileRepositoryEntity> getFiles() {
-        return files;
-    }
-
-    public void setFiles(Set<FileRepositoryEntity> files) {
-        this.files = files;
-    }
-
-
 
     /*
      * Extend Bean Field
