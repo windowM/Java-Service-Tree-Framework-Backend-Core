@@ -99,13 +99,19 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
      */
     @ResponseBody
     @RequestMapping(value="/uploadFileToNode.do", method = RequestMethod.POST)
-    public ResponseEntity<?> uploadFileToNode(final MultipartHttpServletRequest multiRequest,
+    public ModelAndView uploadFileToNode(final MultipartHttpServletRequest multiRequest,
                                          HttpServletRequest request, Model model) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
         long param_c_id = parser.getLong("pdservice_link");
 
-        return ResponseEntity.ok(CommonResponse.success(pdService.uploadFileTo(param_c_id, multiRequest)));
+        //return ResponseEntity.ok(CommonResponse.success(pdService.uploadFileTo(param_c_id, multiRequest)));
+        HashMap<String, Set<FileRepositoryEntity>> map = new HashMap();
+
+        map.put("files", pdService.uploadFileTo(param_c_id, multiRequest));
+        ModelAndView modelAndView = new ModelAndView("jsonView");
+        modelAndView.addObject("result", map);
+        return modelAndView;
     }
 
     @ResponseBody

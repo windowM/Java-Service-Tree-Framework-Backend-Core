@@ -106,17 +106,6 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
         this.pdServiceVersionEntities = pdServiceVersionEntities;
     }
 
-    private Set<FileRepositoryEntity> fileRepositoryEntities;
-
-    @Transient
-    public Set<FileRepositoryEntity> getFileRepositoryEntities() {
-        return fileRepositoryEntities;
-    }
-
-    public void setFileRepositoryEntities(Set<FileRepositoryEntity> fileRepositoryEntities) {
-        this.fileRepositoryEntities = fileRepositoryEntities;
-    }
-
     /*
      * Extend Bean Field
      */

@@ -176,7 +176,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
     @Override
     @Transactional
-    public PdServiceEntity uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception {
+    public Set<FileRepositoryEntity> uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception {
 
         Set<FileRepositoryEntity> fileEntitySet = upload(multiRequest, "test", fileRepository, logger);
 
@@ -211,9 +211,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         paramPdServiceNode.setC_id(param_c_id);
         PdServiceEntity updateTarget = this.getNode(paramPdServiceNode);
 
-        updateTarget.setFileRepositoryEntities(returnSet);
-
-        return updateTarget;
+        return returnSet;
     }
 
     public Set<FileRepositoryEntity> upload(MultipartHttpServletRequest multiRequest,

@@ -11,6 +11,7 @@
  */
 package com.arms.pdservice.service;
 
+import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.service.TreeService;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PdService extends TreeService {
 
@@ -29,7 +31,7 @@ public interface PdService extends TreeService {
 
     public PdServiceEntity addPdServiceVersion(PdServiceEntity pdServiceEntity) throws Exception;
 
-    public PdServiceEntity uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception;
+    public Set<FileRepositoryEntity> uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception;
 
     public PdServiceVersionEntity removeVersionNode(PdServiceVersionEntity pdServiceVersionEntity) throws Exception;
 
