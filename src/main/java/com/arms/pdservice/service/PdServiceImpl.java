@@ -29,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -176,23 +175,23 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
     @Override
     @Transactional
-    public Set<FileRepositoryEntity> uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception {
+    public Set<FileRepositoryEntity> uploadFileForPdServiceNode(Long pdservice_link, MultipartHttpServletRequest multiRequest) throws Exception {
 
-        Set<FileRepositoryEntity> fileEntitySet = upload(multiRequest, "test", fileRepository, logger);
+        Set<FileRepositoryEntity> fileEntitySet = upload(multiRequest, fileRepository);
 
         Set<Long> fileCids = new HashSet<>();
 
         for ( FileRepositoryEntity file : fileEntitySet ){
 
             GlobalTreeMapEntity globalTreeMap = new GlobalTreeMapEntity();
-            globalTreeMap.setPdservice_link(param_c_id);
+            globalTreeMap.setPdservice_link(pdservice_link);
             globalTreeMap.setFilerepository_link(file.getC_id());
             List<GlobalTreeMapEntity> searchList = globalTreeMapService.findAllBy(globalTreeMap);
             if ( searchList == null || searchList.isEmpty() ){
                 GlobalTreeMapEntity savedMap = globalTreeMapService.save(globalTreeMap);
                 fileCids.add(savedMap.getFilerepository_link());
             } else {
-                logger.info("already registe PdService = " + param_c_id + " & FileRepo = " + globalTreeMap.getFilerepository_link());
+                logger.info("already registe PdService = " + pdservice_link + " & FileRepo = " + globalTreeMap.getFilerepository_link());
                 fileCids.add(globalTreeMap.getFilerepository_link());
             }
 
@@ -207,27 +206,17 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         }
 
-        PdServiceEntity paramPdServiceNode = new PdServiceEntity();
-        paramPdServiceNode.setC_id(param_c_id);
-        PdServiceEntity updateTarget = this.getNode(paramPdServiceNode);
-
         return returnSet;
     }
 
     public Set<FileRepositoryEntity> upload(MultipartHttpServletRequest multiRequest,
-                                                   String c_title,
-                                                   FileRepository fileRepository,
-                                                   Logger logger) throws Exception {
-
-        logger.info("FileHandler :: upload :: c_title -> " + c_title);
-
-        // Spring multipartResolver 미사용 시 (commons-fileupload 활용)
-        //List<EgovFormBasedFileVo> list = EgovFormBasedFileUtil.uploadFiles(request, uploadDir, maxFileSize);
+                                                   FileRepository fileRepository) throws Exception {
 
         // Spring multipartResolver 사용시
         PropertiesReader propertiesReader = new PropertiesReader("com/egovframework/property/globals.properties");
         String uploadDir = propertiesReader.getProperty("Globals.fileStorePath");
         long maxFileSize = new Long(313);
+
         List<EgovFormBasedFileVo> list = EgovFileUploadUtil.uploadFiles(multiRequest, uploadDir, maxFileSize);
 
         Set<FileRepositoryEntity> fileRepositoryEntities = new HashSet<>();
@@ -250,7 +239,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
             fileRepositoryEntity.setDelete_type(egovFormBasedFileVo.getDelete_type());
 
             fileRepositoryEntity.setRef(new Long(2));
-            fileRepositoryEntity.setC_title(c_title);
+            fileRepositoryEntity.setC_title("for PdService");
             fileRepositoryEntity.setC_type("default");
 
             FileRepositoryEntity returnFileRepositoryEntity = fileRepository.addNode(fileRepositoryEntity);
@@ -263,15 +252,8 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
             fileRepositoryEntities.add(fileRepositoryEntity);
 
-            egovFormBasedFileVo.setUrl("/auth-user/api/arms/fileRepository" + "/downloadFileByNode/" + returnFileRepositoryEntity.getId());
-            egovFormBasedFileVo.setThumbnailUrl("/auth-user/api/arms/fileRepository" + "/thumbnailUrlFileToNode/" + returnFileRepositoryEntity.getId());
-            egovFormBasedFileVo.setDelete_url("/auth-user/api/arms/fileRepository" + "/deleteFileByNode/" + returnFileRepositoryEntity.getId());
-
         }
 
-        //HashMap<String, List<EgovFormBasedFileVo>> map = new HashMap();
-        //map.put("files", list);
-        //return map;
         return fileRepositoryEntities;
     }
 

@@ -103,12 +103,12 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
                                          HttpServletRequest request, Model model) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
-        long param_c_id = parser.getLong("pdservice_link");
+        long pdservice_link = parser.getLong("pdservice_link");
 
         //return ResponseEntity.ok(CommonResponse.success(pdService.uploadFileTo(param_c_id, multiRequest)));
         HashMap<String, Set<FileRepositoryEntity>> map = new HashMap();
 
-        map.put("files", pdService.uploadFileTo(param_c_id, multiRequest));
+        map.put("files", pdService.uploadFileForPdServiceNode(pdservice_link, multiRequest));
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", map);
         return modelAndView;

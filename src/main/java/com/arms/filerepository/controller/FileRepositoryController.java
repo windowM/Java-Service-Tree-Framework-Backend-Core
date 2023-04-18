@@ -57,9 +57,6 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     @Qualifier("pdService")
     private PdService pdService;
 
-    @Autowired
-    private GlobalTreeMapService globalTreeMapService;
-
     @PostConstruct
     public void initialize() {
         setTreeService(fileRepository);
@@ -72,32 +69,15 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     public ModelAndView getFilesByNode(FileRepositoryEntity fileRepositoryEntity, HttpServletRequest request) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
-
-        PdServiceEntity pdServiceEntity = new PdServiceEntity();
-        pdServiceEntity.setC_id(parser.getLong("fileIdLink"));
-        PdServiceEntity node = pdService.getNode(pdServiceEntity);
-
-        GlobalTreeMapEntity globalTreeMap = new GlobalTreeMapEntity();
-        globalTreeMap.setPdservice_link(parser.getLong("fileIdLink"));
-        List<GlobalTreeMapEntity> mapList = globalTreeMapService.findAllBy(globalTreeMap);
-
-        Set<FileRepositoryEntity> files = new HashSet<>();
-        HashMap<String, Set<FileRepositoryEntity>> map = new HashMap();
-        for( GlobalTreeMapEntity row : mapList ){
-            if ( row.getFilerepository_link() != null ){
-                logger.info("row.getFilerepository_link() = " + row.getFilerepository_link());
-                FileRepositoryEntity entity = new FileRepositoryEntity();
-                entity.setC_id(row.getFilerepository_link());
-                files.add(fileRepository.getNode(entity));
-            }
-        }
-        map.put("files", files);
+        HashMap<String, Set<FileRepositoryEntity>> returnMap = fileRepository.getFileSetByFileIdLink(parser);
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", map);
+        modelAndView.addObject("result", returnMap);
 
         return modelAndView;
     }
+
+
 
     @ResponseBody
     @RequestMapping(value="/deleteFileByNode/{fileId}", method = RequestMethod.DELETE)
@@ -119,7 +99,7 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     public void downloadFile(@PathVariable(value ="fileId") Long fileId,
                              HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        PropertiesReader propertiesReader = new PropertiesReader("egovframework/egovProps/globals.properties");
+        PropertiesReader propertiesReader = new PropertiesReader("com/egovframework/property/globals.properties");
         String uploadPath = propertiesReader.getProperty("Globals.fileStorePath");
 
         FileRepositoryEntity fileRepositoryEntity = new FileRepositoryEntity();

@@ -31,7 +31,7 @@ public interface PdService extends TreeService {
 
     public PdServiceEntity addPdServiceVersion(PdServiceEntity pdServiceEntity) throws Exception;
 
-    public Set<FileRepositoryEntity> uploadFileTo(Long param_c_id, MultipartHttpServletRequest multiRequest) throws Exception;
+    public Set<FileRepositoryEntity> uploadFileForPdServiceNode(Long pdservice_link, MultipartHttpServletRequest multiRequest) throws Exception;
 
     public PdServiceVersionEntity removeVersionNode(PdServiceVersionEntity pdServiceVersionEntity) throws Exception;
 
