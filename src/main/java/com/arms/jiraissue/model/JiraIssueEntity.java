@@ -11,38 +11,39 @@
  */
 package com.arms.jiraissue.model;
 
+import com.arms.jiraissuepriority.model.JiraIssuePriorityEntity;
+import com.arms.jiraissueresolution.model.JiraIssueResolutionEntity;
+import com.arms.jiraissuestatus.model.JiraIssueStatusEntity;
+import com.arms.jiraissuetype.model.JiraIssueTypeEntity;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_JIRAISSUE")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class JiraIssueEntity extends TreeSearchEntity implements Serializable {
-
-    public JiraIssueEntity() {
-        super();
-    }
-
-    public JiraIssueEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
 
  	@Override
     @Id
@@ -122,6 +123,53 @@ public class JiraIssueEntity extends TreeSearchEntity implements Serializable {
 
     @Column(name = "c_issue_resolution")
     private Long c_issue_resolution;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToOne
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "jiraissue_link"),
+            inverseJoinColumns = @JoinColumn(name = "jiraissuepriority_link")
+    )
+    @WhereJoinTable( clause = "jiraissuepriority_link is not null")
+    private JiraIssuePriorityEntity jiraIssuePriorityEntity;
+
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToOne
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "jiraissue_link"),
+            inverseJoinColumns = @JoinColumn(name = "jiraissueresolution_link")
+    )
+    @WhereJoinTable( clause = "jiraissueresolution_link is not null")
+    private JiraIssueResolutionEntity jiraIssueResolutionEntity;
+
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "jiraissue_link"),
+            inverseJoinColumns = @JoinColumn(name = "jiraissuestatus_link")
+    )
+    @WhereJoinTable( clause = "jiraissuestatus_link is not null")
+    private JiraIssueStatusEntity jiraIssueStatusEntity;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "jiraissue_link"),
+            inverseJoinColumns = @JoinColumn(name = "jiraissuetype_link")
+    )
+    @WhereJoinTable( clause = "jiraissuetype_link is not null")
+    private JiraIssueTypeEntity jiraIssueTypeEntity;
+
 
     /*
      * Extend Bean Field

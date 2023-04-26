@@ -12,7 +12,6 @@
 package com.arms.jiraproject.model;
 
 import com.arms.jiraprojectversion.model.JiraProjectVersionEntity;
-import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.ple.treeframework.model.TreeBaseEntity;
 import com.egovframework.ple.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,7 +29,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Data
 @Getter
 @Setter
 @Builder
@@ -119,8 +117,8 @@ public class JiraProjectEntity extends TreeSearchEntity implements Serializable 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "GLOBAL_TREE_MAP",
-            joinColumns = @JoinColumn(name = "pdservice_link"),
-            inverseJoinColumns = @JoinColumn(name = "pdserviceversion_link")
+            joinColumns = @JoinColumn(name = "jiraproject_link"),
+            inverseJoinColumns = @JoinColumn(name = "jiraprojectversion_link")
     )
     @WhereJoinTable( clause = "pdserviceversion_link is not null")
     public Set<JiraProjectVersionEntity> getJiraProjectVersionEntities() {

@@ -4,14 +4,23 @@
 CREATE TABLE IF NOT EXISTS `aRMS`.`GLOBAL_TREE_MAP` (
 
     `map_key`                               bigint(20) AUTO_INCREMENT primary key COMMENT '키',
-    `filerepository_link`                   bigint(20) default NULL COMMENT '파일',
 
-    `jiraconnectinfo_link`                   bigint(20) default NULL COMMENT '파일',
-    `jiraissue_link`                            bigint(20) default NULL COMMENT '파일',
-    `jiraissuepriority_link`                   bigint(20) default NULL COMMENT '파일',
+    `filerepository_link`                   bigint(20) default NULL COMMENT '파일링크',
+
+    `jiraserver_link`                       bigint(20) default NULL COMMENT '지라 서버',
+    `jiraconnectinfo_link`                  bigint(20) default NULL COMMENT '지라 접속 정보',
 
     `pdservice_link`                        bigint(20) default NULL COMMENT '제품(서비스)',
-    `pdserviceversion_link`                 bigint(20) default NULL COMMENT '제품(서비스) 버전'
+    `pdserviceversion_link`                 bigint(20) default NULL COMMENT '제품(서비스) 버전',
+
+    `jiraproject_link`                      bigint(20) default NULL COMMENT '지라 프로젝트',
+    `jiraprojectversion_link`               bigint(20) default NULL COMMENT '지라 프로젝트 버전',
+
+    `jiraissue_link`                        bigint(20) default NULL COMMENT '지라 이슈',
+    `jiraissuepriority_link`                bigint(20) default NULL COMMENT '지라 이슈 우선순위',
+    `jiraissueresolution_link`              bigint(20) default NULL COMMENT '지라 이슈 해결책',
+    `jiraissuestatus_link`                  bigint(20) default NULL COMMENT '지라 이슈 상태',
+    `jiraissuetype_link`                    bigint(20) default NULL COMMENT '지라 이슈 타입'
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='트리 맵';
 
@@ -259,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_PDSERVICE` (
     `c_pdservice_reviewer05`    text NULL,
     `c_pdservice_writer`        text NULL
 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='제품(서비스)';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='제품(서비스)';
 
 
 Insert into `aRMS`.`T_ARMS_PDSERVICE` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)

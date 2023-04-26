@@ -28,7 +28,7 @@ spring:
       password: mysqluserpassword
   flyway:
     enabled: false
-    url: jdbc:log4jdbc:mysql://192.168.25.46:3306/aRMS?characterEncoding=UTF-8&useLegacyDatetimeCode=false
+    url: jdbc:mysql://192.168.25.46:3306/aRMS?characterEncoding=UTF-8&useLegacyDatetimeCode=false
     user: mysqluser
     password: mysqluserpassword
     baseline-on-migrate: false           # flyway_schema_history 테이블을 자동으로 생성할지 여부
@@ -76,3 +76,9 @@ database:
   url: jdbc:log4jdbc:mysql://192.168.25.46:3306/aRMS?characterEncoding=UTF-8&useLegacyDatetimeCode=false
   username: mysqluser
   password: mysqluserpassword
+
+arms:
+  jira:
+    baseurl: http://www.313.co.kr/jira
+    id: admin
+    pass: flexjava
