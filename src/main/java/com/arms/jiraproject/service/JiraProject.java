@@ -15,6 +15,6 @@ import com.egovframework.ple.treeframework.service.TreeService;
 
 public interface JiraProject extends TreeService {
 
-
+    public void miningJiraProject() throws Exception;
 
 }

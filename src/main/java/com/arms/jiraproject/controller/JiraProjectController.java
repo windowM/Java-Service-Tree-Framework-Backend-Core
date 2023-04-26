@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 import com.arms.jiraproject.model.JiraProjectEntity;
 import com.arms.jiraproject.service.JiraProject;
@@ -54,6 +55,16 @@ public class JiraProjectController extends TreeAbstractController<JiraProject, J
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
+    @ResponseBody
+    @RequestMapping(
+            value = {"/miningJiraProject.do"},
+            method = {RequestMethod.GET}
+    )
+    public ModelAndView miningJiraProject(ModelMap model, HttpServletRequest request) throws Exception {
+        jiraProject.miningJiraProject();
+        ModelAndView modelAndView = new ModelAndView("jsonView");
+        modelAndView.addObject("result", "set_jiraProject_toPdServiceJira");
+        return modelAndView;
+    }
 
 }

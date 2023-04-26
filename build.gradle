@@ -196,8 +196,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     
     //jira
-    implementation 'com.atlassian.jira:jira-rest-java-client-core:4.0.0'
-    implementation 'com.atlassian.jira:jira-rest-java-client-api:4.0.0'
+    implementation 'com.atlassian.jira:jira-rest-java-client-app:5.1.6'
 
     // poi
     implementation 'org.apache.poi:poi:5.1.0'
