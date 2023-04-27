@@ -118,6 +118,19 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
 
     }
 
+    @ResponseBody
+    @RequestMapping(
+            value = {"/getVersionList.do"},
+            method = {RequestMethod.GET}
+    )
+    public ResponseEntity<?> getVersionList(PdServiceEntity pdServiceEntity, ModelMap model, HttpServletRequest request) throws Exception {
+
+        PdServiceEntity pdServiceNode = pdService.getNode(pdServiceEntity);
+        Set<PdServiceVersionEntity> pdServiceVersionList = pdServiceNode.getPdServiceVersionEntities();
+
+        return ResponseEntity.ok(CommonResponse.success(pdServiceVersionList));
+    }
+
     @RequestMapping(value="/removeVersion.do", method= RequestMethod.DELETE)
     public ModelAndView removeVersion(PdServiceVersionEntity treeSearchEntity, HttpServletRequest request) throws Exception {
 

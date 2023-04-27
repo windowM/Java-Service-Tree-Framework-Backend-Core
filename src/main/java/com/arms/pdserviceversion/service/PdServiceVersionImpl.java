@@ -30,8 +30,6 @@ public class PdServiceVersionImpl extends TreeServiceImpl implements PdServiceVe
     @Override
     public List<PdServiceVersionEntity> getVersionListByPdService(PdServiceVersionEntity pdServiceVersionEntity) throws Exception {
 
-        pdServiceVersionEntity.setOrder(Order.asc("c_left"));
-        pdServiceVersionEntity.setWhere("c_pdservice_link", pdServiceVersionEntity.getC_id());
         List<PdServiceVersionEntity> pdServiceVersionEntities = this.getChildNode(pdServiceVersionEntity);
         logger.info("UserPdServiceVersionController ::  getVersion :: pdServiceVersionDTOS = " + pdServiceVersionEntities.size());
 

@@ -14,6 +14,7 @@ package com.arms.pdserviceversion.controller;
 import com.arms.pdservice.service.PdService;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
+import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import com.egovframework.javaservice.treeframework.util.StringUtility;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
@@ -22,11 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
@@ -54,15 +57,6 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @RequestMapping(value="/getVersionList.do",method= RequestMethod.GET)
-    public ModelAndView getVersionList(PdServiceVersionEntity pdServiceVersionEntity, ModelMap model,
-                                       HttpServletRequest request) throws Exception {
-
-        ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", pdServiceVersion.getVersionListByPdService(pdServiceVersionEntity));
-        return modelAndView;
-    }
 
     @RequestMapping(value="/getVersionListByCids.do",method= RequestMethod.GET)
     public ModelAndView getVersionListByCids(PdServiceVersionEntity pdServiceVersionEntity, ModelMap model,
