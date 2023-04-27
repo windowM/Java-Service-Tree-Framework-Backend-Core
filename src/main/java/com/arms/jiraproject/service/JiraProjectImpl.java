@@ -43,7 +43,7 @@ public class JiraProjectImpl extends TreeServiceImpl implements JiraProject{
 
 	@Override
 	@Transactional
-	public void miningJiraProject() throws Exception {
+	public String miningJiraProject() throws Exception {
 		final JiraRestClient restClient = jiraConfig.getJiraRestClient();
 		Iterable<BasicProject> allProject = restClient.getProjectClient().getAllProjects().claim();
 
@@ -93,6 +93,8 @@ public class JiraProjectImpl extends TreeServiceImpl implements JiraProject{
 				}
 			}
 		}
+
+		return "Jira Project Data Mining Complete";
 	}
 
 

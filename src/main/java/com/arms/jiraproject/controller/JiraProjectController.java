@@ -11,12 +11,14 @@
  */
 package com.arms.jiraproject.controller;
 
+import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,11 +52,8 @@ public class JiraProjectController extends TreeAbstractController<JiraProject, J
             value = {"/miningJiraProject.do"},
             method = {RequestMethod.GET}
     )
-    public ModelAndView miningJiraProject(ModelMap model, HttpServletRequest request) throws Exception {
-        jiraProject.miningJiraProject();
-        ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", "set_jiraProject_toPdServiceJira");
-        return modelAndView;
+    public ResponseEntity<?> miningJiraProject(ModelMap model, HttpServletRequest request) throws Exception {
+        return ResponseEntity.ok(CommonResponse.success(jiraProject.miningJiraProject()));
     }
 
 }

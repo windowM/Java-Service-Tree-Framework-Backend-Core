@@ -1,7 +1,6 @@
 package com.arms.samplemybastis.controller;
 
 import com.arms.samplemybastis.service.MyBatisService;
-import com.egovframework.javaservice.treeframework.controller.TreeSupportController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = {"/arms/sample/mybatis"})
-public class SampleMybatisContoller extends TreeSupportController {
+public class SampleMybatisContoller {
 
     @Autowired
     @Qualifier("myBatisService")
