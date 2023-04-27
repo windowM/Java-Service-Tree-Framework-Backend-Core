@@ -11,7 +11,7 @@
  */
 package com.arms.jiraissuepriority.service;
 
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.service.TreeService;
 
 public interface JiraIssuePriority extends TreeService {
 

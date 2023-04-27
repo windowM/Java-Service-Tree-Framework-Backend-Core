@@ -13,16 +13,11 @@ package com.arms.filerepository.controller;
 
 import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
-import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdservice.service.PdService;
-import com.egovframework.ple.treeframework.controller.TreeAbstractController;
-import com.egovframework.ple.treeframework.util.PropertiesReader;
-import com.egovframework.ple.treeframework.util.ParameterParser;
-import com.egovframework.ple.treeframework.util.EgovFormBasedFileUtil;
-import com.egovframework.ple.treemap.model.GlobalTreeMapEntity;
-import com.egovframework.ple.treemap.service.GlobalTreeMapService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
+import com.egovframework.javaservice.treeframework.util.PropertiesReader;
+import com.egovframework.javaservice.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treeframework.util.EgovFormBasedFileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +35,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Slf4j

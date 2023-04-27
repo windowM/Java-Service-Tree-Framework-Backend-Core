@@ -11,7 +11,7 @@
  */
 package com.arms.jiraissuestatus.service;
 
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.service.TreeService;
 
 public interface JiraIssueStatus extends TreeService {
 

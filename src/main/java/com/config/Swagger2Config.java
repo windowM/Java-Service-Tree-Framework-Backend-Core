@@ -1,7 +1,7 @@
 package com.config;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.util.PaginationInfo;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.util.PaginationInfo;
 import com.fasterxml.classmate.TypeResolver;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
@@ -50,7 +50,7 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("PLE TreeFramework")
+                .title("Java Service Tree Framework")
                 .description(
                     "<span style='color: #e5603b;font-size: 18px;'><strong>&#8880; Select &trade;&#8881;</strong></span>\n\n" +
 

@@ -11,28 +11,23 @@
  */
 package com.arms.jiraproject.service;
 
-import com.arms.filerepository.service.FileRepository;
 import com.arms.jiraproject.model.JiraProjectEntity;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.domain.BasicProject;
 import com.atlassian.jira.rest.client.api.domain.Project;
 import com.atlassian.jira.rest.client.api.domain.Version;
 import com.config.JiraConfig;
-import com.egovframework.ple.treeframework.TreeConstant;
-import com.egovframework.ple.treeframework.service.TreeServiceImpl;
-import com.egovframework.ple.treeframework.util.StringUtils;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import com.egovframework.javaservice.treeframework.TreeConstant;
+import com.egovframework.javaservice.treeframework.service.TreeServiceImpl;
+import com.egovframework.javaservice.treeframework.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
+
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

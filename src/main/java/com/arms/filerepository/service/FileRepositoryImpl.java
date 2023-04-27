@@ -12,10 +12,10 @@
 package com.arms.filerepository.service;
 
 import com.arms.filerepository.model.FileRepositoryEntity;
-import com.egovframework.ple.treeframework.service.TreeServiceImpl;
-import com.egovframework.ple.treeframework.util.ParameterParser;
-import com.egovframework.ple.treemap.model.GlobalTreeMapEntity;
-import com.egovframework.ple.treemap.service.GlobalTreeMapService;
+import com.egovframework.javaservice.treeframework.service.TreeServiceImpl;
+import com.egovframework.javaservice.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treemap.model.GlobalTreeMapEntity;
+import com.egovframework.javaservice.treemap.service.GlobalTreeMapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

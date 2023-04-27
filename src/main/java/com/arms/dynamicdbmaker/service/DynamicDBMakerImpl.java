@@ -13,7 +13,7 @@ package com.arms.dynamicdbmaker.service;
 
 import com.arms.dynamicdbmaker.mapper.DynamicDBMakerDao;
 import com.arms.dynamicdbmaker.model.DynamicDBMakerEntity;
-import com.egovframework.ple.treeframework.service.TreeServiceImpl;
+import com.egovframework.javaservice.treeframework.service.TreeServiceImpl;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

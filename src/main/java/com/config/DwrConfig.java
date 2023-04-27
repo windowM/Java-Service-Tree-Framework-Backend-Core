@@ -45,7 +45,7 @@ public class DwrConfig implements WebMvcConfigurer {
 
         registration.addInitParameter("initApplicationScopeCreatorsAtStartup", "false");
         registration.addInitParameter("jsonpEnabled", "false");
-        registration.addInitParameter("org.directwebremoting.extend.ScriptSessionManager", "com.egovframework.ple.treeframework.remote.ScriptSessionManager");
+        registration.addInitParameter("org.directwebremoting.extend.ScriptSessionManager", "com.egovframework.javaservice.treeframework.remote.ScriptSessionManager");
         registration.addInitParameter("allowScriptTagRemoting", "true");
 
         registration.addInitParameter("maxWaitAfterWrite", "60");

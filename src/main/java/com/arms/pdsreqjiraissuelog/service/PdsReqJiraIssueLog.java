@@ -11,7 +11,7 @@
  */
 package com.arms.pdsreqjiraissuelog.service;
 
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.service.TreeService;
 
 public interface PdsReqJiraIssueLog extends TreeService {
 

@@ -12,8 +12,8 @@
 package com.arms.filerepository.service;
 
 import com.arms.filerepository.model.FileRepositoryEntity;
-import com.egovframework.ple.treeframework.service.TreeService;
-import com.egovframework.ple.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.util.ParameterParser;
 
 import java.util.HashMap;
 import java.util.Set;
