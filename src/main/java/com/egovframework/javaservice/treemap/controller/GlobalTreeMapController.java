@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequestMapping("/arms/globaltreemap")
 @RestController
@@ -108,9 +109,45 @@ public class GlobalTreeMapController {
     public ResponseEntity<?> setConnectInfo_pdService_pdServiceVersion_jiraProject(GlobalTreeMapEntity globalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
-        String[] jiraProjectList = StringUtility.jsonStringifyConvert(parser.get("c_pdservice_jira_ids"));
+        String[] paramList = StringUtility.jsonStringifyConvert(parser.get("c_pdservice_jira_ids"));
 
-        List<GlobalTreeMapEntity> saveTargetList = new ArrayList<>();
+        List<String> jiraProjectList = Arrays.stream(paramList).collect(Collectors.toList());
+
+        // 1. pdService 와 pdServiceVersion 으로 리스트를 찾고
+        // 2. 찾은 리스트를 중심으로 루프를 돌면서
+        // 매치 리스트는 save 하고
+        // non 매치 리스트는 delete 를 하자.
+
+        GlobalTreeMapEntity searchObj = new GlobalTreeMapEntity();
+        searchObj.setPdservice_link(globalTreeMapEntity.getPdservice_link());
+        searchObj.setPdserviceversion_link(globalTreeMapEntity.getPdserviceversion_link());
+        List<GlobalTreeMapEntity> searchedObjList = globalTreeMapService.findAllBy(searchObj);
+
+        // 1. pdService 와 pdServiceVersion 으로 리스트를 찾고
+        List<GlobalTreeMapEntity> filteredList = searchedObjList.stream().filter(data ->
+                data.getPdservice_link() != null &&
+                data.getPdserviceversion_link() != null &&
+                data.getJiraproject_link() != null
+        ).collect(Collectors.toList());
+
+        // 2. 찾은 리스트를 중심으로 루프를 돌면서 삭제할거 삭제하고
+        for(GlobalTreeMapEntity data : filteredList){
+            Long jiraProjectLink = data.getJiraproject_link();
+            boolean alreadyRegist = jiraProjectList.stream().anyMatch(dataObj -> jiraProjectLink.equals(dataObj));
+
+            if(alreadyRegist){
+                //이미 등록된 데이터.
+                log.info("already registered : getPdservice_link" + data.getPdservice_link());
+                log.info("already registered : getPdserviceversion_link" + data.getPdserviceversion_link());
+                log.info("already registered : getJiraproject_link" + data.getJiraproject_link());
+
+                jiraProjectList.remove(data);
+
+            }else {
+                //등록은 되 있으나, 매치되지 않은 데이터 : 삭제 대상.
+                globalTreeMapService.delete(data);
+            }
+        }
 
         for( String jiraProject : jiraProjectList ){
 
@@ -125,9 +162,6 @@ public class GlobalTreeMapController {
                             data.getPdserviceversion_link() == saveTarget.getPdserviceversion_link() &&
                             data.getJiraproject_link() == saveTarget.getJiraproject_link()
             ).collect(Collectors.toList());
-
-            log.info("===============================================================");
-
 
             if( checkDuplicate == null || checkDuplicate.isEmpty() == true) {
                 globalTreeMapService.save(saveTarget);
