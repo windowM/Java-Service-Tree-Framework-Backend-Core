@@ -12,6 +12,8 @@
 package com.arms.reqadd.controller;
 
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
+import com.egovframework.javaservice.treeframework.interceptor.SessionUtil;
+import com.egovframework.javaservice.treeframework.util.ParameterParser;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,15 @@ import javax.annotation.PostConstruct;
 
 import com.arms.reqadd.model.ReqAddEntity;
 import com.arms.reqadd.service.ReqAdd;
+import org.hibernate.criterion.Order;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -41,4 +52,49 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddEntit
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @ResponseBody
+    @RequestMapping(
+            value = {"/{changeReqTableName}/getMonitor.do"},
+            method = {RequestMethod.GET}
+    )
+    public ModelAndView getMonitor(
+            @PathVariable(value ="changeReqTableName") String changeReqTableName,
+            ReqAddEntity reqAddEntity, ModelMap model, HttpServletRequest request) throws Exception {
+
+        SessionUtil.setAttribute("getMonitor",changeReqTableName);
+
+        reqAddEntity.setOrder(Order.asc("c_left"));
+        List<ReqAddEntity> list = this.reqAdd.getChildNode(reqAddEntity);
+
+        SessionUtil.removeAttribute("getMonitor");
+
+        ModelAndView modelAndView = new ModelAndView("jsonView");
+        modelAndView.addObject("result", list);
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(
+            value = {"/{changeReqTableName}/getChildNode.do"},
+            method = {RequestMethod.GET}
+    )
+    public ModelAndView getSwitchDBChildNode(@PathVariable(value ="changeReqTableName") String changeReqTableName,
+                         ReqAddEntity reqAddDTO, HttpServletRequest request) throws Exception {
+        ParameterParser parser = new ParameterParser(request);
+        if (parser.getInt("c_id") <= 0) {
+            throw new RuntimeException();
+        } else {
+
+            SessionUtil.setAttribute("getChildNode",changeReqTableName);
+
+            reqAddDTO.setWhere("c_parentid", new Long(parser.get("c_id")));
+            List<ReqAddEntity> list = reqAdd.getChildNode(reqAddDTO);
+
+            SessionUtil.removeAttribute("getChildNode");
+
+            ModelAndView modelAndView = new ModelAndView("jsonView");
+            modelAndView.addObject("result", list);
+            return modelAndView;
+        }
+    }
 }
