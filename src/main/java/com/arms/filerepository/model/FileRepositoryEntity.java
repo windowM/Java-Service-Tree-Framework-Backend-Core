@@ -29,11 +29,14 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_FILEREPOSITORY")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class FileRepositoryEntity extends TreeSearchEntity implements Serializable {
 
     @Override
@@ -45,9 +48,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
     }
 
     //@Getter @Setter
-
     private PdServiceEntity pdServiceEntity;
-
     @ManyToOne
     @JsonBackReference
     @JoinTable(

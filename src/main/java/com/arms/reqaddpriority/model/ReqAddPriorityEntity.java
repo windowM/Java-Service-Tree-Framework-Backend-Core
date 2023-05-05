@@ -1,7 +1,7 @@
 /*
  * @author Dongmin.lee
- * @since 2023-03-21
- * @version 23.03.21
+ * @since 2023-05-05
+ * @version 23.05.05
  * @see <pre>
  *  Copyright (C) 2007 by 313 DEV GRP, Inc - All Rights Reserved
  *  Unauthorized copying of this file, via any medium is strictly prohibited
@@ -9,33 +9,45 @@
  *  Written by 313 developer group <313@313.co.kr>, December 2010
  * </pre>
  */
-package com.arms.reqcomment.model;
+package com.arms.reqaddpriority.model;
 
 import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
 import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "T_ARMS_REQCOMMENT")
+@Table(name = "T_ARMS_REQADDPRIORITY")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReqCommentEntity extends TreeSearchEntity implements Serializable {
+public class ReqAddPriorityEntity extends TreeSearchEntity implements Serializable {
 
  	@Override
     @Id
@@ -44,33 +56,7 @@ public class ReqCommentEntity extends TreeSearchEntity implements Serializable {
     public Long getC_id() {
         return super.getC_id();
     }
-    
     //@Getter @Setter
-    @Column(name = "c_pdservice_link")
-    private Long c_pdservice_link;
-
-    @Column(name = "c_version_link")
-    private Long c_version_link;
-
-    @Column(name = "c_req_link")
-    private Long c_req_link;
-
-
-    @Column(name = "c_req_comment_sender")
-    @Type(type="text")
-    private String c_req_comment_sender;
-
-    @Column(name = "c_req_comment_date")
-    @Type(type="text")
-    private String c_req_comment_date;
-
-    @Column(name = "c_req_comment_contents")
-    @Type(type="text")
-    private String c_req_comment_contents;
-
-    @Column(name = "c_req_comment_etc")
-    @Type(type="text")
-    private String c_req_comment_etc;
 
     /*
      * Extend Bean Field
