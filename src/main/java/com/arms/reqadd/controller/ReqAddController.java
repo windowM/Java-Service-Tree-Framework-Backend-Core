@@ -11,9 +11,12 @@
  */
 package com.arms.reqadd.controller;
 
+import com.arms.reqpriority.model.ReqPriorityEntity;
+import com.arms.reqpriority.service.ReqPriority;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import com.egovframework.javaservice.treeframework.interceptor.SessionUtil;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treeframework.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,5 +104,47 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddEntit
         }
     }
 
+    @Autowired
+    @Qualifier("reqPriority")
+    private ReqPriority reqPriority;
+
+    @ResponseBody
+    @RequestMapping(
+            value = {"/{changeReqTableName}/getNode.do"},
+            method = {RequestMethod.GET}
+    )
+    public <V extends ReqAddEntity> ModelAndView getSwitchDBNode(
+            @PathVariable(value ="changeReqTableName") String changeReqTableName
+            ,V reqAddDTO, HttpServletRequest request) throws Exception {
+
+        ParameterParser parser = new ParameterParser(request);
+
+        if (parser.getInt("c_id") <= 0) {
+            throw new RuntimeException();
+        } else {
+
+            SessionUtil.setAttribute("getNode",changeReqTableName);
+
+            V returnVO = reqAdd.getNode(reqAddDTO);
+//            if(StringUtils.isNotEmpty(returnVO.getC_version_link())) {
+//                String replaceTxt = returnVO.getC_version_link().replaceAll("\\[", "").replaceAll("\\]", "");
+//                replaceTxt = replaceTxt.replaceAll("\"", "");
+//                returnVO.setC_version_link(replaceTxt);
+//            }
+
+            Long req_priorirty = returnVO.getC_req_priority_link();
+
+            ReqPriorityEntity reqPriorityEntity = new ReqPriorityEntity();
+            reqPriorityEntity.setC_id(3L);
+            ReqPriorityEntity savedObj = reqPriority.getNode(reqPriorityEntity);
+
+            returnVO.setReqPriorityEntity(savedObj);
+            SessionUtil.removeAttribute("getNode");
+
+            ModelAndView modelAndView = new ModelAndView("jsonView");
+            modelAndView.addObject("result", returnVO);
+            return modelAndView;
+        }
+    }
 
 }

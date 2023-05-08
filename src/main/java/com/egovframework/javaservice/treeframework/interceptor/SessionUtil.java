@@ -28,21 +28,21 @@ public class SessionUtil {
      * attribute 값을 가져 오기 위한 method
      */
     public static Object getAttribute(String name) throws Exception {
-        return (Object) RequestContextHolder.getRequestAttributes().getAttribute(name, RequestAttributes.SCOPE_SESSION);
+        return (Object) RequestContextHolder.getRequestAttributes().getAttribute(name, RequestAttributes.SCOPE_REQUEST);
     }
 
     /**
      * attribute 설정 method
      */
     public static void setAttribute(String name, Object object) throws Exception {
-        RequestContextHolder.getRequestAttributes().setAttribute(name, object, RequestAttributes.SCOPE_SESSION);
+        RequestContextHolder.getRequestAttributes().setAttribute(name, object, RequestAttributes.SCOPE_REQUEST);
     }
 
     /**
      * 설정한 attribute 삭제
      */
     public static void removeAttribute(String name) throws Exception {
-        RequestContextHolder.getRequestAttributes().removeAttribute(name, RequestAttributes.SCOPE_SESSION);
+        RequestContextHolder.getRequestAttributes().removeAttribute(name, RequestAttributes.SCOPE_REQUEST);
     }
 
     /**

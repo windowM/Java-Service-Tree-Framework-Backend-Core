@@ -11,18 +11,25 @@
  */
 package com.arms.reqadd.model;
 
+import com.arms.jiraissuepriority.model.JiraIssuePriorityEntity;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
+import com.arms.reqpriority.model.ReqPriorityEntity;
+import com.arms.reqstate.model.ReqStateEntity;
 import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
 import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -45,15 +52,6 @@ public class ReqAddEntity extends TreeSearchEntity implements Serializable {
         return super.getC_id();
     }
     //@Getter @Setter
-
-    @Column(name = "c_pdservice_link")
-    private Long c_pdservice_link;
-
-    @Column(name = "c_version_link")
-    private Long c_version_link;
-
-
-    //ReqStatus Issue Link
 
     @Column(name = "c_req_reviewer01")
     @Type(type="text")
@@ -105,8 +103,8 @@ public class ReqAddEntity extends TreeSearchEntity implements Serializable {
     @Column(name = "c_req_priority_link")
     private Long c_req_priority_link;
 
-    @Column(name = "c_req_status_link")
-    private Long c_req_status_link;
+    @Column(name = "c_req_state_link")
+    private Long c_req_state_link;
 
     @Lob
     @Column(name = "c_req_contents")
@@ -116,6 +114,54 @@ public class ReqAddEntity extends TreeSearchEntity implements Serializable {
     @Column(name = "c_req_etc")
     @Type(type="text")
     private String c_req_etc;
+
+    // -- 1:1 table 연계
+    // 동적 테이블 이기때문에 글로벌 트리맵에 joinColumns 에 추가하기엔 너무 큰 리소스 코드가 들어가서
+    // 프로그래밍 적인 코드 릴레이션을 처리한다.
+    // 대신에 onetoone 처리도 잘 되는걸 확인했다.
+    // 글로벌 트리맵에서 관리하도록 하자.
+
+    //
+    //    @LazyCollection(LazyCollectionOption.FALSE)
+    //    @JsonManagedReference
+    //    @OneToOne
+    //    @JoinTable(
+    //            name = "GLOBAL_TREE_MAP",
+    //            joinColumns = @JoinColumn(name = "reqadd_link"),
+    //            inverseJoinColumns = @JoinColumn(name = "reqpriority_link")
+    //    )
+    //    @WhereJoinTable( clause = "reqpriority_link is not null and pdservice_link = 10" )
+    //    public ReqPriorityEntity getReqPriorityEntity() {
+    //        return reqPriorityEntity;
+    //    }
+    //
+    //    public void setReqPriorityEntity(ReqPriorityEntity reqPriorityEntity) {
+    //        this.reqPriorityEntity = reqPriorityEntity;
+    //    }
+
+    // -- 1:1 Row 단방향 연계
+    private ReqPriorityEntity reqPriorityEntity;
+
+    @Transient
+    public ReqPriorityEntity getReqPriorityEntity() {
+        return reqPriorityEntity;
+    }
+
+    public void setReqPriorityEntity(ReqPriorityEntity reqPriorityEntity) {
+        this.reqPriorityEntity = reqPriorityEntity;
+    }
+
+    // -- 1:1 Row 단방향 연계
+    private ReqStateEntity reqStateEntity;
+
+    @Transient
+    public ReqStateEntity getReqStateEntity() {
+        return reqStateEntity;
+    }
+
+    public void setReqStateEntity(ReqStateEntity reqStateEntity) {
+        this.reqStateEntity = reqStateEntity;
+    }
 
     /*
      * Extend Bean Field

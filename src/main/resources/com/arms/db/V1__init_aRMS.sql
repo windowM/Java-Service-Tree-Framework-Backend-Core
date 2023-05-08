@@ -20,7 +20,11 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`GLOBAL_TREE_MAP` (
     `jiraissuepriority_link`                bigint(20) default NULL COMMENT '지라 이슈 우선순위',
     `jiraissueresolution_link`              bigint(20) default NULL COMMENT '지라 이슈 해결책',
     `jiraissuestatus_link`                  bigint(20) default NULL COMMENT '지라 이슈 상태',
-    `jiraissuetype_link`                    bigint(20) default NULL COMMENT '지라 이슈 타입'
+    `jiraissuetype_link`                    bigint(20) default NULL COMMENT '지라 이슈 타입',
+
+    `reqadd_link`                           bigint(20) default NULL COMMENT '요구사항',
+    `reqpriority_link`                      bigint(20) default NULL COMMENT '요구사항 우선순위',
+    `reqstate_link`                        bigint(20) default NULL COMMENT '요구사항 상태값'
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='트리 맵';
 
@@ -1088,9 +1092,6 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADD_LOG` (
     `c_state`                   text NULL COMMENT '노드 상태값 ( 이전인지. 이후인지)',
     `c_date`                    date NULL COMMENT '노드 변경 시',
 
-    `c_pdservice_link`          bigint(20) NULL,
-    `c_version_link`            bigint(20) NULL,
-
     `c_req_reviewer01`          text NULL,
     `c_req_reviewer01_status`   text NULL,
     `c_req_reviewer02`          text NULL,
@@ -1106,7 +1107,7 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADD_LOG` (
     `c_req_priority_link`       bigint(20) NULL,
     `c_req_contents`            longtext NULL,
     `c_req_etc`                 text NULL,
-    `c_req_status_link`         bigint(20) NULL
+    `c_req_state_link`          bigint(20) NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 트리거 로그';
 
@@ -1122,9 +1123,6 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADD` (
     `c_title`                   VARCHAR(255) COMMENT '노드 명',
     `c_type`                    VARCHAR(255) COMMENT '노드 타입',
 
-    `c_pdservice_link`          bigint(20) NULL,
-    `c_version_link`            bigint(20) NULL,
-
     `c_req_reviewer01`          text NULL,
     `c_req_reviewer01_status`   text NULL,
     `c_req_reviewer02`          text NULL,
@@ -1140,7 +1138,7 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADD` (
     `c_req_priority_link`       bigint(20) NULL,
     `c_req_contents`            longtext NULL,
     `c_req_etc`                 text NULL,
-    `c_req_status_link`         bigint(20) NULL
+    `c_req_state_link`          bigint(20) NULL
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항';
 
@@ -1185,9 +1183,9 @@ DELIMITER ;
 
 
 --
--- Table structure for table `T_ARMS_REQADDPRIORRITY`
+-- Table structure for table `T_ARMS_REQPRIORITY`
 --
-CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDPRIORRITY_LOG` (
+CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQPRIORITY_LOG` (
 
     `c_id`                      bigint(20) NOT NULL COMMENT '노드 아이디',
     `c_parentid`                bigint(20) NOT NULL COMMENT '부모 노드 아이디',
@@ -1202,13 +1200,13 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDPRIORRITY_LOG` (
     `c_state`                   text NULL COMMENT '노드 상태값 ( 이전인지. 이후인지)',
     `c_date`                    date NULL COMMENT '노드 변경 시',
 
-    `c_req_priority_name`           text NULL,
-    `c_req_priority_contents`       longtext NULL
+    `c_etc`                     text NULL,
+    `c_contents`                longtext NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 우선순위 트리거 로그';
 
 
-CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDPRIORRITY` (
+CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQPRIORITY` (
 
     `c_id`                      bigint(20) AUTO_INCREMENT primary key COMMENT '노드 아이디',
     `c_parentid`                bigint(20) NOT NULL COMMENT '부모 노드 아이디',
@@ -1219,46 +1217,52 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDPRIORRITY` (
     `c_title`                   VARCHAR(255) COMMENT '노드 명',
     `c_type`                    VARCHAR(255) COMMENT '노드 타입',
 
-    `c_req_priority_name`           text NULL,
-    `c_req_priority_contents`       longtext NULL
+    `c_etc`                     text NULL,
+    `c_contents`                longtext NULL
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 우선순위';
 
 
-Insert into `aRMS`.`T_ARMS_REQADDPRIORRITY` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
-Values (1, 0, 0, 1, 4, 0, 'T_ARMS_REQADDPRIORRITY', 'root');
-Insert into `aRMS`.`T_ARMS_REQADDPRIORRITY` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
-Values (2, 1, 0, 2, 3, 1, '요구사항 우선순위', 'drive');
+Insert into `aRMS`.`T_ARMS_REQPRIORITY` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (1, 0, 0, 1, 10, 0, 'T_ARMS_REQPRIORITY', 'root');
+Insert into `aRMS`.`T_ARMS_REQPRIORITY` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (2, 1, 0, 2, 9, 1, '요구사항 우선순위', 'drive');
+Insert into `aRMS`.`T_ARMS_REQPRIORITY` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (3, 2, 0, 3, 4, 2, '낮음', 'default');
+Insert into `aRMS`.`T_ARMS_REQPRIORITY` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (4, 2, 1, 5, 6, 2, '중간', 'default');
+Insert into `aRMS`.`T_ARMS_REQPRIORITY` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (5, 2, 2, 7, 8, 2, '높음', 'default');
 
 
 DELIMITER $$
-CREATE TRIGGER TG_INSERT_T_ARMS_REQADDPRIORRITY
-    BEFORE  INSERT ON T_ARMS_REQADDPRIORRITY
+CREATE TRIGGER TG_INSERT_T_ARMS_REQPRIORITY
+    BEFORE  INSERT ON T_ARMS_REQPRIORITY
     FOR EACH ROW
 BEGIN
-    insert into T_ARMS_REQADDPRIORRITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQPRIORITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (NEW.C_ID,NEW.C_PARENTID,NEW.C_POSITION,NEW.C_LEFT,NEW.C_RIGHT,NEW.C_LEVEL,NEW.C_TITLE,NEW.C_TYPE,'update','변경이전데이터',now());
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE TRIGGER TG_UPDATE_T_ARMS_REQADDPRIORRITY
-    BEFORE  UPDATE ON T_ARMS_REQADDPRIORRITY
+CREATE TRIGGER TG_UPDATE_T_ARMS_REQPRIORITY
+    BEFORE  UPDATE ON T_ARMS_REQPRIORITY
     FOR EACH ROW
 BEGIN
-    insert into T_ARMS_REQADDPRIORRITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQPRIORITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (OLD.C_ID,OLD.C_PARENTID,OLD.C_POSITION,OLD.C_LEFT,OLD.C_RIGHT,OLD.C_LEVEL,OLD.C_TITLE,OLD.C_TYPE,'update','변경이전데이터',now());
-    insert into T_ARMS_REQADDPRIORRITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQPRIORITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (NEW.C_ID,NEW.C_PARENTID,NEW.C_POSITION,NEW.C_LEFT,NEW.C_RIGHT,NEW.C_LEVEL,NEW.C_TITLE,NEW.C_TYPE,'update','변경이후데이터',now());
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE TRIGGER TG_DELETE_T_ARMS_REQADDPRIORRITY
-    BEFORE  DELETE ON T_ARMS_REQADDPRIORRITY
+CREATE TRIGGER TG_DELETE_T_ARMS_REQPRIORITY
+    BEFORE  DELETE ON T_ARMS_REQPRIORITY
     FOR EACH ROW
 BEGIN
-    insert into T_ARMS_REQADDPRIORRITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQPRIORITY_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (OLD.C_ID,OLD.C_PARENTID,OLD.C_POSITION,OLD.C_LEFT,OLD.C_RIGHT,OLD.C_LEVEL,OLD.C_TITLE,OLD.C_TYPE,'delete','삭제된데이터',now());
 END $$
 DELIMITER ;
@@ -1266,9 +1270,9 @@ DELIMITER ;
 
 
 --
--- Table structure for table `T_ARMS_REQADDSTATUS`
+-- Table structure for table `T_ARMS_REQSTATE`
 --
-CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDSTATUS_LOG` (
+CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQSTATE_LOG` (
 
     `c_id`                      bigint(20) NOT NULL COMMENT '노드 아이디',
     `c_parentid`                bigint(20) NOT NULL COMMENT '부모 노드 아이디',
@@ -1283,13 +1287,13 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDSTATUS_LOG` (
     `c_state`                   text NULL COMMENT '노드 상태값 ( 이전인지. 이후인지)',
     `c_date`                    date NULL COMMENT '노드 변경 시',
 
-    `c_req_status_name`           text NULL,
-    `c_req_status_contents`       longtext NULL
+    `c_etc`                     text NULL,
+    `c_contents`                longtext NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 상태 트리거 로그';
 
 
-CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDSTATUS` (
+CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQSTATE` (
 
     `c_id`                      bigint(20) AUTO_INCREMENT primary key COMMENT '노드 아이디',
     `c_parentid`                bigint(20) NOT NULL COMMENT '부모 노드 아이디',
@@ -1300,46 +1304,52 @@ CREATE TABLE IF NOT EXISTS `aRMS`.`T_ARMS_REQADDSTATUS` (
     `c_title`                   VARCHAR(255) COMMENT '노드 명',
     `c_type`                    VARCHAR(255) COMMENT '노드 타입',
 
-    `c_req_status_name`           text NULL,
-    `c_req_status_contents`       longtext NULL
+    `c_etc`                     text NULL,
+    `c_contents`                longtext NULL
 
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 상태값';
 
 
-Insert into `aRMS`.`T_ARMS_REQADDSTATUS` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
-Values (1, 0, 0, 1, 4, 0, 'T_ARMS_REQADDSTATUS', 'root');
-Insert into `aRMS`.`T_ARMS_REQADDSTATUS` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
-Values (2, 1, 0, 2, 3, 1, '요구사항 상태값', 'drive');
+Insert into `aRMS`.`T_ARMS_REQSTATE` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (1, 0, 0, 1, 10, 0, 'T_ARMS_REQSTATE', 'root');
+Insert into `aRMS`.`T_ARMS_REQSTATE` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (2, 1, 0, 2, 9, 1, '요구사항 상태값', 'drive');
+Insert into `aRMS`.`T_ARMS_REQSTATE` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (3, 2, 0, 3, 4, 2, '요구사항 생성', 'default');
+Insert into `aRMS`.`T_ARMS_REQSTATE` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (4, 2, 1, 5, 6, 2, '요구사항 업데이트', 'default');
+Insert into `aRMS`.`T_ARMS_REQSTATE` (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE)
+Values (5, 2, 2, 7, 8, 2, '요구사항 종료', 'default');
 
 
 DELIMITER $$
-CREATE TRIGGER TG_INSERT_T_ARMS_REQADDSTATUS
-    BEFORE  INSERT ON T_ARMS_REQADDSTATUS
+CREATE TRIGGER TG_INSERT_T_ARMS_REQSTATE
+    BEFORE  INSERT ON T_ARMS_REQSTATE
     FOR EACH ROW
 BEGIN
-    insert into T_ARMS_REQADDSTATUS_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQSTATE_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (NEW.C_ID,NEW.C_PARENTID,NEW.C_POSITION,NEW.C_LEFT,NEW.C_RIGHT,NEW.C_LEVEL,NEW.C_TITLE,NEW.C_TYPE,'update','변경이전데이터',now());
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE TRIGGER TG_UPDATE_T_ARMS_REQADDSTATUS
-    BEFORE  UPDATE ON T_ARMS_REQADDSTATUS
+CREATE TRIGGER TG_UPDATE_T_ARMS_REQSTATE
+    BEFORE  UPDATE ON T_ARMS_REQSTATE
     FOR EACH ROW
 BEGIN
-    insert into T_ARMS_REQADDSTATUS_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQSTATE_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (OLD.C_ID,OLD.C_PARENTID,OLD.C_POSITION,OLD.C_LEFT,OLD.C_RIGHT,OLD.C_LEVEL,OLD.C_TITLE,OLD.C_TYPE,'update','변경이전데이터',now());
-    insert into T_ARMS_REQADDSTATUS_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQSTATE_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (NEW.C_ID,NEW.C_PARENTID,NEW.C_POSITION,NEW.C_LEFT,NEW.C_RIGHT,NEW.C_LEVEL,NEW.C_TITLE,NEW.C_TYPE,'update','변경이후데이터',now());
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE TRIGGER TG_DELETE_T_ARMS_REQADDSTATUS
-    BEFORE  DELETE ON T_ARMS_REQADDSTATUS
+CREATE TRIGGER TG_DELETE_T_ARMS_REQSTATE
+    BEFORE  DELETE ON T_ARMS_REQSTATE
     FOR EACH ROW
 BEGIN
-    insert into T_ARMS_REQADDSTATUS_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
+    insert into T_ARMS_REQSTATE_LOG (C_ID, C_PARENTID, C_POSITION, C_LEFT, C_RIGHT, C_LEVEL, C_TITLE, C_TYPE, C_METHOD, C_STATE, C_DATE)
     values (OLD.C_ID,OLD.C_PARENTID,OLD.C_POSITION,OLD.C_LEFT,OLD.C_RIGHT,OLD.C_LEVEL,OLD.C_TITLE,OLD.C_TYPE,'delete','삭제된데이터',now());
 END $$
 DELIMITER ;

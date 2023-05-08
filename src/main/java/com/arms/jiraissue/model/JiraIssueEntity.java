@@ -15,6 +15,7 @@ import com.arms.jiraissuepriority.model.JiraIssuePriorityEntity;
 import com.arms.jiraissueresolution.model.JiraIssueResolutionEntity;
 import com.arms.jiraissuestatus.model.JiraIssueStatusEntity;
 import com.arms.jiraissuetype.model.JiraIssueTypeEntity;
+import com.arms.reqpriority.model.ReqPriorityEntity;
 import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
 import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;

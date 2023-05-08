@@ -37,7 +37,7 @@
             `c_req_priority_link`       bigint(20) NULL,
             `c_req_contents`            longtext NULL,
             `c_req_etc`                 text NULL,
-            `c_req_status_link`         bigint(20) NULL
+            `c_req_state_link`          bigint(20) NULL
 
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 테이블 로그';
 
@@ -74,7 +74,7 @@
             `c_req_priority_link`       bigint(20) NULL,
             `c_req_contents`            longtext NULL,
             `c_req_etc`                 text NULL,
-            `c_req_status_link`         bigint(20) NULL
+            `c_req_state_link`          bigint(20) NULL
 
         ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='요구사항 테이블';
 
