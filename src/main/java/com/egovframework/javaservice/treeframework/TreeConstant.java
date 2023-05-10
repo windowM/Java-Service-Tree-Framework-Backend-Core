@@ -10,6 +10,9 @@ public class TreeConstant {
     public static final String Leaf_Node_TYPE = "default";
     public static final String Branch_TYPE = "folder";
 
+    public static final String REQADD_PREFIX_TABLENAME = "T_ARMS_REQADD_";
+    public static final String REQSTATUS_PREFIX_TABLENAME = "T_ARMS_REQSTATUS_";
+
 
 
 }

@@ -49,11 +49,11 @@ public class JiraProjectController extends TreeAbstractController<JiraProject, J
 
     @ResponseBody
     @RequestMapping(
-            value = {"/miningJiraProject.do"},
+            value = {"/miningDataToaRMS.do"},
             method = {RequestMethod.GET}
     )
-    public ResponseEntity<?> miningJiraProject(ModelMap model, HttpServletRequest request) throws Exception {
-        return ResponseEntity.ok(CommonResponse.success(jiraProject.miningJiraProject()));
+    public ResponseEntity<?> miningDataToaRMS(ModelMap model, HttpServletRequest request) throws Exception {
+        return ResponseEntity.ok(CommonResponse.success(jiraProject.miningDataToaRMS()));
     }
 
 }

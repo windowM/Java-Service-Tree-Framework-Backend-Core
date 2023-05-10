@@ -17,6 +17,7 @@ import com.arms.filerepository.service.FileRepository;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
+import com.egovframework.javaservice.treeframework.TreeConstant;
 import com.egovframework.javaservice.treeframework.service.TreeServiceImpl;
 import com.egovframework.javaservice.treeframework.util.*;
 import com.egovframework.javaservice.treemap.model.GlobalTreeMapEntity;
@@ -41,11 +42,6 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static final Long ROOT_NODE_ID = new Long(2);
-    private static final String NODE_TYPE = new String("default");
-    private static final String REQ_PREFIX_TABLENAME_BY_PDSERVICE = new String("T_ARMS_REQADD_");
-    private static final String REQ_PREFIX_TABLENAME_BY_PDSERVICE_STATUS = new String("T_ARMS_REQSTATUS_");
-
     @Autowired
     @Qualifier("fileRepository")
     private FileRepository fileRepository;
@@ -66,7 +62,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         pdServiceEntity.setOrder(Order.desc("c_id"));
         Criterion criterion = Restrictions.not(
                 // replace "id" below with property name, depending on what you're filtering against
-                Restrictions.in("c_id", new Object[] {new Long(1), new Long(2)})
+                Restrictions.in("c_id", new Object[] {TreeConstant.ROOT_CID, TreeConstant.First_Node_CID})
         );
         pdServiceEntity.getCriterions().add(criterion);
         List<PdServiceEntity> list = this.getChildNode(pdServiceEntity);
@@ -81,7 +77,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
     public PdServiceEntity addNodeToEndPosition(PdServiceEntity pdServiceEntity) throws Exception {
         //루트 노드를 기준으로 리스트를 검색
         PdServiceEntity paramPdServiceEntity = new PdServiceEntity();
-        paramPdServiceEntity.setWhere("c_parentid", ROOT_NODE_ID);
+        paramPdServiceEntity.setWhere("c_parentid", TreeConstant.First_Node_CID);
         List<PdServiceEntity> list = this.getChildNode(paramPdServiceEntity);
 
         //검색된 노드중 maxPosition을 찾는다.
@@ -91,9 +87,9 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
                 .orElseThrow(NoSuchElementException::new);
 
         //노드 값 셋팅
-        pdServiceEntity.setRef(ROOT_NODE_ID);
+        pdServiceEntity.setRef(TreeConstant.First_Node_CID);
         pdServiceEntity.setC_position(maxPositionPdServiceEntity.getC_position() + 1);
-        pdServiceEntity.setC_type(NODE_TYPE);
+        pdServiceEntity.setC_type(TreeConstant.Leaf_Node_TYPE);
 
         return this.addNode(pdServiceEntity);
     }
@@ -108,7 +104,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         PdServiceVersionEntity baseVerNode = new PdServiceVersionEntity();
         baseVerNode.setRef(2L);
         baseVerNode.setC_title("BaseVersion");
-        baseVerNode.setC_type("default");
+        baseVerNode.setC_type(TreeConstant.Leaf_Node_TYPE);
         baseVerNode.setC_pds_version_start_date("start");
         baseVerNode.setC_pds_version_end_date("end");
         baseVerNode.setC_pds_version_contents("contents");
@@ -128,7 +124,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
         dynamicDBMaker.createSchema(addedNode.getC_id().toString());
 
         //C_ETC 컬럼에 요구사항 테이블 이름 기입
-        addedNode.setC_pdservice_etc(REQ_PREFIX_TABLENAME_BY_PDSERVICE + addedNode.getC_id().toString());
+        addedNode.setC_pdservice_etc(TreeConstant.REQADD_PREFIX_TABLENAME + addedNode.getC_id().toString());
         this.updateNode(addedNode);
 
         return addedNode;

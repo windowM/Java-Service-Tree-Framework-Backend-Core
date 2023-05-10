@@ -19,9 +19,6 @@
             `c_state`                   text NULL COMMENT '노드 상태값 ( 이전인지. 이후인지)',
             `c_date`                    date NULL COMMENT '노드 변경 시',
 
-            `c_pdservice_link`          bigint(20) NULL,
-            `c_version_link`            bigint(20) NULL,
-
             `c_req_reviewer01`          text NULL,
             `c_req_reviewer01_status`   text NULL,
             `c_req_reviewer02`          text NULL,
@@ -47,7 +44,7 @@
 
         CREATE TABLE IF NOT EXISTS ${c_title} (
 
-            `c_id`                      bigint(20) NOT NULL COMMENT '노드 아이디',
+            `c_id`                      bigint(20) AUTO_INCREMENT primary key COMMENT '노드 아이디',
             `c_parentid`                bigint(20) NOT NULL COMMENT '부모 노드 아이디',
             `c_position`                bigint(20) NOT NULL COMMENT '노드 포지션',
             `c_left`                    bigint(20) NOT NULL COMMENT '노드 좌측 끝 포인트',
@@ -55,9 +52,6 @@
             `c_level`                   bigint(20) NOT NULL COMMENT '노드 DEPTH',
             `c_title`                   VARCHAR(255) COMMENT '노드 명',
             `c_type`                    VARCHAR(255) COMMENT '노드 타입',
-
-            `c_pdservice_link`          bigint(20) NULL,
-            `c_version_link`            bigint(20) NULL,
 
             `c_req_reviewer01`          text NULL,
             `c_req_reviewer01_status`   text NULL,

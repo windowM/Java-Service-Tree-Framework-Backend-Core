@@ -123,6 +123,8 @@ public class JiraIssueEntity extends TreeSearchEntity implements Serializable {
     @Column(name = "c_issue_resolution")
     private Long c_issue_resolution;
 
+    //---
+
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     @OneToOne
@@ -134,6 +136,8 @@ public class JiraIssueEntity extends TreeSearchEntity implements Serializable {
     @WhereJoinTable( clause = "jiraissuepriority_link is not null")
     private JiraIssuePriorityEntity jiraIssuePriorityEntity;
 
+
+    //---
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
@@ -147,6 +151,8 @@ public class JiraIssueEntity extends TreeSearchEntity implements Serializable {
     private JiraIssueResolutionEntity jiraIssueResolutionEntity;
 
 
+    //---
+
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
@@ -157,6 +163,9 @@ public class JiraIssueEntity extends TreeSearchEntity implements Serializable {
     )
     @WhereJoinTable( clause = "jiraissuestatus_link is not null")
     private JiraIssueStatusEntity jiraIssueStatusEntity;
+
+
+    //---
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference

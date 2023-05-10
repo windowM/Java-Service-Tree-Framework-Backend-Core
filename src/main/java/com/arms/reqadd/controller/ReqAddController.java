@@ -13,17 +13,21 @@ package com.arms.reqadd.controller;
 
 import com.arms.reqpriority.model.ReqPriorityEntity;
 import com.arms.reqpriority.service.ReqPriority;
+import com.egovframework.javaservice.treeframework.TreeConstant;
+import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import com.egovframework.javaservice.treeframework.interceptor.SessionUtil;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
-import com.egovframework.javaservice.treeframework.util.StringUtils;
+import com.egovframework.javaservice.treeframework.validation.group.AddNode;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
@@ -126,13 +130,6 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddEntit
             SessionUtil.setAttribute("getNode",changeReqTableName);
 
             V returnVO = reqAdd.getNode(reqAddDTO);
-//            if(StringUtils.isNotEmpty(returnVO.getC_version_link())) {
-//                String replaceTxt = returnVO.getC_version_link().replaceAll("\\[", "").replaceAll("\\]", "");
-//                replaceTxt = replaceTxt.replaceAll("\"", "");
-//                returnVO.setC_version_link(replaceTxt);
-//            }
-
-            Long req_priorirty = returnVO.getC_req_priority_link();
 
             ReqPriorityEntity reqPriorityEntity = new ReqPriorityEntity();
             reqPriorityEntity.setC_id(3L);
@@ -144,6 +141,34 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddEntit
             ModelAndView modelAndView = new ModelAndView("jsonView");
             modelAndView.addObject("result", returnVO);
             return modelAndView;
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(
+            value = {"/{changeReqTableName}/addNode.do"},
+            method = {RequestMethod.POST}
+    )
+    public ResponseEntity<?> addReqNode(
+            @PathVariable(value ="changeReqTableName") String changeReqTableName,
+            @Validated({AddNode.class}) ReqAddEntity reqAddEntity,
+            BindingResult bindingResult, ModelMap model) throws Exception {
+
+        if (bindingResult.hasErrors()) {
+            throw new RuntimeException();
+        } else {
+
+            SessionUtil.setAttribute("addNode",changeReqTableName);
+
+            reqAddEntity.setRef(TreeConstant.First_Node_CID);
+            reqAddEntity.setC_type(TreeConstant.Leaf_Node_TYPE);
+            ReqAddEntity savedNode = reqAdd.addNode(reqAddEntity);
+
+            SessionUtil.removeAttribute("addNode");
+
+            log.info("ReqAddController :: addReqNode");
+            return ResponseEntity.ok(CommonResponse.success(savedNode));
+
         }
     }
 

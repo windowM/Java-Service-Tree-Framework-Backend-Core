@@ -43,7 +43,7 @@ public class JiraProjectImpl extends TreeServiceImpl implements JiraProject{
 
 	@Override
 	@Transactional
-	public String miningJiraProject() throws Exception {
+	public String miningDataToaRMS() throws Exception {
 		final JiraRestClient restClient = jiraConfig.getJiraRestClient();
 		Iterable<BasicProject> allProject = restClient.getProjectClient().getAllProjects().claim();
 
