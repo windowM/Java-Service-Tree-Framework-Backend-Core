@@ -11,10 +11,12 @@
  */
 package com.arms.reqadd.service;
 
+import com.arms.pdservice.model.PdServiceEntity;
+import com.arms.reqadd.model.ReqAddEntity;
 import com.egovframework.javaservice.treeframework.service.TreeService;
 
 public interface ReqAdd extends TreeService {
 
-
+    public ReqAddEntity addReqNode(ReqAddEntity reqAddEntity, String changeReqTableName) throws Exception;
 
 }

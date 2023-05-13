@@ -11,40 +11,35 @@
  */
 package com.arms.reqadd.controller;
 
+import com.arms.reqadd.model.ReqAddEntity;
+import com.arms.reqadd.service.ReqAdd;
 import com.arms.reqpriority.model.ReqPriorityEntity;
 import com.arms.reqpriority.service.ReqPriority;
-import com.egovframework.javaservice.treeframework.TreeConstant;
 import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import com.egovframework.javaservice.treeframework.interceptor.SessionUtil;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
 import com.egovframework.javaservice.treeframework.validation.group.AddNode;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.PostConstruct;
-
-import com.arms.reqadd.model.ReqAddEntity;
-import com.arms.reqadd.service.ReqAdd;
-import org.hibernate.criterion.Order;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-
-import static com.egovframework.javaservice.treeframework.util.StringUtility.jsonStringifyConvert;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -160,9 +155,7 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddEntit
 
             SessionUtil.setAttribute("addNode",changeReqTableName);
 
-            reqAddEntity.setRef(TreeConstant.First_Node_CID);
-            reqAddEntity.setC_type(TreeConstant.Leaf_Node_TYPE);
-            ReqAddEntity savedNode = reqAdd.addNode(reqAddEntity);
+            ReqAddEntity savedNode = reqAdd.addReqNode(reqAddEntity, changeReqTableName);
 
             SessionUtil.removeAttribute("addNode");
 

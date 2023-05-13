@@ -14,22 +14,19 @@ package com.arms.pdserviceversion.controller;
 import com.arms.pdservice.service.PdService;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
-import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
-import com.egovframework.javaservice.treeframework.util.StringUtility;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treeframework.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
@@ -64,10 +61,10 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
 
         ParameterParser parser = new ParameterParser(request);
         String parse_c_ids = parser.get("c_ids");
-        String[] convert_c_ids = StringUtility.jsonStringifyConvert(parse_c_ids);
+        String[] convert_c_ids = StringUtils.jsonStringifyConvert(parse_c_ids);
         List<Long> longList = new ArrayList<>();
         for (String c_id : convert_c_ids ) {
-            longList.add(StringUtility.toLong(c_id));
+            longList.add(StringUtils.toLong(c_id));
         }
 
         ModelAndView modelAndView = new ModelAndView("jsonView");

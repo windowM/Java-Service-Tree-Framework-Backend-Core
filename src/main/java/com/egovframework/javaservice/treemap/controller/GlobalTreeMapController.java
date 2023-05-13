@@ -2,7 +2,6 @@ package com.egovframework.javaservice.treemap.controller;
 
 import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
-import com.egovframework.javaservice.treeframework.util.StringUtility;
 import com.egovframework.javaservice.treeframework.util.StringUtils;
 import com.egovframework.javaservice.treemap.model.GlobalTreeMapEntity;
 import com.egovframework.javaservice.treemap.service.GlobalTreeMapService;
@@ -17,11 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RequestMapping("/arms/globaltreemap")
 @RestController
@@ -109,7 +106,7 @@ public class GlobalTreeMapController {
     public ResponseEntity<?> setConnectInfo_pdService_pdServiceVersion_jiraProject(GlobalTreeMapEntity globalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
-        String[] paramList = StringUtility.jsonStringifyConvert(parser.get("c_pdservice_jira_ids"));
+        String[] paramList = StringUtils.jsonStringifyConvert(parser.get("c_pdservice_jira_ids"));
 
         List<String> jiraProjectList = Arrays.stream(paramList).collect(Collectors.toList());
 
