@@ -1,4 +1,4 @@
-package com.egovframework.javaservice.treeframework.execl;
+package com.egovframework.javaservice.treeframework.excel;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
