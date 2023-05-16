@@ -11,11 +11,12 @@
  */
 package com.arms.pdserviceversion.controller;
 
+import com.arms.pdservice.service.PdService;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdserviceversion.service.PdServiceVersion;
-import com.egovframework.ple.treeframework.controller.TreeAbstractController;
-import com.egovframework.ple.treeframework.util.StringUtility;
-import com.egovframework.ple.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
+import com.egovframework.javaservice.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treeframework.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,10 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
     @Qualifier("pdServiceVersion")
     private PdServiceVersion pdServiceVersion;
 
+    @Autowired
+    @Qualifier("pdService")
+    private PdService pdService;
+
     @PostConstruct
     public void initialize() {
         setTreeService(pdServiceVersion);
@@ -50,25 +55,16 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping(value="/getVersionList.do",method= RequestMethod.GET)
-    public ModelAndView getVersionList(PdServiceVersionEntity pdServiceVersionEntity, ModelMap model,
-                                       HttpServletRequest request) throws Exception {
-
-        ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", pdServiceVersion.getVersionListByPdService(pdServiceVersionEntity));
-        return modelAndView;
-    }
-
     @RequestMapping(value="/getVersionListByCids.do",method= RequestMethod.GET)
     public ModelAndView getVersionListByCids(PdServiceVersionEntity pdServiceVersionEntity, ModelMap model,
                                              HttpServletRequest request) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
         String parse_c_ids = parser.get("c_ids");
-        String[] convert_c_ids = StringUtility.jsonStringifyConvert(parse_c_ids);
+        String[] convert_c_ids = StringUtils.jsonStringifyConvert(parse_c_ids);
         List<Long> longList = new ArrayList<>();
         for (String c_id : convert_c_ids ) {
-            longList.add(StringUtility.toLong(c_id));
+            longList.add(StringUtils.toLong(c_id));
         }
 
         ModelAndView modelAndView = new ModelAndView("jsonView");

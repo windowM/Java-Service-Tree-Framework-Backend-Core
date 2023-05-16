@@ -11,12 +11,12 @@
  */
 package com.arms.jiraissueprioritylog.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeLogBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -28,21 +28,15 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "T_ARMS_JIRAISSUEPRIORITYLOG")
+@Builder
+@Table(name = "T_ARMS_JIRAISSUEPRIORITY_LOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class JiraIssuePriorityLogEntity extends TreeSearchEntity implements Serializable {
-
-    public JiraIssuePriorityLogEntity() {
-        super();
-    }
-
-    public JiraIssuePriorityLogEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
+public class JiraIssuePriorityLogEntity extends TreeLogBaseEntity implements Serializable {
 
  	@Override
     @Id
@@ -51,7 +45,24 @@ public class JiraIssuePriorityLogEntity extends TreeSearchEntity implements Seri
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
+
+    @Column(name = "c_issue_priority_id")
+    @Type(type="text")
+    private String c_issue_priority_id;
+
+    @Column(name = "c_issue_priority_desc")
+    @Type(type="text")
+    private String c_issue_priority_desc;
+
+    @Column(name = "c_issue_priority_name")
+    @Type(type="text")
+    private String c_issue_priority_name;
+
+    @Column(name = "c_issue_priority_url")
+    @Type(type="text")
+    private String c_issue_priority_url;
 
     /*
      * Extend Bean Field

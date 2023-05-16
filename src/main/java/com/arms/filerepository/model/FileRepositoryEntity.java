@@ -11,8 +11,10 @@
  */
 package com.arms.filerepository.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.arms.pdservice.model.PdServiceEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -27,11 +29,14 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_FILEREPOSITORY")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class FileRepositoryEntity extends TreeSearchEntity implements Serializable {
 
     @Override
@@ -43,8 +48,20 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
     }
 
     //@Getter @Setter
+    private PdServiceEntity pdServiceEntity;
+    @ManyToOne
+    @JsonBackReference
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "filerepository_link"),
+            inverseJoinColumns = @JoinColumn(name = "pdservice_link")
+    )
+    @WhereJoinTable( clause = "pdservice_link is not null")
+    public PdServiceEntity getPdServiceEntity() {
+        return pdServiceEntity;
+    }
+
     //필드명과 컬럼명이 다를 경우는 하기와 같이 처리.
-    private Long fileIdLink;
     private String fileName;
     private String contentType;
     private String serverSubPath;
@@ -56,17 +73,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
     private String delete_url;
     private String delete_type;
 
-    @Column(name="C_FILE_ID_LINK")
-    public Long getFileIdLink() {
-        return fileIdLink;
-    }
-
-    public void setFileIdLink(Long fileIdLink) {
-        this.fileIdLink = fileIdLink;
-    }
-
-
-    @Column(name="C_FILE_NAME")
+    @Column(name="c_file_name")
     @Type(type="text")
     public String getFileName() {
         return fileName;
@@ -76,7 +83,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.fileName = fileName;
     }
 
-    @Column(name="C_CONTENT_TYPE")
+    @Column(name="c_file_content_type")
     @Type(type="text")
     public String getContentType() {
         return contentType;
@@ -86,7 +93,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.contentType = contentType;
     }
 
-    @Column(name="C_SERVER_SUB_PATH")
+    @Column(name="c_file_server_sub_path")
     @Type(type="text")
     public String getServerSubPath() {
         return serverSubPath;
@@ -96,7 +103,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.serverSubPath = serverSubPath;
     }
 
-    @Column(name="C_PHYSICAL_NAME")
+    @Column(name="c_file_physical_name")
     @Type(type="text")
     public String getPhysicalName() {
         return physicalName;
@@ -106,7 +113,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.physicalName = physicalName;
     }
 
-    @Column(name="C_SIZE")
+    @Column(name="c_file_size")
     public Long getSize() {
         return size;
     }
@@ -115,7 +122,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.size = size;
     }
 
-    @Column(name="C_NAME")
+    @Column(name="c_file_tag_name")
     @Type(type="text")
     public String getName() {
         return name;
@@ -125,7 +132,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.name = name;
     }
 
-    @Column(name="C_URL")
+    @Column(name="c_file_url")
     @Type(type="text")
     public String getUrl() {
         return url;
@@ -135,7 +142,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.url = url;
     }
 
-    @Column(name="C_THUMBNAIL_URL")
+    @Column(name="c_file_thumbnail_url")
     @Type(type="text")
     public String getThumbnailUrl() {
         return thumbnailUrl;
@@ -145,7 +152,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    @Column(name="C_DELETE_URL")
+    @Column(name="c_file_delete_url")
     @Type(type="text")
     public String getDelete_url() {
         return delete_url;
@@ -155,7 +162,7 @@ public class FileRepositoryEntity extends TreeSearchEntity implements Serializab
         this.delete_url = delete_url;
     }
 
-    @Column(name="C_DELETE_TYPE")
+    @Column(name="c_file_delete_type")
     @Type(type="text")
     public String getDelete_type() {
         return delete_type;

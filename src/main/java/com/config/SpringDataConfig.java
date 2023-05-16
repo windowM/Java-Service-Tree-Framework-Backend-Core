@@ -4,16 +4,16 @@ import java.util.Map;
 import java.util.Properties;
 import javax.sql.DataSource;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(
-        basePackages = {"com.egovframework.ple.treeframework.*", "com.arms.*"}
+        basePackages = {"com.egovframework.javaservice.treemap.*"}
         ,entityManagerFactoryRef = "entityManagerJpaFactory"
         ,transactionManagerRef =  "transactionJpaManager"
 )
@@ -36,18 +36,15 @@ public class SpringDataConfig {
     private final JpaProperties jpaProperties;
     private final HibernateProperties hibernateProperties;
 
-
-    @Bean(name = "jpaDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource onlyJpaDataSource() {
-        return new DriverManagerDataSource();
-    }
+    @Autowired
+    @Qualifier("onlyJpaDataSource")
+    DataSource onlyJpaDataSource;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerJpaFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(onlyJpaDataSource());
-        em.setPackagesToScan(new String[] { "com.egovframework.ple.treeframework.**.model", "com.arms.**.model"});
+        em.setDataSource(onlyJpaDataSource);
+        em.setPackagesToScan(new String[] { "com.egovframework.javaservice.treemap.**"});
         em.setJpaPropertyMap(jpaProperties.getProperties());
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         return em;
@@ -63,8 +60,8 @@ public class SpringDataConfig {
     @Bean(name = "sessionJpaFactory")
     public LocalSessionFactoryBean sessionJpaFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(onlyJpaDataSource());
-        sessionFactory.setPackagesToScan(new String[] { "com.egovframework.ple.treeframework.**.model", "com.arms.**.model" });
+        sessionFactory.setDataSource(onlyJpaDataSource);
+        sessionFactory.setPackagesToScan(new String[] { "com.egovframework.javaservice.treemap.**"});
         Map<String, Object> hibernateProps
                 = hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
 

@@ -11,28 +11,34 @@
  */
 package com.arms.pdservice.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_PDSERVICE")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class PdServiceEntity extends TreeSearchEntity implements Serializable {
 
     @Override
@@ -45,54 +51,59 @@ public class PdServiceEntity extends TreeSearchEntity implements Serializable {
 
     //@Getter @Setter
     @Lob
-    @Column(name="c_contents")
-    private String c_contents;
+    @Column(name="c_pdservice_contents")
+    private String c_pdservice_contents;
 
-    @Column(name="c_etc")
+    @Column(name="c_pdservice_etc")
     @Type(type="text")
-    private String c_etc;
+    private String c_pdservice_etc;
 
-    @Column(name="c_owner")
+    @Column(name="c_pdservice_owner")
     @Type(type="text")
-    private String c_owner;
+    private String c_pdservice_owner;
 
-    @Column(name="c_reviewer01")
+    @Column(name="c_pdservice_reviewer01")
     @Type(type="text")
-    private String c_reviewer01;
+    private String c_pdservice_reviewer01;
 
-    @Column(name="c_reviewer02")
+    @Column(name="c_pdservice_reviewer02")
     @Type(type="text")
-    private String c_reviewer02;
+    private String c_pdservice_reviewer02;
 
-    @Column(name="c_reviewer03")
+    @Column(name="c_pdservice_reviewer03")
     @Type(type="text")
-    private String c_reviewer03;
+    private String c_pdservice_reviewer03;
 
-    @Column(name="c_reviewer04")
+    @Column(name="c_pdservice_reviewer04")
     @Type(type="text")
-    private String c_reviewer04;
+    private String c_pdservice_reviewer04;
 
-    @Column(name="c_reviewer05")
-    private String c_reviewer05;
+    @Column(name="c_pdservice_reviewer05")
+    private String c_pdservice_reviewer05;
 
-    @Column(name="c_writer_name")
+    @Column(name="c_pdservice_writer")
     @Type(type="text")
-    private String c_writer_name;
+    private String c_pdservice_writer;
 
-    @Column(name="c_writer_cn")
-    @Type(type="text")
-    private String c_writer_cn;
+    // -- 1:N table 연계
+    private Set<PdServiceVersionEntity> pdServiceVersionEntities;
 
-    @Column(name="c_writer_mail")
-    @Type(type="text")
-    private String c_writer_mail;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "pdservice_link"),
+            inverseJoinColumns = @JoinColumn(name = "pdserviceversion_link")
+    )
+    @WhereJoinTable( clause = "pdserviceversion_link is not null")
+    public Set<PdServiceVersionEntity> getPdServiceVersionEntities() {
+        return pdServiceVersionEntities;
+    }
 
-    @Column(name="c_writer_date")
-    @Type(type="text")
-    private String c_writer_date;
-
-    @Column(name="c_fileid_link")
-    private Long c_fileid_link;
+    public void setPdServiceVersionEntities(Set<PdServiceVersionEntity> pdServiceVersionEntities) {
+        this.pdServiceVersionEntities = pdServiceVersionEntities;
+    }
 
     /*
      * Extend Bean Field

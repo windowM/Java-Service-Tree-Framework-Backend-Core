@@ -11,12 +11,13 @@
  */
 package com.arms.pdserviceversion.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.arms.pdservice.model.PdServiceEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -28,11 +29,14 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_PDSERVICEVERSION")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class PdServiceVersionEntity extends TreeSearchEntity implements Serializable {
 
     @Override
@@ -44,20 +48,39 @@ public class PdServiceVersionEntity extends TreeSearchEntity implements Serializ
     }
 
     //@Getter @Setter
-    @Type(type="text")
-    @Column(name = "c_start_date")
-    private String c_start_date;
+    private PdServiceEntity pdServiceEntity;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "pdserviceversion_link"),
+            inverseJoinColumns = @JoinColumn(name = "pdservice_link")
+    )
+    @WhereJoinTable( clause = "pdservice_link is not null")
+    public PdServiceEntity getPdServiceEntity() {
+        return pdServiceEntity;
+    }
+
+    public void setPdServiceEntity(PdServiceEntity pdServiceEntity) {
+        this.pdServiceEntity = pdServiceEntity;
+    }
 
     @Type(type="text")
-    @Column(name = "c_end_date")
-    private String c_end_date;
+    @Column(name = "c_pds_version_start_date")
+    private String c_pds_version_start_date;
 
-    @Column(name = "c_pdservice_link")
-    private Long c_pdservice_link;
+    @Type(type="text")
+    @Column(name = "c_pds_version_end_date")
+    private String c_pds_version_end_date;
 
     @Lob
-    @Column(name="C_CONTENTS")
-    private String c_contents;
+    @Column(name="c_pds_version_contents")
+    private String c_pds_version_contents;
+
+    @Type(type="text")
+    @Column(name = "c_pds_version_etc")
+    private String c_pds_version_etc;
 
     /*
      * Extend Bean Field

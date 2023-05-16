@@ -12,7 +12,7 @@
 package com.arms.pdserviceversion.service;
 
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
-import com.egovframework.ple.treeframework.service.TreeServiceImpl;
+import com.egovframework.javaservice.treeframework.service.TreeServiceImpl;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -30,8 +30,6 @@ public class PdServiceVersionImpl extends TreeServiceImpl implements PdServiceVe
     @Override
     public List<PdServiceVersionEntity> getVersionListByPdService(PdServiceVersionEntity pdServiceVersionEntity) throws Exception {
 
-        pdServiceVersionEntity.setOrder(Order.asc("c_left"));
-        pdServiceVersionEntity.setWhere("c_pdservice_link", pdServiceVersionEntity.getC_id().toString());
         List<PdServiceVersionEntity> pdServiceVersionEntities = this.getChildNode(pdServiceVersionEntity);
         logger.info("UserPdServiceVersionController ::  getVersion :: pdServiceVersionDTOS = " + pdServiceVersionEntities.size());
 
@@ -51,4 +49,5 @@ public class PdServiceVersionImpl extends TreeServiceImpl implements PdServiceVe
 
         return pdServiceVersionEntities;
     }
+
 }

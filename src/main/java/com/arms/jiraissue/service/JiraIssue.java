@@ -11,10 +11,14 @@
  */
 package com.arms.jiraissue.service;
 
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.arms.jiraissue.model.JiraIssueEntity;
+import com.arms.pdservice.model.PdServiceEntity;
+import com.egovframework.javaservice.treeframework.service.TreeService;
 
 public interface JiraIssue extends TreeService {
 
+    public String miningDataToaRMS() throws Exception;
 
+    public JiraIssueEntity makeIssueForReqAdd(JiraIssueEntity jiraIssueEntity) throws Exception;
 
 }

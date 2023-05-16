@@ -12,7 +12,7 @@
 package com.arms.pdserviceversion.service;
 
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.service.TreeService;
 
 import java.util.List;
 
@@ -21,4 +21,5 @@ public interface PdServiceVersion extends TreeService {
     public List<PdServiceVersionEntity> getVersionListByPdService(PdServiceVersionEntity pdServiceVersionEntity) throws Exception;
 
     public List<PdServiceVersionEntity> getVersionListByCids(List<Long> pdServiceVersionDTO) throws Exception;
+
 }

@@ -11,15 +11,27 @@
  */
 package com.arms.pdservice.service;
 
+import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.pdservice.model.PdServiceEntity;
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
+import com.egovframework.javaservice.treeframework.service.TreeService;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PdService extends TreeService {
 
     public List<PdServiceEntity> getNodesWithoutRoot(PdServiceEntity pdServiceEntity) throws Exception;
 
     public PdServiceEntity addNodeToEndPosition(PdServiceEntity pdServiceEntity) throws Exception;
+
+    public PdServiceEntity addPdServiceAndVersion(PdServiceEntity pdServiceEntity) throws Exception;
+
+    public PdServiceEntity addPdServiceVersion(PdServiceEntity pdServiceEntity) throws Exception;
+
+    public Set<FileRepositoryEntity> uploadFileForPdServiceNode(Long pdservice_link, MultipartHttpServletRequest multiRequest) throws Exception;
+
+    public PdServiceVersionEntity removeVersionNode(PdServiceVersionEntity pdServiceVersionEntity) throws Exception;
 
 }

@@ -6,7 +6,7 @@
 <dwr>
     <allow>
         <create creator="new" javascript="Chat">
-            <param name="class" value="com.egovframework.ple.treeframework.remote.Chat"/>
+            <param name="class" value="com.egovframework.javaservice.treeframework.remote.Chat"/>
         </create>
     </allow>
 </dwr>

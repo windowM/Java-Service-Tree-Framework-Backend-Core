@@ -11,12 +11,11 @@
  */
 package com.arms.reqcomment.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -28,21 +27,15 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_REQCOMMENT")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReqCommentEntity extends TreeSearchEntity implements Serializable {
-
-    public ReqCommentEntity() {
-        super();
-    }
-
-    public ReqCommentEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
 
  	@Override
     @Id
@@ -51,7 +44,33 @@ public class ReqCommentEntity extends TreeSearchEntity implements Serializable {
     public Long getC_id() {
         return super.getC_id();
     }
+    
     //@Getter @Setter
+    @Column(name = "c_pdservice_link")
+    private Long c_pdservice_link;
+
+    @Column(name = "c_version_link")
+    private Long c_version_link;
+
+    @Column(name = "c_req_link")
+    private Long c_req_link;
+
+
+    @Column(name = "c_req_comment_sender")
+    @Type(type="text")
+    private String c_req_comment_sender;
+
+    @Column(name = "c_req_comment_date")
+    @Type(type="text")
+    private String c_req_comment_date;
+
+    @Column(name = "c_req_comment_contents")
+    @Type(type="text")
+    private String c_req_comment_contents;
+
+    @Column(name = "c_req_comment_etc")
+    @Type(type="text")
+    private String c_req_comment_etc;
 
     /*
      * Extend Bean Field

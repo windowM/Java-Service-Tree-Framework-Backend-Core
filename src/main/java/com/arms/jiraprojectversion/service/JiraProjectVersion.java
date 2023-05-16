@@ -11,7 +11,7 @@
  */
 package com.arms.jiraprojectversion.service;
 
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.service.TreeService;
 
 public interface JiraProjectVersion extends TreeService {
 

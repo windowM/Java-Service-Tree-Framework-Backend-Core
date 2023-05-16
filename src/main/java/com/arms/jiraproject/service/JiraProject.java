@@ -11,10 +11,10 @@
  */
 package com.arms.jiraproject.service;
 
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.service.TreeService;
 
 public interface JiraProject extends TreeService {
 
-
+    public String miningDataToaRMS() throws Exception;
 
 }

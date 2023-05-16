@@ -11,12 +11,12 @@
  */
 package com.arms.pdservicelog.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeLogBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -28,21 +28,16 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_PDSERVICE_LOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class PdServiceLogEntity extends TreeSearchEntity implements Serializable {
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
+public class PdServiceLogEntity extends TreeLogBaseEntity implements Serializable {
 
-    public PdServiceLogEntity() {
-        super();
-    }
-
-    public PdServiceLogEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
 
  	@Override
     @Id
@@ -54,54 +49,39 @@ public class PdServiceLogEntity extends TreeSearchEntity implements Serializable
 
     //@Getter @Setter
     @Lob
-    @Column(name="c_contents")
-    private String c_contents;
+    @Column(name="c_pdservice_contents")
+    private String c_pdservice_contents;
 
-    @Column(name="c_etc")
+    @Column(name="c_pdservice_etc")
     @Type(type="text")
-    private String c_etc;
+    private String c_pdservice_etc;
 
-    @Column(name="c_owner")
+    @Column(name="c_pdservice_owner")
     @Type(type="text")
-    private String c_owner;
+    private String c_pdservice_owner;
 
-    @Column(name="c_reviewer01")
+    @Column(name="c_pdservice_reviewer01")
     @Type(type="text")
-    private String c_reviewer01;
+    private String c_pdservice_reviewer01;
 
-    @Column(name="c_reviewer02")
+    @Column(name="c_pdservice_reviewer02")
     @Type(type="text")
-    private String c_reviewer02;
+    private String c_pdservice_reviewer02;
 
-    @Column(name="c_reviewer03")
+    @Column(name="c_pdservice_reviewer03")
     @Type(type="text")
-    private String c_reviewer03;
+    private String c_pdservice_reviewer03;
 
-    @Column(name="c_reviewer04")
+    @Column(name="c_pdservice_reviewer04")
     @Type(type="text")
-    private String c_reviewer04;
+    private String c_pdservice_reviewer04;
 
-    @Column(name="c_reviewer05")
-    private String c_reviewer05;
+    @Column(name="c_pdservice_reviewer05")
+    private String c_pdservice_reviewer05;
 
-    @Column(name="c_writer_name")
+    @Column(name="c_pdservice_writer")
     @Type(type="text")
-    private String c_writer_name;
-
-    @Column(name="c_writer_cn")
-    @Type(type="text")
-    private String c_writer_cn;
-
-    @Column(name="c_writer_mail")
-    @Type(type="text")
-    private String c_writer_mail;
-
-    @Column(name="c_writer_date")
-    @Type(type="text")
-    private String c_writer_date;
-
-    @Column(name="c_fileid_link")
-    private Long c_fileid_link;
+    private String c_pdservice_writer;
     /*
      * Extend Bean Field
      */

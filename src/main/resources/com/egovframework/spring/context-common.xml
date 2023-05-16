@@ -9,6 +9,7 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
+
 	<context:annotation-config/>
 
 	<bean id="jsonMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />

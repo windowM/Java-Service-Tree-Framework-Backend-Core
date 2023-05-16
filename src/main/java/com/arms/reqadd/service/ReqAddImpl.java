@@ -11,18 +11,13 @@
  */
 package com.arms.reqadd.service;
 
-import com.egovframework.ple.treeframework.service.TreeServiceImpl;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import com.arms.reqadd.model.ReqAddEntity;
+import com.egovframework.javaservice.treeframework.TreeConstant;
+import com.egovframework.javaservice.treeframework.service.TreeServiceImpl;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
@@ -31,4 +26,28 @@ public class ReqAddImpl extends TreeServiceImpl implements ReqAdd{
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Override
+	public ReqAddEntity addReqNode(ReqAddEntity reqAddEntity, String changeReqTableName) throws Exception {
+
+		reqAddEntity.setRef(TreeConstant.First_Node_CID);
+		reqAddEntity.setC_type(TreeConstant.Leaf_Node_TYPE);
+
+		ReqAddEntity savedReqAddEntity = this.addNode(reqAddEntity);
+
+		//이슈 등록하고
+		//등록된 이슈를 요구사항과 연결해 줘야 함.
+
+		//changeReqTableName 으로 숫자값만 가져와서
+		//어떤 제품(서비스)인지 확인하고
+		//StringUtility
+
+		//JIRA 연결 정보를 가져와서
+		//이슈가 이미 있는지 확인? <- 이게 필요할까?
+		//각 연결정보의 프로젝트에 이슈를 생성한다.
+
+
+
+
+		return savedReqAddEntity;
+	}
 }

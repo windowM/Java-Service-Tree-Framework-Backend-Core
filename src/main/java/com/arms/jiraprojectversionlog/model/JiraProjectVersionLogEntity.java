@@ -11,12 +11,12 @@
  */
 package com.arms.jiraprojectversionlog.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeLogBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -28,21 +28,15 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "T_ARMS_JIRAPROJECTVERSIONLOG")
+@Builder
+@Table(name = "T_ARMS_JIRAPROJECTVERSION_LOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class JiraProjectVersionLogEntity extends TreeSearchEntity implements Serializable {
-
-    public JiraProjectVersionLogEntity() {
-        super();
-    }
-
-    public JiraProjectVersionLogEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
+public class JiraProjectVersionLogEntity extends TreeLogBaseEntity implements Serializable {
 
  	@Override
     @Id
@@ -51,7 +45,43 @@ public class JiraProjectVersionLogEntity extends TreeSearchEntity implements Ser
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
+
+    @Column(name = "c_jira_link")
+    private Long c_jira_link;
+
+    @Column(name = "c_jira_version_url")
+    @Type(type="text")
+    private String c_jira_version_url;
+
+    @Column(name = "c_jira_version_id")
+    @Type(type="text")
+    private String c_jira_version_id;
+
+    @Column(name = "c_jira_version_desc")
+    @Type(type="text")
+    private String c_jira_version_desc;
+
+    @Column(name = "c_jira_version_name")
+    @Type(type="text")
+    private String c_jira_version_name;
+
+    @Column(name = "c_jira_version_projectid")
+    @Type(type="text")
+    private String c_jira_version_projectid;
+
+    @Column(name = "c_jira_version_archived")
+    @Type(type="text")
+    private String c_jira_version_archived;
+
+    @Column(name = "c_jira_version_released")
+    @Type(type="text")
+    private String c_jira_version_released;
+
+    @Column(name = "c_jira_version_releaseDate")
+    @Type(type="text")
+    private String c_jira_version_releaseDate;
 
     /*
      * Extend Bean Field

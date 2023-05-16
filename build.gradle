@@ -12,8 +12,8 @@ plugins {
     id 'maven-publish'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 import org.apache.tools.ant.taskdefs.condition.Os
 ext {
@@ -22,12 +22,12 @@ ext {
     artifactType = System.getenv("ARTIFACT_TYPE") ? System.getenv("ARTIFACT_TYPE").toUpperCase() : "SNAPSHOT"
     repositoryType = "${artifactType}".equalsIgnoreCase("RELEASE") ? "release" : "snapshot"
     //업로드 타입 정의 ( maven-release, maven-snapshot, ${repositoryType})
-    repositoryUrl = "http://www.313.co.kr/nexus/service/local/repositories/StandardProject/content"
-    metadataUrl = "${repositoryUrl}/313devgrp/java-service-tree-framework-backend-core/maven-metadata.xml"
+    repositoryUrl = "http://www.313.co.kr/nexus/repository/ple-releases"
+    metadataUrl = "${repositoryUrl}/313devgrp/Java-Service-Tree-Framework-Backend-Core/maven-metadata.xml"
 
     //version 정보
     majorVersion = 23
-    minorVersion = 01
+    minorVersion = 05
     //patchVersion = auto generation
 
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -84,7 +84,7 @@ def getMavenSettingsCredentials = {
         }
     }else {
         if(!mavenSettings.exists()){
-            mavenSettings = new File ("/jenkins_home/settings.xml")
+            mavenSettings = new File ("${projectDir}/settings.xml")
         }
     }
     def xmlSlurper = new XmlSlurper()
@@ -128,6 +128,7 @@ publishing {
 
 repositories {
     mavenCentral()
+    maven { url "https://m2proxy.atlassian.com/repository/public" }
 }
 
 dependencyManagement {
@@ -175,8 +176,9 @@ dependencies {
     //mybatis
     implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.1.3'
 
-    //oracle
+    //mysql
     implementation 'mysql:mysql-connector-java:8.0.32'
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     // Swagger
     implementation('io.springfox:springfox-swagger2:2.9.2')
@@ -192,6 +194,14 @@ dependencies {
 
     // flyway
     implementation 'org.flywaydb:flyway-core'
+    
+    //jira
+    implementation 'com.atlassian.jira:jira-rest-java-client-app:5.1.6'
+
+    // poi
+    implementation 'org.apache.poi:poi:5.1.0'
+    implementation 'org.apache.poi:poi-ooxml:5.1.0'
+
 }
 
 configurations {

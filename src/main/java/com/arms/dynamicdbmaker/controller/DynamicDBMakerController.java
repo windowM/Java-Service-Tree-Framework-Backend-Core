@@ -11,31 +11,20 @@
  */
 package com.arms.dynamicdbmaker.controller;
 
-import com.egovframework.ple.treeframework.controller.CommonResponse;
-import com.egovframework.ple.treeframework.controller.TreeAbstractController;
-import com.egovframework.ple.treeframework.util.FileHandler;
-import com.egovframework.ple.treeframework.util.Util_TitleChecker;
-import com.egovframework.ple.treeframework.validation.group.AddNode;
-import com.egovframework.ple.treeframework.util.ParameterParser;
-import lombok.AllArgsConstructor;
+import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
+
 import javax.annotation.PostConstruct;
 
 import com.arms.dynamicdbmaker.model.DynamicDBMakerEntity;
 import com.arms.dynamicdbmaker.service.DynamicDBMaker;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -53,10 +42,13 @@ public class DynamicDBMakerController extends TreeAbstractController<DynamicDBMa
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @ResponseBody
     @GetMapping("/createSchema")
-    public ResponseEntity<?> createSchema() throws Exception {
-        return ResponseEntity
-                .ok(CommonResponse.success(dynamicDBMaker.createSchema("313")));
+    public ModelAndView createSchema() throws Exception {
+        ModelAndView modelAndView = new ModelAndView("jsonView");
+        modelAndView.addObject("result", dynamicDBMaker.createSchema("313"));
+
+        return modelAndView;
     }
 
 }

@@ -11,12 +11,12 @@
  */
 package com.arms.pdserviceversionlog.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeLogBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -28,21 +28,15 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_PDSERVICEVERSION_LOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class PdServiceVersionLogEntity extends TreeSearchEntity implements Serializable {
-
-    public PdServiceVersionLogEntity() {
-        super();
-    }
-
-    public PdServiceVersionLogEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
+public class PdServiceVersionLogEntity extends TreeLogBaseEntity implements Serializable {
 
  	@Override
     @Id
@@ -51,22 +45,27 @@ public class PdServiceVersionLogEntity extends TreeSearchEntity implements Seria
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
-
-    @Type(type="text")
-    @Column(name = "c_start_date")
-    private String c_start_date;
-
-    @Type(type="text")
-    @Column(name = "c_end_date")
-    private String c_end_date;
 
     @Column(name = "c_pdservice_link")
     private Long c_pdservice_link;
 
+    @Type(type="text")
+    @Column(name = "c_pds_version_start_date")
+    private String c_pds_version_start_date;
+
+    @Type(type="text")
+    @Column(name = "c_pds_version_end_date")
+    private String c_pds_version_end_date;
+
     @Lob
-    @Column(name="C_CONTENTS")
-    private String c_contents;
+    @Column(name="c_pds_version_contents")
+    private String c_pds_version_contents;
+
+    @Type(type="text")
+    @Column(name = "c_pds_version_etc")
+    private String c_pds_version_etc;
 
     /*
      * Extend Bean Field

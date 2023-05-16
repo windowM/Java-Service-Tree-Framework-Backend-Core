@@ -11,8 +11,15 @@
  */
 package com.arms.filerepository.service;
 
-import com.egovframework.ple.treeframework.service.TreeService;
+import com.arms.filerepository.model.FileRepositoryEntity;
+import com.egovframework.javaservice.treeframework.service.TreeService;
+import com.egovframework.javaservice.treeframework.util.ParameterParser;
+
+import java.util.HashMap;
+import java.util.Set;
 
 public interface FileRepository extends TreeService {
+
+    public HashMap<String, Set<FileRepositoryEntity>> getFileSetByFileIdLink(ParameterParser parser) throws Exception;
 
 }

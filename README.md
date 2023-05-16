@@ -72,3 +72,6 @@ MVC패턴을 구현한 다양한 프레임워크를 대상으로 ( EgovFramework
 ![YourKit](https://www.yourkit.com/images/yklogo.png)
 > YourKit, LCC is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/) and [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/),
 > innovative and intelligent tools for profiling Java and .NET applications.
+
+
+1. interceptor 에서 관리되는 동적 테이블은 onetoX 에 해당하는 릴레이션을 관리 할 수 없다.

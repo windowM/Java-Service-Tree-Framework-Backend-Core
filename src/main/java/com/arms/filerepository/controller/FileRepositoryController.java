@@ -13,10 +13,11 @@ package com.arms.filerepository.controller;
 
 import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
-import com.egovframework.ple.treeframework.controller.TreeAbstractController;
-import com.egovframework.ple.treeframework.util.PropertiesReader;
-import com.egovframework.ple.treeframework.util.ParameterParser;
-import com.egovframework.ple.treeframework.util.EgovFormBasedFileUtil;
+import com.arms.pdservice.service.PdService;
+import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
+import com.egovframework.javaservice.treeframework.util.PropertiesReader;
+import com.egovframework.javaservice.treeframework.util.ParameterParser;
+import com.egovframework.javaservice.treeframework.util.EgovFormBasedFileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
@@ -44,6 +45,10 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     @Autowired
     @Qualifier("fileRepository")
     private FileRepository fileRepository;
+
+    @Autowired
+    @Qualifier("pdService")
+    private PdService pdService;
 
     @PostConstruct
     public void initialize() {
@@ -57,19 +62,15 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     public ModelAndView getFilesByNode(FileRepositoryEntity fileRepositoryEntity, HttpServletRequest request) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
-
-        fileRepositoryEntity.setWhere("fileIdLink", parser.getLong("fileIdlink"));
-        fileRepositoryEntity.setWhere("c_title", fileRepositoryEntity.getC_title());
-        List<FileRepositoryEntity> list = fileRepository.getChildNode(fileRepositoryEntity);
-
-        HashMap<String, List<FileRepositoryEntity>> map = new HashMap();
-        map.put("files", list);
+        HashMap<String, Set<FileRepositoryEntity>> returnMap = fileRepository.getFileSetByFileIdLink(parser);
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", map);
+        modelAndView.addObject("result", returnMap);
 
         return modelAndView;
     }
+
+
 
     @ResponseBody
     @RequestMapping(value="/deleteFileByNode/{fileId}", method = RequestMethod.DELETE)
@@ -91,7 +92,7 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     public void downloadFile(@PathVariable(value ="fileId") Long fileId,
                              HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        PropertiesReader propertiesReader = new PropertiesReader("egovframework/egovProps/globals.properties");
+        PropertiesReader propertiesReader = new PropertiesReader("com/egovframework/property/globals.properties");
         String uploadPath = propertiesReader.getProperty("Globals.fileStorePath");
 
         FileRepositoryEntity fileRepositoryEntity = new FileRepositoryEntity();

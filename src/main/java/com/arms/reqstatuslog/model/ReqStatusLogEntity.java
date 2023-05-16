@@ -11,12 +11,12 @@
  */
 package com.arms.reqstatuslog.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeLogBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -28,21 +28,15 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_REQSTATUSLOG")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ReqStatusLogEntity extends TreeSearchEntity implements Serializable {
-
-    public ReqStatusLogEntity() {
-        super();
-    }
-
-    public ReqStatusLogEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
+public class ReqStatusLogEntity extends TreeLogBaseEntity implements Serializable {
 
  	@Override
     @Id
@@ -51,7 +45,182 @@ public class ReqStatusLogEntity extends TreeSearchEntity implements Serializable
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
+
+    @Column(name = "c_pdservice_link")
+    private Long c_pdservice_link;
+
+    @Column(name = "c_pdservice_name")
+    @Type(type="text")
+    private String c_pdservice_name;
+
+
+    @Column(name = "c_pds_version_link")
+    private Long c_version_link;
+
+    @Column(name = "c_pds_version_name")
+    @Type(type="text")
+    private String c_pds_version_name;
+
+
+    @Column(name = "c_jira_link")
+    private Long c_jira_link;
+
+    @Column(name = "c_jira_key")
+    @Type(type="text")
+    private String c_jira_key;
+
+    @Column(name = "c_jira_url")
+    @Type(type="text")
+    private String c_jira_url;
+
+
+
+    @Column(name = "c_jira_version_link")
+    private Long c_jira_version_link;
+
+    @Column(name = "c_jira_version_name")
+    @Type(type="text")
+    private String c_jira_version_name;
+
+    @Column(name = "c_jira_version_url")
+    @Type(type="text")
+    private String c_jira_version_url;
+
+
+
+    //ReqStatus Issue Link
+    @Column(name = "c_issue_link")
+    private Long c_issue_link;
+
+    @Column(name = "c_issue_summery")
+    @Type(type="text")
+    private String c_issue_summery;
+
+    @Column(name = "c_issue_url")
+    @Type(type="text")
+    private String c_issue_url;
+
+
+    @Column(name = "c_issue_priority_link")
+    private Long c_issue_priority_link;
+
+    @Column(name = "c_issue_priority_name")
+    @Type(type="text")
+    private String c_issue_priority_name;
+
+    @Column(name = "c_issue_priority_url")
+    @Type(type="text")
+    private String c_issue_priority_url;
+
+
+    @Column(name = "c_issue_status_link")
+    private Long c_issue_status_link;
+
+    @Column(name = "c_issue_status_name")
+    @Type(type="text")
+    private String c_issue_status_name;
+
+    @Column(name = "c_issue_status_url")
+    @Type(type="text")
+    private String c_issue_status_url;
+
+    @Column(name = "c_issue_resolution_link")
+    private Long c_issue_resolution_link;
+
+    @Column(name = "c_issue_resolution_name")
+    @Type(type="text")
+    private String c_issue_resolution_name;
+
+    @Column(name = "c_issue_resolution_url")
+    @Type(type="text")
+    private String c_issue_resolution_url;
+
+    @Column(name = "c_req_link")
+    private Long c_req_link;
+
+    @Column(name = "c_req_name")
+    @Type(type="text")
+    private String c_req_name;
+
+    @Column(name = "c_req_priority_link")
+    private Long c_req_priority_link;
+
+    @Column(name = "c_req_priority_name")
+    @Type(type="text")
+    private String c_req_priority_name;
+
+    @Column(name = "c_req_status_link")
+    private Long c_req_status_link;
+
+    @Column(name = "c_req_status_name")
+    @Type(type="text")
+    private String c_req_status_name;
+
+    @Column(name = "c_reviewer01")
+    @Type(type="text")
+    private String c_reviewer01;
+
+    @Column(name = "c_reviewer02")
+    private String c_reviewer02;
+
+    @Column(name = "c_reviewer03")
+    @Type(type="text")
+    private String c_reviewer03;
+
+    @Column(name = "c_reviewer04")
+    @Type(type="text")
+    private String c_reviewer04;
+
+    @Column(name = "c_reviewer05")
+    @Type(type="text")
+    private String c_reviewer05;
+
+    @Column(name = "c_reviewer01_status")
+    @Type(type="text")
+    private String c_reviewer01_status;
+
+    @Column(name = "c_reviewer02_status")
+    @Type(type="text")
+    private String c_reviewer02_status;
+
+    @Column(name = "c_reviewer03_status")
+    @Type(type="text")
+    private String c_reviewer03_status;
+
+    @Column(name = "c_reviewer04_status")
+    @Type(type="text")
+    private String c_reviewer04_status;
+
+    @Column(name = "c_reviewer05_status")
+    @Type(type="text")
+    private String c_reviewer05_status;
+
+    @Column(name = "c_writer")
+    @Type(type="text")
+    private String c_writer;
+
+    @Column(name = "c_writer_date")
+    @Type(type="text")
+    private String c_writer_date;
+
+    @Column(name = "c_issue_link_issue_summary")
+    @Type(type="text")
+    private String c_issue_link_issue_summary;
+
+    @Column(name = "c_issue_sub_issue_summary")
+    @Type(type="text")
+    private String c_issue_sub_issue_summary;
+
+    @Column(name = "c_req_status_etc")
+    @Type(type="text")
+    private String c_req_status_etc;
+
+    @Lob
+    @Column(name = "c_req_status_contents")
+    private String c_req_status_contents;
+
 
     /*
      * Extend Bean Field

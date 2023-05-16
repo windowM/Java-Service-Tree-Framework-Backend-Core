@@ -11,28 +11,15 @@
  */
 package com.arms.jiraconnectinfo.controller;
 
-import com.egovframework.ple.treeframework.controller.TreeAbstractController;
-import com.egovframework.ple.treeframework.util.FileHandler;
-import com.egovframework.ple.treeframework.util.Util_TitleChecker;
-import com.egovframework.ple.treeframework.validation.group.AddNode;
-import com.egovframework.ple.treeframework.util.ParameterParser;
-import lombok.AllArgsConstructor;
+import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
+
 import javax.annotation.PostConstruct;
 
 import com.arms.jiraconnectinfo.model.JiraConnectInfoEntity;

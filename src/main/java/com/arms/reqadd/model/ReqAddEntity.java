@@ -11,38 +11,38 @@
  */
 package com.arms.reqadd.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.arms.jiraissuepriority.model.JiraIssuePriorityEntity;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
+import com.arms.reqpriority.model.ReqPriorityEntity;
+import com.arms.reqstate.model.ReqStateEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_REQADD")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReqAddEntity extends TreeSearchEntity implements Serializable {
-
-    public ReqAddEntity() {
-        super();
-    }
-
-    public ReqAddEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
 
  	@Override
     @Id
@@ -53,80 +53,116 @@ public class ReqAddEntity extends TreeSearchEntity implements Serializable {
     }
     //@Getter @Setter
 
-    @Column(name = "c_pdservice_link")
-    private Long c_pdservice_link;
-
-    @Column(name = "c_pdserviceversion_link")
-    private Long c_version_link;
-
-    @Column(name = "c_jira_link")
-    private Long c_jira_link;
-
-    @Column(name = "c_jira_ver_link")
-    private Long c_jira_ver_link;
-
-    //ReqStatus Issue Link
-    @Column(name = "c_issue_link")
-    private Long c_issue_link;
-
-    @Column(name = "c_reviewer01")
+    @Column(name = "c_req_reviewer01")
     @Type(type="text")
-    private String c_reviewer01;
+    private String c_req_reviewer01;
 
-    @Column(name = "c_reviewer02")
-    private String c_reviewer02;
+    @Column(name = "c_req_reviewer02")
+    private String c_req_reviewer02;
 
-    @Column(name = "c_reviewer03")
+    @Column(name = "c_req_reviewer03")
     @Type(type="text")
-    private String c_reviewer03;
+    private String c_req_reviewer03;
 
-    @Column(name = "c_reviewer04")
+    @Column(name = "c_req_reviewer04")
     @Type(type="text")
-    private String c_reviewer04;
+    private String c_req_reviewer04;
 
-    @Column(name = "c_reviewer05")
+    @Column(name = "c_req_reviewer05")
     @Type(type="text")
-    private String c_reviewer05;
+    private String c_req_reviewer05;
 
-    @Column(name = "c_reviewer01_status")
+    @Column(name = "c_req_reviewer01_status")
     @Type(type="text")
-    private String c_reviewer01_status;
+    private String c_req_reviewer01_status;
 
-    @Column(name = "c_reviewer02_status")
+    @Column(name = "c_req_reviewer02_status")
     @Type(type="text")
-    private String c_reviewer02_status;
+    private String c_req_reviewer02_status;
 
-    @Column(name = "c_reviewer03_status")
+    @Column(name = "c_req_reviewer03_status")
     @Type(type="text")
-    private String c_reviewer03_status;
+    private String c_req_reviewer03_status;
 
-    @Column(name = "c_reviewer04_status")
+    @Column(name = "c_req_reviewer04_status")
     @Type(type="text")
-    private String c_reviewer04_status;
+    private String c_req_reviewer04_status;
 
-    @Column(name = "c_reviewer05_status")
+    @Column(name = "c_req_reviewer05_status")
     @Type(type="text")
-    private String c_reviewer05_status;
+    private String c_req_reviewer05_status;
 
-    @Column(name = "c_writer")
+    @Column(name = "c_req_writer")
     @Type(type="text")
-    private String c_writer;
+    private String c_req_writer;
 
-    @Column(name = "c_writer_date")
+    @Column(name = "c_req_create_date")
     @Type(type="text")
-    private String c_writer_date;
+    private String c_req_create_date;
 
-    @Column(name = "c_priority")
-    @Type(type="text")
-    private Long c_priority;
+    @Column(name = "c_req_priority_link")
+    private Long c_req_priority_link;
 
-    @Column(name = "c_req_status")
-    @Type(type="text")
-    private String c_req_status;
+    @Column(name = "c_req_state_link")
+    private Long c_req_state_link;
 
     @Lob
-    @Column(name = "c_contents")
-    private String c_contents;
+    @Column(name = "c_req_contents")
+    @Type(type="text")
+    private String c_req_contents;
+
+    @Column(name = "c_req_etc")
+    @Type(type="text")
+    private String c_req_etc;
+
+    // -- 1:1 table 연계
+    // 동적 테이블 이기때문에 글로벌 트리맵에 joinColumns 에 추가하기엔 너무 큰 리소스 코드가 들어가서
+    // 프로그래밍 적인 코드 릴레이션을 처리한다.
+    // 대신에 onetoone 처리도 잘 되는걸 확인했다.
+    // 글로벌 트리맵에서 관리하도록 하자.
+
+    //
+    //    @LazyCollection(LazyCollectionOption.FALSE)
+    //    @JsonManagedReference
+    //    @OneToOne
+    //    @JoinTable(
+    //            name = "GLOBAL_TREE_MAP",
+    //            joinColumns = @JoinColumn(name = "reqadd_link"),
+    //            inverseJoinColumns = @JoinColumn(name = "reqpriority_link")
+    //    )
+    //    @WhereJoinTable( clause = "reqpriority_link is not null and pdservice_link = 10" )
+    //    public ReqPriorityEntity getReqPriorityEntity() {
+    //        return reqPriorityEntity;
+    //    }
+    //
+    //    public void setReqPriorityEntity(ReqPriorityEntity reqPriorityEntity) {
+    //        this.reqPriorityEntity = reqPriorityEntity;
+    //    }
+
+    // -- 1:1 Row 단방향 연계
+    private ReqPriorityEntity reqPriorityEntity;
+
+    @Transient
+    public ReqPriorityEntity getReqPriorityEntity() {
+        return reqPriorityEntity;
+    }
+
+    public void setReqPriorityEntity(ReqPriorityEntity reqPriorityEntity) {
+        this.reqPriorityEntity = reqPriorityEntity;
+    }
+
+    // -- 1:1 Row 단방향 연계
+    private ReqStateEntity reqStateEntity;
+
+    @Transient
+    public ReqStateEntity getReqStateEntity() {
+        return reqStateEntity;
+    }
+
+    public void setReqStateEntity(ReqStateEntity reqStateEntity) {
+        this.reqStateEntity = reqStateEntity;
+    }
+
     /*
      * Extend Bean Field
      */

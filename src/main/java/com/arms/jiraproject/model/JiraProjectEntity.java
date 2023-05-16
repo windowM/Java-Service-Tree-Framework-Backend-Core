@@ -11,38 +11,35 @@
  */
 package com.arms.jiraproject.model;
 
-import com.egovframework.ple.treeframework.model.TreeBaseEntity;
-import com.egovframework.ple.treeframework.model.TreeSearchEntity;
+import com.arms.jiraprojectversion.model.JiraProjectVersionEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseEntity;
+import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "T_ARMS_JIRAPROJECT")
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 @DynamicUpdate(value=true)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class JiraProjectEntity extends TreeSearchEntity implements Serializable {
-
-    public JiraProjectEntity() {
-        super();
-    }
-
-    public JiraProjectEntity(Boolean copyBooleanValue) {
-        super();
-        this.copyBooleanValue = copyBooleanValue;
-    }
 
  	@Override
     @Id
@@ -51,7 +48,86 @@ public class JiraProjectEntity extends TreeSearchEntity implements Serializable 
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
+
+    @Lob
+    @Column(name = "c_jira_contents")
+    private String c_jira_contents;
+
+    @Column(name = "c_jira_etc")
+    @Type(type="text")
+    private String c_jira_etc;
+
+    @Column(name = "c_jira_url")
+    @Type(type="text")
+    private String c_jira_url;
+
+    @Column(name = "c_jira_id")
+    @Type(type="text")
+    private String c_jira_id;
+
+    @Column(name = "c_jira_key")
+    @Type(type="text")
+    private String c_jira_key;
+
+    @Column(name = "c_jira_name")
+    @Type(type="text")
+    private String c_jira_name;
+
+
+    @Column(name = "c_jira_avatar_48")
+    @Type(type="text")
+    private String c_jira_avatar_48;
+
+    @Column(name = "c_jira_avatar_32")
+    @Type(type="text")
+    private String c_jira_avatar_32;
+
+    @Column(name = "c_jira_avatar_24")
+    @Type(type="text")
+    private String c_jira_avatar_24;
+
+    @Column(name = "c_jira_avatar_16")
+    @Type(type="text")
+    private String c_jira_avatar_16;
+
+    @Column(name = "c_jira_category_url")
+    @Type(type="text")
+    private String c_jira_category_url;
+
+    @Column(name = "c_jira_category_id")
+    @Type(type="text")
+    private String c_jira_category_id;
+
+    @Column(name = "c_jira_category_name")
+    @Type(type="text")
+    private String c_jira_category_name;
+
+    @Column(name = "c_jira_category_desc")
+    @Type(type="text")
+    private String c_jira_category_desc;
+
+
+    // -- 1:N table 연계
+    private Set<JiraProjectVersionEntity> jiraProjectVersionEntities;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "GLOBAL_TREE_MAP",
+            joinColumns = @JoinColumn(name = "jiraproject_link"),
+            inverseJoinColumns = @JoinColumn(name = "jiraprojectversion_link")
+    )
+    @WhereJoinTable( clause = "pdserviceversion_link is not null")
+    public Set<JiraProjectVersionEntity> getJiraProjectVersionEntities() {
+        return jiraProjectVersionEntities;
+    }
+
+    public void setJiraProjectVersionEntities(Set<JiraProjectVersionEntity> jiraProjectVersionEntities) {
+        this.jiraProjectVersionEntities = jiraProjectVersionEntities;
+    }
 
     /*
      * Extend Bean Field
