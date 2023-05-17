@@ -20,6 +20,7 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -35,12 +36,8 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     protected abstract Class<T> getEntityClass();
 
     public Session getCurrentSession() {
-        Session currentSession = getHibernateTemplate().getSessionFactory().getCurrentSession();
-        if( currentSession == null ){
-            throw new RuntimeException("getHibernateTemplate().getSessionFactory().getCurrentSession() is null");
-        }else{
-            return currentSession;
-        }
+          return Optional.ofNullable(getHibernateTemplate().getSessionFactory().getCurrentSession()).
+                  orElseThrow(() -> new RuntimeException("TreeAbstractDao :: getCurrentSession is null"));
     }
 
     public DetachedCriteria createDetachedCriteria(Class<?> clazz) {
@@ -224,6 +221,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return result;
     }
 
+    @Nullable
     public int getGroupByCount(T treeSearchEntity, String tagert) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion criterion : treeSearchEntity.getCriterions()) {
