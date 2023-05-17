@@ -19,7 +19,9 @@ import org.hibernate.criterion.*;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
 
@@ -32,6 +34,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     }
     protected abstract Class<T> getEntityClass();
 
+    @NotNull
     public SessionFactory getTempSessionFactory() {
         return getHibernateTemplate().getSessionFactory();
     }
