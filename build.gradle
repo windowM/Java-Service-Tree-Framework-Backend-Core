@@ -12,6 +12,15 @@ plugins {
     id 'maven-publish'
 }
 
+sonarqube {
+    properties {
+        property "sonar.projectKey", "Java-Service-Tree-Framework-Backend-Core"
+        property "sonar.host.url", "http://www.313.co.kr/sonar"
+        property "sonar.login", "admin"
+        property "sonar.password", "qwe123"
+    }
+}
+
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
