@@ -34,9 +34,13 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     }
     protected abstract Class<T> getEntityClass();
 
-    @NotNull
     public Session getCurrentSession() {
-        return getHibernateTemplate().getSessionFactory().getCurrentSession();
+        Session currentSession = getHibernateTemplate().getSessionFactory().getCurrentSession();
+        if( currentSession == null ){
+            throw new RuntimeException("getHibernateTemplate().getSessionFactory().getCurrentSession() is null");
+        }else{
+            return currentSession;
+        }
     }
 
     public DetachedCriteria createDetachedCriteria(Class<?> clazz) {
@@ -57,7 +61,12 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
 
     @NotNull
     public T getUnique(Long id) {
-        return getHibernateTemplate().get(getEntityClass(), id);
+        T returnObj = getHibernateTemplate().get(getEntityClass(), id);
+        if(returnObj == null){
+            throw new RuntimeException("returnObj is null");
+        }else{
+            return returnObj;
+        }
     }
 
     public T getUnique(Criterion criterion) {
@@ -203,7 +212,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         detachedCriteria.setProjection(projectList);
         List<?> l = getHibernateTemplate().findByCriteria(detachedCriteria);
         detachedCriteria.setProjection(null);
-        if (null == l || l.size() == 0) {
+        if (l.isEmpty()) {
             return result;
         } else {
             Iterator<?> ite = l.iterator();
@@ -225,7 +234,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         detachedCriteria.setProjection(projectList);
         List<?> l = getHibernateTemplate().findByCriteria(detachedCriteria);
         detachedCriteria.setProjection(null);
-        if (null == l || l.size() == 0) {
+        if (l.isEmpty()) {
             return 0;
         } else {
             return l.size();
@@ -265,6 +274,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
     }
 
+    @CheckForNull
     public int getCount(Criterion... criterions) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterions) {
@@ -273,8 +283,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
 
         detachedCriteria.setProjection(Projections.rowCount());
         List<?> l = getHibernateTemplate().findByCriteria(detachedCriteria);
-
-        if (l.size() == 0) {
+        if (l.isEmpty()) {
             return 0;
         }
 
@@ -293,7 +302,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         detachedCriteria.setProjection(Projections.rowCount());
         List<?> l = getHibernateTemplate().findByCriteria(detachedCriteria);
 
-        if (null == l || l.size() == 0) {
+        if (l.isEmpty()) {
             return 0;
         }
 
