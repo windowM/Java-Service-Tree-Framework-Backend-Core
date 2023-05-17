@@ -78,8 +78,6 @@ public interface TreeDao<T extends TreeSearchEntity, ID extends Serializable> {
 
     public int getCount(T extractSearchDTO);
 
-    public int getCount(T extractSearchDTO, List<Criterion> criterions);
-
     public int getCount(List<Criterion> criterions);
 
     public int getSum(List<Criterion> criterions, String propertyName);
@@ -96,7 +94,7 @@ public interface TreeDao<T extends TreeSearchEntity, ID extends Serializable> {
 
     public void storeOrUpdate(T newInstance);
 
-    public void storeOrUpdateAdvanced(T newInstance, String columId);
+    public void storeOrUpdateAdvanced(T newInstance);
 
     public void update(T transientObject);
 

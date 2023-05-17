@@ -302,21 +302,6 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return total.intValue();
     }
 
-    public int getCount(T treeSearchEntity, List<Criterion> criterions) {
-        DetachedCriteria detachedCriteria = createDetachedCriteria();
-
-        for (Criterion c : criterions) {
-            detachedCriteria.add(c);
-        }
-
-        detachedCriteria.setProjection(Projections.rowCount());
-        List<?> l = getHibernateTemplate().findByCriteria(detachedCriteria);
-
-        Long total = (Long) l.get(0);
-        detachedCriteria.setProjection(null);
-        return total.intValue();
-    }
-
     public int getCount(List<Criterion> criterions) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterions) {
@@ -391,7 +376,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         getHibernateTemplate().saveOrUpdate(newInstance);
     }
 
-    public void storeOrUpdateAdvanced(T newInstance, String columId) {
+    public void storeOrUpdateAdvanced(T newInstance) {
         getHibernateTemplate().saveOrUpdate(newInstance);
     }
 
@@ -480,13 +465,6 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     @SuppressWarnings("rawtypes")
     public List search(Map<String, Object> parameterMap) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-
-		/* coveriry 처리.
-		Set<String> fieldName = parameterMap.keySet();
-		for (String field : fieldName) {
-            criteria.add(Restrictions.ilike(field, parameterMap.get(field)));
-        }
-        */
 
         for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
             criteria.add(Restrictions.ilike(entry.getKey(), entry.getValue()));
