@@ -20,6 +20,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.springframework.orm.hibernate5.HibernateCallback;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -30,8 +31,6 @@ public interface TreeDao<T extends TreeSearchEntity, ID extends Serializable> {
     public Class<T> getClazz();
 
     public void setClazz(Class<T> clazzToSet);
-
-    public SessionFactory getTempSessionFactory();
 
     public Session getCurrentSession();
 

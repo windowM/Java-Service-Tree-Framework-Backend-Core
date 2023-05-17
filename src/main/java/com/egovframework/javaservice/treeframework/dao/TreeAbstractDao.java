@@ -35,10 +35,6 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     protected abstract Class<T> getEntityClass();
 
     @NotNull
-    public SessionFactory getTempSessionFactory() {
-        return getHibernateTemplate().getSessionFactory();
-    }
-
     public Session getCurrentSession() {
         return getHibernateTemplate().getSessionFactory().getCurrentSession();
     }
@@ -59,6 +55,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return criteria;
     }
 
+    @NotNull
     public T getUnique(Long id) {
         return getHibernateTemplate().get(getEntityClass(), id);
     }
@@ -80,7 +77,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         }
         List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
         if (list.isEmpty()) {
-            return null;
+            return treeSearchEntity;
         }
         return (T) list.get(0);
     }
@@ -113,7 +110,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         DetachedCriteria criteria = DetachedCriteria.forClass(getEntityClass());
         List<T> list = (List<T>) getHibernateTemplate().findByCriteria(criteria);
         if (list.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
         return list;
     }
@@ -138,6 +135,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return list;
     }
 
+    @NotNull
     public List<T> getList(T treeSearchEntity, Criterion... criterion) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterion) {
