@@ -851,7 +851,7 @@ public class TreeServiceImpl implements TreeService {
 
                 treeSearchEntity.setC_position(increasePosition);
 
-                final boolean isSamePosition = (nodeById.getC_position() == treeSearchEntity.getC_position());
+                final boolean isSamePosition = nodeById.getC_position().equals(treeSearchEntity.getC_position());
 
                 if (isSamePosition) {
                     if (logger.isDebugEnabled()) {
