@@ -51,11 +51,11 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
                 }
             } else {
                 // factory가 null인 경우 처리
-                throw new RuntimeException("TreeAbstractDao :: getCurrentSession - factory가 is null");
+                throw new RuntimeException("TreeAbstractDao :: getCurrentSession - factory is null");
             }
         } else {
             // template이 null인 경우 처리
-            throw new RuntimeException("TreeAbstractDao :: getCurrentSession - template이 is null");
+            throw new RuntimeException("TreeAbstractDao :: getCurrentSession - template is null");
         }
     }
 
@@ -77,11 +77,16 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
 
 
     public T getUnique(Long id) {
-        T returnObj = getHibernateTemplate().get(getEntityClass(), id);
-        if(returnObj == null){
-            throw new RuntimeException("returnObj is null");
-        }else{
-            return returnObj;
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            T returnObj = template.get(getEntityClass(), id);
+            if(returnObj == null){
+                throw new RuntimeException("TreeAbstractDao :: getUnique -returnObj is null");
+            }else{
+                return returnObj;
+            }
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: getUnique - getHibernateTemplate is null");
         }
     }
 
