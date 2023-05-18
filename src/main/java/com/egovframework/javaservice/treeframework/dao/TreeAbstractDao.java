@@ -685,7 +685,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
 
 
     public void bulkInsert(Collection<T> entities) {
-        Session session = getHibernateTemplate().getSessionFactory().openSession();
+        Session session = getCurrentSession();
         session.setCacheMode(CacheMode.IGNORE);
         Transaction tx = session.beginTransaction();
 
@@ -706,7 +706,14 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
 
 
     public T excute(HibernateCallback<T> callback) {
-        return getHibernateTemplate().execute(callback);
+
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            return template.execute(callback);
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: excute - getHibernateTemplate is null");
+        }
+
     }
 
     @SuppressWarnings("unused")
