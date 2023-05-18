@@ -35,6 +35,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     }
     protected abstract Class<T> getEntityClass();
 
+    @Nullable
     public Session getCurrentSession() {
           return Optional.ofNullable(getHibernateTemplate().getSessionFactory().getCurrentSession()).
                   orElseThrow(() -> new RuntimeException("TreeAbstractDao :: getCurrentSession is null"));
