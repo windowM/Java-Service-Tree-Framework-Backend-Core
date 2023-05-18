@@ -84,9 +84,10 @@ public class SessionUtil {
 
     public static HttpServletRequest getUrl()  throws Exception {
 
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         if (requestAttributes != null) {
-            return requestAttributes.getRequest();
+            ServletRequestAttributes servletRequestAttributes =  (ServletRequestAttributes) requestAttributes;
+            return servletRequestAttributes.getRequest();
         }else{
             throw new RuntimeException("SessionUtil :: getUrl - requestAttributes is null");
         }
