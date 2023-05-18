@@ -93,11 +93,16 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     public T getUnique(Criterion criterion) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         detachedCriteria.add(criterion);
-        List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
-        if (list.isEmpty()) {
-            return null;
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            List<T> list = (List<T>) template.findByCriteria(detachedCriteria);
+            if (list.isEmpty()) {
+                throw new RuntimeException("TreeAbstractDao :: getUnique - findByCriteria result is null");
+            }
+            return (T) list.get(0);
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: getUnique - getHibernateTemplate is null");
         }
-        return (T) list.get(0);
     }
 
 
@@ -106,11 +111,17 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         for (Criterion c : treeSearchEntity.getCriterions()) {
             detachedCriteria.add(c);
         }
-        List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
-        if (list.isEmpty()) {
-            return treeSearchEntity;
+
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            List<T> list = (List<T>) template.findByCriteria(detachedCriteria);
+            if (list.isEmpty()) {
+                throw new RuntimeException("TreeAbstractDao :: getUnique - findByCriteria result is null");
+            }
+            return (T) list.get(0);
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: getUnique - getHibernateTemplate is null");
         }
-        return (T) list.get(0);
     }
 
 
@@ -119,11 +130,17 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         for (Criterion c : criterions) {
             detachedCriteria.add(c);
         }
-        List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
-        if (list.isEmpty()) {
-            return null;
+
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            List<T> list = (List<T>) template.findByCriteria(detachedCriteria);
+            if (list.isEmpty()) {
+                throw new RuntimeException("TreeAbstractDao :: getUnique - findByCriteria result is null");
+            }
+            return (T) list.get(0);
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: getUnique - getHibernateTemplate is null");
         }
-        return (T) list.get(0);
     }
 
 
@@ -132,26 +149,47 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         for (Criterion c : criterion) {
             detachedCriteria.add(c);
         }
-        List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
-        if (list.isEmpty()) {
-            return null;
+
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            List<T> list = (List<T>) template.findByCriteria(detachedCriteria);
+            if (list.isEmpty()) {
+                throw new RuntimeException("TreeAbstractDao :: getUnique - findByCriteria result is null");
+            }
+            return (T) list.get(0);
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: getUnique - getHibernateTemplate is null");
         }
-        return (T) list.get(0);
     }
 
 
     public List<T> getList() {
         DetachedCriteria criteria = DetachedCriteria.forClass(getEntityClass());
-        List<T> list = (List<T>) getHibernateTemplate().findByCriteria(criteria);
-        if (list.isEmpty()) {
-            return Collections.emptyList();
+
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            List<T> list = (List<T>) template.findByCriteria(criteria);
+            if (list.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return list;
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: getList - getHibernateTemplate is null");
         }
-        return list;
     }
 
 
     public List<T> getList(DetachedCriteria detachedCriteria, int limit, int offset) {
-        return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria, offset, limit);
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            List<T> list = (List<T>) template.findByCriteria(detachedCriteria, offset, limit);
+            if (list.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return list;
+        } else {
+            throw new RuntimeException("TreeAbstractDao :: getList - getHibernateTemplate is null");
+        }
     }
 
 
