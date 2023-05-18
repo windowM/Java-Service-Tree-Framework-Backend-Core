@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import javax.annotation.CheckForNull;
@@ -35,10 +36,27 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     }
     protected abstract Class<T> getEntityClass();
 
-    @Nullable
     public Session getCurrentSession() {
-          return Optional.ofNullable(getHibernateTemplate().getSessionFactory().getCurrentSession()).
-                  orElseThrow(() -> new RuntimeException("TreeAbstractDao :: getCurrentSession is null"));
+        HibernateTemplate template = getHibernateTemplate();
+        if (template != null) {
+            SessionFactory factory = template.getSessionFactory();
+            if (factory != null) {
+                Session session = factory.getCurrentSession();
+                if (session != null) {
+                    // session 객체 사용
+                    return session;
+                } else {
+                    // session이 null인 경우 처리
+                    throw new RuntimeException("TreeAbstractDao :: getCurrentSession - session is null");
+                }
+            } else {
+                // factory가 null인 경우 처리
+                throw new RuntimeException("TreeAbstractDao :: getCurrentSession - factory가 is null");
+            }
+        } else {
+            // template이 null인 경우 처리
+            throw new RuntimeException("TreeAbstractDao :: getCurrentSession - template이 is null");
+        }
     }
 
     public DetachedCriteria createDetachedCriteria(Class<?> clazz) {
