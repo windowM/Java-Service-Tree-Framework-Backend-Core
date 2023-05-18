@@ -75,7 +75,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return criteria;
     }
 
-    @NotNull
+
     public T getUnique(Long id) {
         T returnObj = getHibernateTemplate().get(getEntityClass(), id);
         if(returnObj == null){
@@ -85,7 +85,6 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         }
     }
 
-    @Nullable
     public T getUnique(Criterion criterion) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         detachedCriteria.add(criterion);
@@ -96,7 +95,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (T) list.get(0);
     }
 
-    @Nullable
+
     public T getUnique(T treeSearchEntity) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : treeSearchEntity.getCriterions()) {
@@ -109,7 +108,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (T) list.get(0);
     }
 
-    @Nullable
+
     public T getUnique(Criterion... criterions) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterions) {
@@ -122,7 +121,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (T) list.get(0);
     }
 
-    @Nullable
+
     public T getUnique(List<Criterion> criterion) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterion) {
@@ -135,7 +134,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (T) list.get(0);
     }
 
-    @Nullable
+
     public List<T> getList() {
         DetachedCriteria criteria = DetachedCriteria.forClass(getEntityClass());
         List<T> list = (List<T>) getHibernateTemplate().findByCriteria(criteria);
@@ -145,12 +144,12 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return list;
     }
 
-    @Nullable
+
     public List<T> getList(DetachedCriteria detachedCriteria, int limit, int offset) {
         return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria, offset, limit);
     }
 
-    @Nullable
+
     public List<T> getList(T treeSearchEntity) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Order order : treeSearchEntity.getOrder()) {
@@ -167,7 +166,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return list;
     }
 
-    @NotNull
+
     public List<T> getList(T treeSearchEntity, Criterion... criterion) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterion) {
@@ -180,7 +179,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
                 treeSearchEntity.getLastIndex());
     }
 
-    @Nullable
+
     public List<T> getList(Criterion... criterions) {
         DetachedCriteria criteria = createDetachedCriteria();
         for (Criterion criterion : criterions) {
@@ -193,7 +192,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return list;
     }
 
-    @Nullable
+
     public List<T> getList(List<Criterion> criterions, List<Order> orders) {
         DetachedCriteria criteria = createDetachedCriteria();
         for (Criterion criterion : criterions) {
@@ -209,7 +208,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return list;
     }
 
-    @Nullable
+
     public List<T> getGroupByList(T treeSearchEntity, String target) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Order order : treeSearchEntity.getOrder()) {
@@ -225,7 +224,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
                 treeSearchEntity.getLastIndex());
     }
 
-    @Nullable
+
     public Map<String, Long> getGroupByList(T treeSearchEntity, String groupProperty, String sumProperty) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         Map<String, Long> result = new HashMap<String, Long>();
@@ -251,7 +250,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return result;
     }
 
-    @Nullable
+
     public int getGroupByCount(T treeSearchEntity, String tagert) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion criterion : treeSearchEntity.getCriterions()) {
@@ -270,7 +269,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
     }
 
 
-    @Nullable
+
     public List<T> getListWithoutPaging(Order order) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         detachedCriteria.addOrder(order);
@@ -278,7 +277,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
     }
 
-    @Nullable
+
     public List<T> getListWithoutPaging(T treeSearchEntity) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Order order : treeSearchEntity.getOrder()) {
@@ -290,7 +289,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
     }
 
-    @Nullable
+
     public List<T> getListWithoutPaging(Order order, Criterion... criterion) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterion) {
@@ -301,7 +300,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
     }
 
-    @Nullable
+
     public List<T> getListWithoutPaging(DetachedCriteria detachedCriteria) {
         return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
     }
@@ -324,7 +323,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return total.intValue();
     }
 
-    @Nullable
+
     public int getCount(T treeSearchEntity) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
 
@@ -344,7 +343,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return total.intValue();
     }
 
-    @Nullable
+
     public int getCount(List<Criterion> criterions) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         for (Criterion c : criterions) {
@@ -359,7 +358,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return total.intValue();
     }
 
-    @Nullable
+
     public int getSum(List<Criterion> criterions, String propertyName) {
         DetachedCriteria detachedCriteria = createDetachedCriteria();
         detachedCriteria.add(Restrictions.isNotNull(propertyName));
@@ -380,7 +379,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return sum != null ? sum.intValue() : 0;
     }
 
-    @Nullable
+
     public int getSum(T treeSearchEntity, String propertyName) {
         DetachedCriteria criteria = getCriteria(treeSearchEntity);
         criteria.add(Restrictions.isNotNull(propertyName));
@@ -396,12 +395,12 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return total != null ? total.intValue() : 0;
     }
 
-    @Nullable
+
     public T find(ID id, LockMode lockMode) {
         return (T) getHibernateTemplate().get(getEntityClass(), id, lockMode);
     }
 
-    @Nullable
+
     public T find(ID id, LockMode lockMode, boolean enableCache) {
         Object obj = getHibernateTemplate().get(getEntityClass(), id, lockMode);
         if (null != obj && !enableCache) {
@@ -411,56 +410,56 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         return (T) obj;
     }
 
-    @Nullable
+
     public void refresh(Object entity) {
         getHibernateTemplate().refresh(entity);
     }
 
-    @Nullable
+
     public ID store(T newInstance) {
         return (ID) getHibernateTemplate().save(newInstance);
     }
 
-    @Nullable
+
     public void storeOrUpdate(T newInstance) {
         getHibernateTemplate().saveOrUpdate(newInstance);
     }
 
-    @Nullable
+
     public void storeOrUpdateAdvanced(T newInstance) {
         getHibernateTemplate().saveOrUpdate(newInstance);
     }
 
-    @Nullable
+
     public void update(T treeSearchEntity) {
         getHibernateTemplate().update(treeSearchEntity);
         getHibernateTemplate().flush();
         getHibernateTemplate().clear();
     }
 
-    @Nullable
+
     public void merge(T treeSearchEntity) {
         getHibernateTemplate().merge(treeSearchEntity);
     }
 
-    @Nullable
+
     public int bulkUpdate(String queryString, Object... value) {
         return getHibernateTemplate().bulkUpdate(queryString, value);
     }
 
-    @Nullable
+
     public void delete(T treeSearchEntity) {
         getHibernateTemplate().delete(treeSearchEntity);
         getHibernateTemplate().flush();
         getHibernateTemplate().clear();
     }
 
-    @Nullable
+
     public void deleteAll(Collection<T> entities) {
         getHibernateTemplate().deleteAll(entities);
     }
 
-    @Nullable
+
     public void bulkInsert(Collection<T> entities) {
         Session session = getHibernateTemplate().getSessionFactory().openSession();
         session.setCacheMode(CacheMode.IGNORE);
@@ -481,7 +480,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         session.close();
     }
 
-    @Nullable
+
     public T excute(HibernateCallback<T> callback) {
         return getHibernateTemplate().execute(callback);
     }
