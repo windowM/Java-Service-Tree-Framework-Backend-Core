@@ -369,7 +369,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
 
         HibernateTemplate template = getHibernateTemplate();
         if (template != null) {
-            List<T> list = (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
+            List<T> list = (List<T>) template.findByCriteria(detachedCriteria);
             if (list.isEmpty()) {
                 return Collections.emptyList();
             }

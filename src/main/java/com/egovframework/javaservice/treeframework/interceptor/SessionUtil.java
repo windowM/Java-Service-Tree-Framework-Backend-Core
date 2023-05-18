@@ -11,6 +11,8 @@
  */
 package com.egovframework.javaservice.treeframework.interceptor;
 
+import com.egovframework.javaservice.treeframework.util.StringUtils;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -28,31 +30,66 @@ public class SessionUtil {
      * attribute 값을 가져 오기 위한 method
      */
     public static Object getAttribute(String name) throws Exception {
-        return (Object) RequestContextHolder.getRequestAttributes().getAttribute(name, RequestAttributes.SCOPE_REQUEST);
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            return (Object) requestAttributes.getAttribute(name, RequestAttributes.SCOPE_REQUEST);
+        } else {
+            throw new RuntimeException("SessionUtil :: getAttribute - requestAttributes is null");
+        }
     }
 
     /**
      * attribute 설정 method
      */
     public static void setAttribute(String name, Object object) throws Exception {
-        RequestContextHolder.getRequestAttributes().setAttribute(name, object, RequestAttributes.SCOPE_REQUEST);
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            requestAttributes.setAttribute(name, object, RequestAttributes.SCOPE_REQUEST);
+        } else {
+            throw new RuntimeException("SessionUtil :: getAttribute - requestAttributes is null");
+        }
     }
 
     /**
      * 설정한 attribute 삭제
      */
     public static void removeAttribute(String name) throws Exception {
-        RequestContextHolder.getRequestAttributes().removeAttribute(name, RequestAttributes.SCOPE_REQUEST);
+
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            requestAttributes.removeAttribute(name, RequestAttributes.SCOPE_REQUEST);
+        } else {
+            throw new RuntimeException("SessionUtil :: getAttribute - requestAttributes is null");
+        }
+
     }
 
     /**
      * session id
      */
     public static String getSessionId() throws Exception  {
-        return RequestContextHolder.getRequestAttributes().getSessionId();
+
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            String sessionId = requestAttributes.getSessionId();
+            if (StringUtils.isNotEmpty(sessionId)){
+                return  sessionId;
+            }else{
+                throw new RuntimeException("SessionUtil :: getSessionId - getSessionId is null");
+            }
+        } else {
+            throw new RuntimeException("SessionUtil :: getSessionId - requestAttributes is null");
+        }
     }
 
     public static HttpServletRequest getUrl()  throws Exception {
-        return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        if (requestAttributes != null) {
+            return requestAttributes.getRequest();
+        }else{
+            throw new RuntimeException("SessionUtil :: getUrl - requestAttributes is null");
+        }
+
     }
 }
