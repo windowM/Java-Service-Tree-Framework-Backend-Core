@@ -157,11 +157,7 @@ public class EgovFormBasedFileUtil {
                 throw new IOException("EgovFormBasedFileUtil :: viewFile : IOException " + e);
             } finally {
                 if (fin != null) {
-                    try {
-                        fin.close();
-                    } catch (IOException e) {
-                        throw new IOException("EgovFormBasedFileUtil :: viewFile : IOException " + e);
-                    }
+                    fin.close();
                 }
                 EgovResourceCloseHelper.close(new Closeable[]{outs, fin});
             }
@@ -201,11 +197,7 @@ public class EgovFormBasedFileUtil {
                 throw new IOException("EgovFormBasedFileUtil :: viewFile : IOException " + e);
             } finally {
                 if (fin != null) {
-                    try {
-                        fin.close();
-                    } catch (IOException e) {
-                        throw new IOException("EgovFormBasedFileUtil :: viewFile : IOException " + e);
-                    }
+                    fin.close();
                 }
                 EgovResourceCloseHelper.close(new Closeable[]{outs, fin});
             }
