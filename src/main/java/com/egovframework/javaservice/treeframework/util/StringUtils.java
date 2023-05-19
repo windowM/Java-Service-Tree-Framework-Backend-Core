@@ -207,12 +207,6 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
         return input;
     }
 
-    public static String nvl2(String str, String defaultStr) {
-        return str == null ? defaultStr : (str == (null))?defaultStr: (str == "null") ?defaultStr:(str == "(null)") ?defaultStr:str ;
-    }
-
-
-
     public static String enterToBr(String str) {
         str = replaceString(str);
         return str == null ? "" : str.replaceAll("\n", " <br/>");
@@ -312,11 +306,6 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
     public static String replaceBrTag(String text) {
         return text.replaceAll("\\n", "<br/>");
     }
-
-    public static String removeAllTag(String txt) {
-        return txt.replaceAll("(?:<!.*?(?:--.*?--\\s*)*.*?>)|(?:<(?:[^>'\"]*|\".*?\"|'.*?')+>)","");
-    }
-
 
     /**
      *  get String of java.util.Map keys and values to log
