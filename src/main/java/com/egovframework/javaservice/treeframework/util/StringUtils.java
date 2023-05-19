@@ -377,44 +377,6 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
         return len < min || len > max ;
     }
     /**
-     * 연속된 값 체크
-     * @param str
-     * @param cmpCnt
-     * @return
-     */
-    public static boolean chkSer (String str, int cmpCnt) {
-        ByteBuffer bf = ByteBuffer.wrap(str.getBytes());
-        //연속된 개수
-        int serCnt = 1;
-        //첫번째 문자코드
-        int curr = bf.get ();
-        //에러 여부
-        boolean flag = false;
-
-        for (int i = bf.position(), last =  bf.capacity(); i < last; i += 1) {
-            //임시 변수
-            int tmp = bf.get();
-            //첫번째 문자와 현재 문자의 차이가 1이면
-            if ( Math.abs(curr - tmp) == 1 ) {
-                //연속 카운트 1증가
-                serCnt += 1;
-            } else {
-                //카운트 리셋
-                serCnt = 1;
-            }
-            //숫자 변경
-            curr = tmp;
-            //연속횟수가 설정한 값과 같다면 종료
-			/*if ( (flag = serCnt == cmpCnt) ) {
-				break;
-			}*/
-            if ( serCnt == cmpCnt ) {
-                return flag;
-            }
-        }
-        return flag;
-    }
-    /**
      * 반복값 체크
      * @param str
      * @param cmpCnt
@@ -446,32 +408,6 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
             //$ANALYSIS-IGNORE
             if ( (flag = rptCnt == cmpCnt) ) {
                 break;
-            }
-        }
-        return flag;
-    }
-    /**
-     * 지정한 정보가 문자열에 지정한 개수 이상 포함되었는지 체크
-     * @param cnt
-     * @param info
-     * @param str
-     * @return
-     */
-    public static boolean chkInfo (int cnt, String info, String str) {
-        //에러 여부
-        boolean flag = false;
-
-        if (null == info) {
-            return flag;
-        } else {
-            for (int i = 0, length = info.length() - cnt + 1; i < length; i += 1) {
-                //입력값에 정보가 3자리 이상 포함되면 에러
-				/*if ( (flag = str.indexOf(info.substring(i, i + cnt)) != -1) ) {
-					break;
-				}*/
-                if ( str.indexOf(info.substring(i, i + cnt)) != -1 ) {
-                    return flag;
-                }
             }
         }
         return flag;
