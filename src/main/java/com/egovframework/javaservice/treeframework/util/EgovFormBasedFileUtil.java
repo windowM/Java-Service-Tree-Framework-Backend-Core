@@ -32,9 +32,6 @@ public class EgovFormBasedFileUtil {
     public static final String SEPERATOR;
     private static final Logger LOGGER;
 
-    public EgovFormBasedFileUtil() {
-    }
-
     public static String getTodayString() {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         return format.format(new Date());
@@ -191,6 +188,8 @@ public class EgovFormBasedFileUtil {
                 while ((read = fin.read(b)) != -1) {
                     outs.write(b, 0, read);
                 }
+            } catch (IOException e) {
+                throw new RuntimeException("EgovFormBasedFileUtil :: viewFile : IOException ");
             } finally {
                 EgovResourceCloseHelper.close(new Closeable[]{outs, fin});
             }

@@ -59,7 +59,7 @@ public class EgovFormBasedFileVo implements Serializable {
     }
 
     public String getName() {
-        return this.fileName;
+        return this.name;
     }
 
     public String getUrl() {
