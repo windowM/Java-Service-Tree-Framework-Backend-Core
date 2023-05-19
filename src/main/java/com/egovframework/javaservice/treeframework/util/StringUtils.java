@@ -334,24 +334,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
         return bool;
     }
 
-    /**
-     * 검색 결과 날짜표기 MM/DD
-     * @param value
-     * @return
-     */
-    public static String historyDate(String value) {
-        return !(nvl(value, "").length() == 0) && value.length() == 8 ? value = value.substring(4, 6) + "/" + value.substring(6, 8) : "";
-    }
 
-
-    /**
-     * 검색 결과 날짜표기 YYYY.MM.DD
-     * @param value
-     * @return
-     */
-    public static String historyDate2(String value) {
-        return !(nvl(value, "").length() == 0) && value.length() == 8 ? value = value.substring(0, 4) + "." + value.substring(4, 6) + "." + value.substring(6, 8) : "";
-    }
     /**
      * 콤마 추가
      * @param data
