@@ -88,30 +88,33 @@ public class EgovFormBasedFileUtil {
             while (iter.hasNext()) {
                 FileItemStream item = iter.next();
                 String name = item.getFieldName();
-                InputStream stream = item.openStream();
-                if (item.isFormField()) {
-                    LOGGER.info("Form field '{}' with value '{}' detected.", name, Streams.asString(stream));
-                } else {
-                    LOGGER.info("File field '{}' with file name '{}' detected.", name, item.getName());
-                    if (!"".equals(item.getName())) {
-                        EgovFormBasedFileVo vo = new EgovFormBasedFileVo();
-                        String tmp = item.getName();
-                        if (tmp.lastIndexOf("\\") >= 0) {
-                            tmp = tmp.substring(tmp.lastIndexOf("\\") + 1);
-                        }
+                try (InputStream stream = item.openStream()) {
+                    if (item.isFormField()) {
+                        LOGGER.info("Form field '{}' with value '{}' detected.", name, Streams.asString(stream));
+                    } else {
+                        LOGGER.info("File field '{}' with file name '{}' detected.", name, item.getName());
+                        if (!"".equals(item.getName())) {
+                            EgovFormBasedFileVo vo = new EgovFormBasedFileVo();
+                            String tmp = item.getName();
+                            if (tmp.lastIndexOf("\\") >= 0) {
+                                tmp = tmp.substring(tmp.lastIndexOf("\\") + 1);
+                            }
 
-                        vo.setFileName(tmp);
-                        vo.setContentType(item.getContentType());
-                        vo.setServerSubPath(getTodayString());
-                        vo.setPhysicalName(getPhysicalFileName());
-                        if (tmp.lastIndexOf(".") >= 0) {
-                            vo.setPhysicalName(vo.getPhysicalName() + tmp.substring(tmp.lastIndexOf(".")));
-                        }
+                            vo.setFileName(tmp);
+                            vo.setContentType(item.getContentType());
+                            vo.setServerSubPath(getTodayString());
+                            vo.setPhysicalName(getPhysicalFileName());
+                            if (tmp.lastIndexOf(".") >= 0) {
+                                vo.setPhysicalName(vo.getPhysicalName() + tmp.substring(tmp.lastIndexOf(".")));
+                            }
 
-                        long size = saveFile(stream, new File(EgovWebUtil.filePathBlackList(where) + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName()));
-                        vo.setSize(size);
-                        list.add(vo);
+                            long size = saveFile(stream, new File(EgovWebUtil.filePathBlackList(where) + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName()));
+                            vo.setSize(size);
+                            list.add(vo);
+                        }
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException("EgovFormBasedFileUtil :: uploadFiles :: InputStream IOException");
                 }
             }
 

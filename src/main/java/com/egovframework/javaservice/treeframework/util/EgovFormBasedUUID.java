@@ -17,7 +17,19 @@ public class EgovFormBasedUUID implements Serializable {
     private transient int sequence = -1;
     private transient long node = -1L;
     private transient int hashCode = -1;
+
     private static volatile SecureRandom numberGenerator = null;
+    private static final Object lock = new Object();
+    public static SecureRandom getNumberGenerator() {
+        if (numberGenerator == null) {
+            synchronized (lock) {
+                if (numberGenerator == null) {
+                    numberGenerator = new SecureRandom();
+                }
+            }
+        }
+        return numberGenerator;
+    }
 
     private EgovFormBasedUUID(byte[] data) {
         long msb = 0L;

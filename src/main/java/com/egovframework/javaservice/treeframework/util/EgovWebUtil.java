@@ -4,8 +4,6 @@ package com.egovframework.javaservice.treeframework.util;
 import java.util.regex.Pattern;
 
 public class EgovWebUtil {
-    public EgovWebUtil() {
-    }
 
     public static String clearXSSMinimum(String value) {
         if (value != null && !value.trim().equals("")) {
@@ -14,7 +12,7 @@ public class EgovWebUtil {
             returnValue = returnValue.replaceAll(">", "&gt;");
             returnValue = returnValue.replaceAll("\"", "&#34;");
             returnValue = returnValue.replaceAll("'", "&#39;");
-            returnValue = returnValue.replaceAll(".", "&#46;");
+            returnValue = returnValue.replaceAll("\\.", "&#46;");
             returnValue = returnValue.replaceAll("%2E", "&#46;");
             returnValue = returnValue.replaceAll("%2F", "&#47;");
             return returnValue;
@@ -47,7 +45,7 @@ public class EgovWebUtil {
     public static String filePathReplaceAll(String value) {
         if (value != null && !value.trim().equals("")) {
             String returnValue = value.replaceAll("/", "");
-            returnValue = returnValue.replaceAll("\\", "");
+            returnValue = returnValue.replaceAll("\\\\", "");
             returnValue = returnValue.replaceAll("\\.\\.", "");
             returnValue = returnValue.replaceAll("&", "");
             return returnValue;
@@ -74,6 +72,6 @@ public class EgovWebUtil {
     }
 
     public static String removeOSCmdRisk(String parameter) {
-        return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("|", "").replaceAll(";", "");
+        return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("\\|", "").replaceAll(";", "");
     }
 }
