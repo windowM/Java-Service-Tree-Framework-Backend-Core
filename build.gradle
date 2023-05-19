@@ -182,6 +182,9 @@ dependencies {
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
     implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
 
+    // modelmapper
+    implementation 'org.modelmapper:modelmapper:3.1.1'
+
     // dwr
     implementation group: 'org.directwebremoting', name: 'dwr', version: '3.0.2-RELEASE'
 
@@ -213,6 +216,7 @@ dependencies {
     // poi
     implementation 'org.apache.poi:poi:5.1.0'
     implementation 'org.apache.poi:poi-ooxml:5.1.0'
+
 
 }
 

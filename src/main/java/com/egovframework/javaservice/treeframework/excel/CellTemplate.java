@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 public class CellTemplate implements Comparable<CellTemplate> {
 
-    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
 
     private Field field;
     private String annotation_headerName;

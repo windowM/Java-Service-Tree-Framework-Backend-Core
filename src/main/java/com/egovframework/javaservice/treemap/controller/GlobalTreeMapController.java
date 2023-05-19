@@ -139,7 +139,7 @@ public class GlobalTreeMapController {
                 log.info("already registered : getPdserviceversion_link" + data.getPdserviceversion_link());
                 log.info("already registered : getJiraproject_link" + data.getJiraproject_link());
 
-                jiraProjectList.remove(data);
+                //jiraProjectList.remove(data);
 
             }else {
                 //등록은 되 있으나, 매치되지 않은 데이터 : 삭제 대상.

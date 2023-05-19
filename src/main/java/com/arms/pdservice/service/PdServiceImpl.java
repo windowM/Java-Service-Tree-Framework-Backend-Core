@@ -234,7 +234,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
             fileRepositoryEntity.setDelete_url(egovFormBasedFileVo.getDelete_url());
             fileRepositoryEntity.setDelete_type(egovFormBasedFileVo.getDelete_type());
 
-            fileRepositoryEntity.setRef(new Long(2));
+            fileRepositoryEntity.setRef(TreeConstant.First_Node_CID);
             fileRepositoryEntity.setC_title("for PdService");
             fileRepositoryEntity.setC_type("default");
 
@@ -265,7 +265,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         for ( PdServiceVersionEntity verNode : versionSet){
 
-            if ( verNode.getC_id() == pdServiceVersionEntity.getC_id() ) {
+            if ( verNode.getC_id().equals(pdServiceVersionEntity.getC_id()) ) {
                 versionSet.remove(verNode);
             }
         }
