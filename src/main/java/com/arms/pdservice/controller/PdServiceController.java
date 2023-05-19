@@ -12,6 +12,7 @@
 package com.arms.pdservice.controller;
 
 import com.arms.filerepository.model.FileRepositoryEntity;
+import com.arms.pdservice.model.PdServiceDTO;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdservice.service.PdService;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
@@ -59,9 +60,12 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             value = {"/addPdServiceNode.do"},
             method = {RequestMethod.POST}
     )
-    public ResponseEntity<?> addPdServiceNode(@Validated({AddNode.class}) PdServiceEntity pdServiceEntity,
+    public ResponseEntity<?> addPdServiceNode(@Validated({AddNode.class}) PdServiceDTO pdServiceDTO,
                                          BindingResult bindingResult, ModelMap model) throws Exception {
+
         log.info("PdServiceController :: addPdServiceNode");
+        PdServiceEntity pdServiceEntity = modelMapper.map(pdServiceDTO, PdServiceEntity.class);
+
         return ResponseEntity.ok(CommonResponse.success(pdService.addPdServiceAndVersion(pdServiceEntity)));
     }
 
@@ -69,16 +73,23 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             value = {"/addVersionToNode.do"},
             method = {RequestMethod.POST}
     )
-    public ResponseEntity<?>  addVersionToNode(@RequestBody PdServiceEntity pdServiceEntity,
+    public ResponseEntity<?> addVersionToNode(@RequestBody PdServiceDTO pdServiceDTO,
                                               BindingResult bindingResult, ModelMap model) throws Exception {
+
+        log.info("PdServiceController :: addVersionToNode");
+        PdServiceEntity pdServiceEntity = modelMapper.map(pdServiceDTO, PdServiceEntity.class);
 
         return ResponseEntity.ok(CommonResponse.success(pdService.addPdServiceVersion(pdServiceEntity)));
     }
 
     @ResponseBody
     @RequestMapping(value = "/addEndNodeByRoot.do", method = RequestMethod.POST)
-    public ResponseEntity<?> addEndNodeByRoot(@RequestBody PdServiceEntity pdServiceEntity,
+    public ResponseEntity<?> addEndNodeByRoot(@RequestBody PdServiceDTO pdServiceDTO,
                                          BindingResult bindingResult) throws Exception {
+
+        log.info("PdServiceController :: addEndNodeByRoot");
+        PdServiceEntity pdServiceEntity = modelMapper.map(pdServiceDTO, PdServiceEntity.class);
+
         return ResponseEntity.ok(CommonResponse.success(pdService.addNodeToEndPosition(pdServiceEntity)));
     }
 
@@ -112,7 +123,10 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             value = {"/getPdServiceMonitor.do"},
             method = {RequestMethod.GET}
     )
-    public ResponseEntity<?> getPdServiceMonitor(PdServiceEntity pdServiceEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> getPdServiceMonitor(PdServiceDTO pdServiceDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("PdServiceController :: getPdServiceMonitor");
+        PdServiceEntity pdServiceEntity = modelMapper.map(pdServiceDTO, PdServiceEntity.class);
 
         return ResponseEntity.ok(CommonResponse.success(pdService.getNodesWithoutRoot(pdServiceEntity)));
 
@@ -123,7 +137,10 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
             value = {"/getVersionList.do"},
             method = {RequestMethod.GET}
     )
-    public ResponseEntity<?> getVersionList(PdServiceEntity pdServiceEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> getVersionList(PdServiceDTO pdServiceDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("PdServiceController :: getVersionList");
+        PdServiceEntity pdServiceEntity = modelMapper.map(pdServiceDTO, PdServiceEntity.class);
 
         PdServiceEntity pdServiceNode = pdService.getNode(pdServiceEntity);
         Set<PdServiceVersionEntity> pdServiceVersionList = pdServiceNode.getPdServiceVersionEntities();
@@ -132,10 +149,10 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
     }
 
     @RequestMapping(value="/removeVersion.do", method= RequestMethod.DELETE)
-    public ModelAndView removeVersion(PdServiceVersionEntity treeSearchEntity, HttpServletRequest request) throws Exception {
+    public ModelAndView removeVersion(PdServiceVersionEntity pdServiceVersionEntity, HttpServletRequest request) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", pdService.removeVersionNode(treeSearchEntity));
+        modelAndView.addObject("result", pdService.removeVersionNode(pdServiceVersionEntity));
         return modelAndView;
     }
 

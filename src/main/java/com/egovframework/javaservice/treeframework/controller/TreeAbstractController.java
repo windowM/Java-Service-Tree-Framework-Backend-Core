@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiOperation;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.modelmapper.ModelMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -40,6 +42,9 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     private T treeService;
     private V returnVO;
+
+    @Autowired
+    protected ModelMapper modelMapper;
 
     public void setTreeService(T treeService) {
         this.treeService = treeService;

@@ -11,6 +11,7 @@
  */
 package com.arms.filerepository.controller;
 
+import com.arms.filerepository.model.FileRepositoryDTO;
 import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
 import com.arms.pdservice.service.PdService;
@@ -59,7 +60,7 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
 
     @ResponseBody
     @RequestMapping(value = "/getFilesByNode.do", method = RequestMethod.GET)
-    public ModelAndView getFilesByNode(FileRepositoryEntity fileRepositoryEntity, HttpServletRequest request) throws Exception {
+    public ModelAndView getFilesByNode(FileRepositoryDTO fileRepositoryDTO, HttpServletRequest request) throws Exception {
 
         ParameterParser parser = new ParameterParser(request);
         HashMap<String, Set<FileRepositoryEntity>> returnMap = fileRepository.getFileSetByFileIdLink(parser);
