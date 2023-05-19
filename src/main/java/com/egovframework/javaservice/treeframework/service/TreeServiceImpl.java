@@ -85,7 +85,7 @@ public class TreeServiceImpl implements TreeService {
         treeDao.getCurrentSession().setCacheMode(CacheMode.IGNORE);
         int totalCount = treeDao.getCount(treeSearchEntity);
 
-        double calPageSize = Math.ceil(totalCount / treeSearchEntity.getPageUnit());
+        double calPageSize = Math.ceil((double) totalCount / treeSearchEntity.getPageUnit());
         int autoPageSize = (int) Math.round(calPageSize);
 
         /** paging */
