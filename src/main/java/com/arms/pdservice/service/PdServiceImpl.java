@@ -102,7 +102,7 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
         //Default Version 생성
         PdServiceVersionEntity baseVerNode = new PdServiceVersionEntity();
-        baseVerNode.setRef(2L);
+        baseVerNode.setRef(TreeConstant.First_Node_CID);
         baseVerNode.setC_title("BaseVersion");
         baseVerNode.setC_type(TreeConstant.Leaf_Node_TYPE);
         baseVerNode.setC_pds_version_start_date("start");

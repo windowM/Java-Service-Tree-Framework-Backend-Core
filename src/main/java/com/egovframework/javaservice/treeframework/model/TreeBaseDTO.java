@@ -1,7 +1,14 @@
 package com.egovframework.javaservice.treeframework.model;
 
+import lombok.*;
+
 import javax.persistence.MappedSuperclass;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
 public abstract class TreeBaseDTO {
 

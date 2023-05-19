@@ -81,7 +81,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         if (template != null) {
             T returnObj = template.get(getEntityClass(), id);
             if(returnObj == null){
-                throw new RuntimeException("TreeAbstractDao :: getUnique -returnObj is null");
+                throw new RuntimeException("TreeAbstractDao :: getUnique : returnObj is null");
             }else{
                 return returnObj;
             }
