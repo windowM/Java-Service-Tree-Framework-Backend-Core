@@ -34,8 +34,8 @@ ext {
     //artifactType = System.getenv("ARTIFACT_TYPE") ? System.getenv("ARTIFACT_TYPE").toUpperCase() : "SNAPSHOT"
     //repositoryType = "${artifactType}".equalsIgnoreCase("RELEASE") ? "release" : "snapshot"
     //업로드 타입 정의 ( maven-release, maven-snapshot, ${repositoryType})
-    repositoryUrl = "http://www.313.co.kr/nexus/repository/ple-releases"
-    metadataUrl = "${repositoryUrl}/313devgrp/Java-Service-Tree-Framework-Backend-Core/maven-metadata.xml"
+    repositoryUrl = "http://www.313.co.kr/nexus/repository/ple-releases/"
+    metadataUrl = "${repositoryUrl}313devgrp/Java-Service-Tree-Framework-Backend-Core/maven-metadata.xml"
 
     //version 정보
     majorVersion = 23
@@ -125,6 +125,7 @@ publishing {
                 password mvnCredential["password"]
             }
             url "${repositoryUrl}"
+            allowInsecureProtocol true
         }
     }
 
