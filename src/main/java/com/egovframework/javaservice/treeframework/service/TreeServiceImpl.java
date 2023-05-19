@@ -85,7 +85,8 @@ public class TreeServiceImpl implements TreeService {
         treeDao.getCurrentSession().setCacheMode(CacheMode.IGNORE);
         int totalCount = treeDao.getCount(treeSearchEntity);
 
-        int autoPageSize = (int) Math.ceil(totalCount / treeSearchEntity.getPageUnit());
+        double calPageSize = Math.ceil(totalCount / treeSearchEntity.getPageUnit());
+        int autoPageSize = (int) Math.round(calPageSize);
 
         /** paging */
         PaginationInfo paginationInfo = treeSearchEntity.getPaginationInfo();
@@ -824,7 +825,7 @@ public class TreeServiceImpl implements TreeService {
                     logger.debug("0번 노드의 위치값=" + session.getAttribute(tableName + "_settedPosition"));
                 }
 
-                long increasePosition = 0;
+                long increasePosition = 0L;
 
                 final boolean isMultiNodeOfPositionsAtZeroThanBehind = ((Integer) session
                         .getAttribute("settedPosition") < nodeById.getC_position());
@@ -834,16 +835,16 @@ public class TreeServiceImpl implements TreeService {
                         logger.debug(">>>>>>>>>>>>>>>멀티 노드의 위치가 0번 노드보다 뒤일때");
                     }
 
-                    increasePosition = (Integer) session.getAttribute(tableName + "_settedPosition") + 1;
+                    increasePosition = NumberUtils.toLong(session.getAttribute(tableName + "_settedPosition").toString()) + 1L;
                 } else {
                     if (logger.isDebugEnabled()) {
                         logger.debug(">>>>>>>>>>>>>>>멀티 노드의 위치가 0번 노드보다 앞일때");
                     }
 
                     if (treeSearchEntity.isCopied()) {
-                        increasePosition = (Integer) session.getAttribute(tableName + "_settedPosition") + 1;
+                        increasePosition = NumberUtils.toLong(session.getAttribute(tableName + "_settedPosition").toString()) + 1L;
                     } else {
-                        increasePosition = (Integer) session.getAttribute(tableName + "_settedPosition");
+                        increasePosition = NumberUtils.toLong(session.getAttribute(tableName + "_settedPosition").toString());
                     }
 
                 }
@@ -858,7 +859,7 @@ public class TreeServiceImpl implements TreeService {
                         logger.debug(">>>>>>>>>>>>>>>원래 노드 위치값과 최종 계산된 노드의 위치값이 동일한 경우");
                     }
 
-                    session.setAttribute(tableName + "_settedPosition", increasePosition - 1);
+                    session.setAttribute(tableName + "_settedPosition", increasePosition - 1L);
                 }
 
                 if (logger.isDebugEnabled()) {

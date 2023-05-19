@@ -13,6 +13,8 @@ public class TreeConstant {
     public static final String REQADD_PREFIX_TABLENAME = "T_ARMS_REQADD_";
     public static final String REQSTATUS_PREFIX_TABLENAME = "T_ARMS_REQSTATUS_";
 
+    public static final Long MAX_UPLOAD_FILESIZE = 313L;
+
 
 
 }
