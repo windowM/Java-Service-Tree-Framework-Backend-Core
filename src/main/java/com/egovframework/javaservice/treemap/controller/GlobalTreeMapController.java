@@ -156,9 +156,9 @@ public class GlobalTreeMapController {
 
             List<GlobalTreeMapEntity> checkList = globalTreeMapService.findAllBy(saveTarget);
             List<GlobalTreeMapEntity> checkDuplicate = checkList.stream().filter(data ->
-                    data.getPdservice_link() == saveTarget.getPdservice_link() &&
-                            data.getPdserviceversion_link() == saveTarget.getPdserviceversion_link() &&
-                            data.getJiraproject_link() == saveTarget.getJiraproject_link()
+                    data.getPdservice_link().equals(saveTarget.getPdservice_link()) &&
+                            data.getPdserviceversion_link().equals(saveTarget.getPdserviceversion_link()) &&
+                            data.getJiraproject_link().equals(saveTarget.getJiraproject_link())
             ).collect(Collectors.toList());
 
             if( checkDuplicate == null || checkDuplicate.isEmpty() == true) {
