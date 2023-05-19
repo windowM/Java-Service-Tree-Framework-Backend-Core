@@ -7,6 +7,7 @@ import com.egovframework.javaservice.treemap.model.GlobalTreeMapEntity;
 import com.egovframework.javaservice.treemap.service.GlobalTreeMapService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
@@ -130,7 +131,7 @@ public class GlobalTreeMapController {
         // 2. 찾은 리스트를 중심으로 루프를 돌면서 삭제할거 삭제하고
         for(GlobalTreeMapEntity data : filteredList){
             Long jiraProjectLink = data.getJiraproject_link();
-            boolean alreadyRegist = jiraProjectList.stream().anyMatch(dataObj -> jiraProjectLink.equals(dataObj));
+            boolean alreadyRegist = jiraProjectList.stream().anyMatch(dataObj -> jiraProjectLink == NumberUtils.toLong(dataObj) );
 
             if(alreadyRegist){
                 //이미 등록된 데이터.
