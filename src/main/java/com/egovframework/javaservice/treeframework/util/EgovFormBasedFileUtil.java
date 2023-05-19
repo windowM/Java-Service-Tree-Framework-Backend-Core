@@ -153,6 +153,8 @@ public class EgovFormBasedFileUtil {
                 while ((read = fin.read(b)) != -1) {
                     outs.write(b, 0, read);
                 }
+            } catch (IOException e) {
+                throw new RuntimeException("EgovFormBasedFileUtil :: viewFile : IOException ");
             } finally {
                 EgovResourceCloseHelper.close(new Closeable[]{outs, fin});
             }
