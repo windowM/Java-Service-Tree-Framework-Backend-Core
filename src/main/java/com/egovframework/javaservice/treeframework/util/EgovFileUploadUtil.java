@@ -18,41 +18,45 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 
         while(fileIter.hasNext()) {
             MultipartFile mFile = mptRequest.getFile((String)fileIter.next());
-            EgovFormBasedFileVo vo = new EgovFormBasedFileVo();
-            String tmp = mFile.getOriginalFilename();
-            if( tmp != null){
-                if (tmp.lastIndexOf("\\") >= 0) {
-                    tmp = tmp.substring(tmp.lastIndexOf("\\") + 1);
-                }
-
-                vo.setFileName(tmp);
-                vo.setContentType(mFile.getContentType());
-                vo.setServerSubPath(getTodayString());
-                vo.setPhysicalName(getPhysicalFileName());
-                vo.setSize(mFile.getSize());
-                if (tmp.lastIndexOf(".") >= 0) {
-                    vo.setPhysicalName(vo.getPhysicalName());
-                }
-
-                if (mFile.getSize() > 0L) {
-                    InputStream is = null;
-
-                    try {
-                        is = mFile.getInputStream();
-                        saveFile(is, new File(EgovWebUtil.filePathBlackList(where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName())));
-                    } finally {
-                        if (is != null) {
-                            is.close();
-                        }
-
+            if( mFile != null){
+                EgovFormBasedFileVo vo = new EgovFormBasedFileVo();
+                String tmp = mFile.getOriginalFilename();
+                if( tmp != null){
+                    if (tmp.lastIndexOf("\\") >= 0) {
+                        tmp = tmp.substring(tmp.lastIndexOf("\\") + 1);
                     }
 
-                    list.add(vo);
-                }
-            }else{
-                throw new RuntimeException("EgovFileUploadUtil :: uploadFiles : mFile.getOriginalFilename() is null");
-            }
+                    vo.setFileName(tmp);
+                    vo.setContentType(mFile.getContentType());
+                    vo.setServerSubPath(getTodayString());
+                    vo.setPhysicalName(getPhysicalFileName());
+                    vo.setSize(mFile.getSize());
+                    if (tmp.lastIndexOf(".") >= 0) {
+                        vo.setPhysicalName(vo.getPhysicalName());
+                    }
 
+                    if (mFile.getSize() > 0L) {
+                        InputStream is = null;
+
+                        try {
+                            is = mFile.getInputStream();
+                            saveFile(is, new File(EgovWebUtil.filePathBlackList(where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName())));
+                        } finally {
+                            if (is != null) {
+                                is.close();
+                            }
+
+                        }
+
+                        list.add(vo);
+                    }
+                }else{
+                    throw new RuntimeException("EgovFileUploadUtil :: uploadFiles : mFile.getOriginalFilename() is null");
+                }
+
+            }else{
+                throw new RuntimeException("EgovFileUploadUtil :: uploadFiles : MultipartFile is null");
+            }
         }
 
         return list;
