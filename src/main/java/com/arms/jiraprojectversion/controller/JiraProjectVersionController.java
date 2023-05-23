@@ -11,6 +11,8 @@
  */
 package com.arms.jiraprojectversion.controller;
 
+import com.arms.jiraprojectversion.model.JiraProjectVersionDTO;
+import com.arms.jiraprojectversionlog.model.JiraProjectVersionLogEntity;
 import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/jiraProjectVersion"})
-public class JiraProjectVersionController extends TreeAbstractController<JiraProjectVersion, JiraProjectVersionEntity> {
+public class JiraProjectVersionController extends TreeAbstractController<JiraProjectVersion, JiraProjectVersionDTO, JiraProjectVersionEntity> {
 
     @Autowired
     @Qualifier("jiraProjectVersion")
@@ -43,6 +45,7 @@ public class JiraProjectVersionController extends TreeAbstractController<JiraPro
     @PostConstruct
     public void initialize() {
         setTreeService(jiraProjectVersion);
+        setTreeEntity(JiraProjectVersionEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

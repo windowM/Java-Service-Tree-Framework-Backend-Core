@@ -11,6 +11,8 @@
  */
 package com.arms.pdsreqjiraissuelog.controller;
 
+import com.arms.pdsreqjiraissue.model.PdsReqJiraIssueEntity;
+import com.arms.pdsreqjiraissuelog.model.PdsReqJiraIssueLogDTO;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.pdsreqjiraissuelog.service.PdsReqJiraIssueLog;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/pdsReqJiraIssueLog"})
-public class PdsReqJiraIssueLogController extends TreeAbstractController<PdsReqJiraIssueLog, PdsReqJiraIssueLogEntity> {
+public class PdsReqJiraIssueLogController extends TreeAbstractController<PdsReqJiraIssueLog, PdsReqJiraIssueLogDTO, PdsReqJiraIssueLogEntity> {
 
     @Autowired
     @Qualifier("pdsReqJiraIssueLog")
@@ -37,6 +39,7 @@ public class PdsReqJiraIssueLogController extends TreeAbstractController<PdsReqJ
     @PostConstruct
     public void initialize() {
         setTreeService(pdsReqJiraIssueLog);
+        setTreeEntity(PdsReqJiraIssueLogEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

@@ -11,6 +11,8 @@
  */
 package com.arms.reqstatus.controller;
 
+import com.arms.reqstatelog.model.ReqStateLogEntity;
+import com.arms.reqstatus.model.ReqStatusDTO;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.reqstatus.service.ReqStatus;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/reqStatus"})
-public class ReqStatusController extends TreeAbstractController<ReqStatus, ReqStatusEntity> {
+public class ReqStatusController extends TreeAbstractController<ReqStatus, ReqStatusDTO, ReqStatusEntity> {
 
     @Autowired
     @Qualifier("reqStatus")
@@ -37,6 +39,7 @@ public class ReqStatusController extends TreeAbstractController<ReqStatus, ReqSt
     @PostConstruct
     public void initialize() {
         setTreeService(reqStatus);
+        setTreeEntity(ReqStatusEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

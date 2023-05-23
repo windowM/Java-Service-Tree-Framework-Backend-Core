@@ -14,6 +14,7 @@ package com.arms.filerepository.controller;
 import com.arms.filerepository.model.FileRepositoryDTO;
 import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.filerepository.service.FileRepository;
+import com.arms.filerepositorylog.model.FileRepositoryLogEntity;
 import com.arms.pdservice.service.PdService;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import com.egovframework.javaservice.treeframework.util.PropertiesReader;
@@ -41,7 +42,7 @@ import java.util.Set;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/fileRepository"})
-public class FileRepositoryController extends TreeAbstractController<FileRepository, FileRepositoryEntity> {
+public class FileRepositoryController extends TreeAbstractController<FileRepository, FileRepositoryDTO, FileRepositoryEntity> {
 
     @Autowired
     @Qualifier("fileRepository")
@@ -54,6 +55,7 @@ public class FileRepositoryController extends TreeAbstractController<FileReposit
     @PostConstruct
     public void initialize() {
         setTreeService(fileRepository);
+        setTreeEntity(FileRepositoryEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

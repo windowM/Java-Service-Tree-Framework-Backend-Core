@@ -11,6 +11,8 @@
  */
 package com.arms.reqreviewlog.controller;
 
+import com.arms.reqreviewcommentlog.model.ReqReviewCommentLogEntity;
+import com.arms.reqreviewlog.model.ReqReviewLogDTO;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.reqreviewlog.service.ReqReviewLog;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/reqReviewLog"})
-public class ReqReviewLogController extends TreeAbstractController<ReqReviewLog, ReqReviewLogEntity> {
+public class ReqReviewLogController extends TreeAbstractController<ReqReviewLog, ReqReviewLogDTO, ReqReviewLogEntity> {
 
     @Autowired
     @Qualifier("reqReviewLog")
@@ -37,6 +39,7 @@ public class ReqReviewLogController extends TreeAbstractController<ReqReviewLog,
     @PostConstruct
     public void initialize() {
         setTreeService(reqReviewLog);
+        setTreeEntity(ReqReviewLogEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

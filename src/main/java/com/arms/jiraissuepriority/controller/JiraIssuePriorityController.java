@@ -11,6 +11,8 @@
  */
 package com.arms.jiraissuepriority.controller;
 
+import com.arms.jiraissuepriority.model.JiraIssuePriorityDTO;
+import com.arms.jiraissueprioritylog.model.JiraIssuePriorityLogEntity;
 import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/jiraIssuePriority"})
-public class JiraIssuePriorityController extends TreeAbstractController<JiraIssuePriority, JiraIssuePriorityEntity> {
+public class JiraIssuePriorityController extends TreeAbstractController<JiraIssuePriority, JiraIssuePriorityDTO, JiraIssuePriorityEntity> {
 
     @Autowired
     @Qualifier("jiraIssuePriority")
@@ -43,6 +45,7 @@ public class JiraIssuePriorityController extends TreeAbstractController<JiraIssu
     @PostConstruct
     public void initialize() {
         setTreeService(jiraIssuePriority);
+        setTreeEntity(JiraIssuePriorityEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

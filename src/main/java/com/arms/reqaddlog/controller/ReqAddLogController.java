@@ -11,6 +11,8 @@
  */
 package com.arms.reqaddlog.controller;
 
+import com.arms.reqadd.model.ReqAddEntity;
+import com.arms.reqaddlog.model.ReqAddLogDTO;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.reqaddlog.service.ReqAddLog;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/reqAddLog"})
-public class ReqAddLogController extends TreeAbstractController<ReqAddLog, ReqAddLogEntity> {
+public class ReqAddLogController extends TreeAbstractController<ReqAddLog, ReqAddLogDTO, ReqAddLogEntity> {
 
     @Autowired
     @Qualifier("reqAddLog")
@@ -37,6 +39,7 @@ public class ReqAddLogController extends TreeAbstractController<ReqAddLog, ReqAd
     @PostConstruct
     public void initialize() {
         setTreeService(reqAddLog);
+        setTreeEntity(ReqAddLogEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

@@ -11,6 +11,8 @@
  */
 package com.egovframework.javaservice.treeframework.controller;
 
+import com.arms.pdservice.model.PdServiceEntity;
+import com.egovframework.javaservice.treeframework.model.TreeBaseDTO;
 import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.egovframework.javaservice.treeframework.service.TreeService;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
@@ -19,6 +21,7 @@ import com.egovframework.javaservice.treeframework.validation.group.*;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -37,11 +40,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Api("TreeFramework")
-public abstract class TreeAbstractController<T extends TreeService, V extends TreeSearchEntity> {
+public abstract class TreeAbstractController<T extends TreeService, D extends TreeBaseDTO, V extends TreeSearchEntity> {
 
     private T treeService;
-    private V returnVO;
+    private Class<V> treeEntity;
 
     @Autowired
     protected ModelMapper modelMapper;
@@ -49,11 +53,18 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     public void setTreeService(T treeService) {
         this.treeService = treeService;
     }
+    public void setTreeEntity(Class<V> treeEntity) {
+        this.treeEntity = treeEntity;
+    }
 
     @ApiOperation(  value = "[Select] TreeFramework의 GetNode" )
     @ResponseBody
     @RequestMapping(value = "/getNode.do", method = RequestMethod.GET)
-    public ModelAndView getNode(V treeSearchEntity, HttpServletRequest request) throws Exception {
+    public ModelAndView getNode(D treeBaseDTO, HttpServletRequest request) throws Exception {
+
+        log.info("TreeAbstractController :: getNode");
+
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         ParameterParser parser = new ParameterParser(request);
 
@@ -70,8 +81,11 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/getChildNode.do", method = RequestMethod.GET)
-    public ModelAndView getChildNode(V treeSearchEntity, HttpServletRequest request)
+    public ModelAndView getChildNode(D treeBaseDTO, HttpServletRequest request)
             throws Exception {
+
+        log.info("TreeAbstractController :: getChildNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         ParameterParser parser = new ParameterParser(request);
 
@@ -89,7 +103,11 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/getNodesWithoutRoot.do", method = RequestMethod.GET)
-    public ModelAndView getNodesWithoutRoot(V treeSearchEntity) throws Exception {
+    public ModelAndView getNodesWithoutRoot(D treeBaseDTO) throws Exception {
+
+        log.info("TreeAbstractController :: getNodesWithoutRoot");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
+
         treeSearchEntity.setOrder(Order.desc("c_id"));
         Criterion criterion = Restrictions.not(
                 // replace "id" below with property name, depending on what you're filtering against
@@ -108,8 +126,11 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/getPaginatedChildNode.do", method = RequestMethod.GET)
-    public ModelAndView getPaginatedChildNode(V treeSearchEntity, ModelMap model,
+    public ModelAndView getPaginatedChildNode(D treeBaseDTO, ModelMap model,
                                               HttpServletRequest request) throws Exception {
+
+        log.info("TreeAbstractController :: getPaginatedChildNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         if (treeSearchEntity.getC_id() <= 0 || treeSearchEntity.getPageIndex() <= 0
                 || treeSearchEntity.getPageUnit() <= 0 || treeSearchEntity.getPageSize() <= 0) {
@@ -129,8 +150,11 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/searchNode.do", method = RequestMethod.GET)
-    public ModelAndView searchNode(V treeSearchEntity, ModelMap model, HttpServletRequest request)
+    public ModelAndView searchNode(D treeBaseDTO, ModelMap model, HttpServletRequest request)
             throws Exception {
+
+        log.info("TreeAbstractController :: searchNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         ParameterParser parser = new ParameterParser(request);
 
@@ -147,8 +171,12 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     @ApiOperation(  value = "[Insert] TreeFramework의 AddNode")
     @ResponseBody
     @RequestMapping(value = "/addNode.do", method = RequestMethod.POST)
-    public ModelAndView addNode(@Validated(value = AddNode.class) V treeSearchEntity,
+    public ModelAndView addNode(@Validated(value = AddNode.class) D treeBaseDTO,
                                 BindingResult bindingResult, ModelMap model) throws Exception {
+
+        log.info("TreeAbstractController :: addNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
+
         if (bindingResult.hasErrors())
             throw new RuntimeException("binding error : " + bindingResult.toString());
 
@@ -161,8 +189,12 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/removeNode.do", method = RequestMethod.DELETE)
-    public ModelAndView removeNode(@Validated(value = RemoveNode.class) V treeSearchEntity,
+    public ModelAndView removeNode(@Validated(value = RemoveNode.class) D treeBaseDTO,
                                    BindingResult bindingResult, ModelMap model) throws Exception {
+
+        log.info("TreeAbstractController :: removeNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
+
         if (bindingResult.hasErrors())
             throw new RuntimeException("binding error : " + bindingResult.toString());
 
@@ -186,8 +218,11 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/updateNode.do", method = RequestMethod.PUT)
-    public ModelAndView updateNode(@Validated(value = UpdateNode.class) V treeSearchEntity,
+    public ModelAndView updateNode(@Validated(value = UpdateNode.class) D treeBaseDTO,
                                    BindingResult bindingResult, HttpServletRequest request, ModelMap model) throws Exception {
+
+        log.info("TreeAbstractController :: updateNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("binding error : " + bindingResult.toString());
@@ -200,11 +235,15 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/alterNode.do", method = RequestMethod.PUT)
-    public ModelAndView alterNode(@Validated(value = AlterNode.class) V treeSearchEntity,
+    public ModelAndView alterNode(@Validated(value = AlterNode.class) D treeBaseDTO,
                                   BindingResult bindingResult, ModelMap model) throws Exception {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("binding error : " + bindingResult.toString());
         }
+
+        log.info("TreeAbstractController :: alterNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
+
 
         treeSearchEntity.setC_title(Util_TitleChecker.StringReplace(treeSearchEntity.getC_title()));
 
@@ -218,11 +257,15 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/alterNodeType.do", method = RequestMethod.PUT)
-    public ModelAndView alterNodeType(@Validated(value = AlterNodeType.class) V treeSearchEntity,
+    public ModelAndView alterNodeType(@Validated(value = AlterNodeType.class) D treeBaseDTO,
                                       BindingResult bindingResult, ModelMap model) throws Exception {
+
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("binding error : " + bindingResult.toString());
         }
+
+        log.info("TreeAbstractController :: alterNodeType");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         treeService.alterNodeType(treeSearchEntity);
         setJsonDefaultSetting(treeSearchEntity);
@@ -233,10 +276,14 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/moveNode.do", method = RequestMethod.POST)
-    public ModelAndView moveNode(@Validated(value = MoveNode.class) V treeSearchEntity,
+    public ModelAndView moveNode(@Validated(value = MoveNode.class) D treeBaseDTO,
                                  BindingResult bindingResult, ModelMap model, HttpServletRequest request) throws Exception {
+
         if (bindingResult.hasErrors())
             throw new RuntimeException("binding error : " + bindingResult.toString());
+
+        log.info("TreeAbstractController :: moveNode");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         treeService.moveNode(treeSearchEntity, request);
         setJsonDefaultSetting(treeSearchEntity);
@@ -249,6 +296,9 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
     @ResponseBody
     @RequestMapping(value = "/analyzeNode.do", method = RequestMethod.GET)
     public ModelAndView analyzeNode(ModelMap model) {
+
+        log.info("TreeAbstractController :: analyzeNode");
+
         model.addAttribute("analyzeResult", "");
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
@@ -258,8 +308,11 @@ public abstract class TreeAbstractController<T extends TreeService, V extends Tr
 
     @ResponseBody
     @RequestMapping(value = "/getMonitor.do", method = RequestMethod.GET)
-    public ModelAndView getMonitor(V treeSearchEntity, ModelMap model, HttpServletRequest request)
+    public ModelAndView getMonitor(D treeBaseDTO, ModelMap model, HttpServletRequest request)
             throws Exception {
+
+        log.info("TreeAbstractController :: getMonitor");
+        V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         treeSearchEntity.setOrder(Order.desc("c_id"));
         List<TreeSearchEntity> list = treeService.getChildNode(treeSearchEntity);

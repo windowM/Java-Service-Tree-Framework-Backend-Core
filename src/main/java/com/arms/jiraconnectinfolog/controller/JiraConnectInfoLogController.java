@@ -11,6 +11,8 @@
  */
 package com.arms.jiraconnectinfolog.controller;
 
+import com.arms.jiraconnectinfolog.model.JiraConnectInfoLogDTO;
+import com.arms.jiraissue.model.JiraIssueEntity;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.jiraconnectinfolog.service.JiraConnectInfoLog;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/jiraConnectInfoLog"})
-public class JiraConnectInfoLogController extends TreeAbstractController<JiraConnectInfoLog, JiraConnectInfoLogEntity> {
+public class JiraConnectInfoLogController extends TreeAbstractController<JiraConnectInfoLog, JiraConnectInfoLogDTO, JiraConnectInfoLogEntity> {
 
     @Autowired
     @Qualifier("jiraConnectInfoLog")
@@ -37,6 +39,7 @@ public class JiraConnectInfoLogController extends TreeAbstractController<JiraCon
     @PostConstruct
     public void initialize() {
         setTreeService(jiraConnectInfoLog);
+        setTreeEntity(JiraConnectInfoLogEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

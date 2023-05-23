@@ -11,6 +11,8 @@
  */
 package com.arms.reqpriority.controller;
 
+import com.arms.reqcommentlog.model.ReqCommentLogEntity;
+import com.arms.reqpriority.model.ReqPriorityDTO;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.reqpriority.service.ReqPriority;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/reqPriority"})
-public class ReqPriorityController extends TreeAbstractController<ReqPriority, ReqPriorityEntity> {
+public class ReqPriorityController extends TreeAbstractController<ReqPriority, ReqPriorityDTO, ReqPriorityEntity> {
 
     @Autowired
     @Qualifier("reqPriority")
@@ -37,6 +39,7 @@ public class ReqPriorityController extends TreeAbstractController<ReqPriority, R
     @PostConstruct
     public void initialize() {
         setTreeService(reqPriority);
+        setTreeEntity(ReqPriorityEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

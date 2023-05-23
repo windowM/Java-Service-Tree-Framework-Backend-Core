@@ -11,6 +11,8 @@
  */
 package com.arms.jiraissueprioritylog.controller;
 
+import com.arms.jiraissueprioritylog.model.JiraIssuePriorityLogDTO;
+import com.arms.jiraissueresolution.model.JiraIssueResolutionEntity;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.jiraissueprioritylog.service.JiraIssuePriorityLog;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/jiraIssuePriorityLog"})
-public class JiraIssuePriorityLogController extends TreeAbstractController<JiraIssuePriorityLog, JiraIssuePriorityLogEntity> {
+public class JiraIssuePriorityLogController extends TreeAbstractController<JiraIssuePriorityLog, JiraIssuePriorityLogDTO, JiraIssuePriorityLogEntity> {
 
     @Autowired
     @Qualifier("jiraIssuePriorityLog")
@@ -37,6 +39,7 @@ public class JiraIssuePriorityLogController extends TreeAbstractController<JiraI
     @PostConstruct
     public void initialize() {
         setTreeService(jiraIssuePriorityLog);
+        setTreeEntity(JiraIssuePriorityLogEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

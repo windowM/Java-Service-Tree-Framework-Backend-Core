@@ -11,6 +11,8 @@
  */
 package com.arms.reqadd.controller;
 
+import com.arms.pdsreqjiraissuelog.model.PdsReqJiraIssueLogEntity;
+import com.arms.reqadd.model.ReqAddDTO;
 import com.arms.reqadd.model.ReqAddEntity;
 import com.arms.reqadd.service.ReqAdd;
 import com.arms.reqpriority.model.ReqPriorityEntity;
@@ -44,7 +46,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/reqAdd"})
-public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddEntity> {
+public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, ReqAddEntity> {
 
     @Autowired
     @Qualifier("reqAdd")
@@ -53,6 +55,7 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddEntit
     @PostConstruct
     public void initialize() {
         setTreeService(reqAdd);
+        setTreeEntity(ReqAddEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

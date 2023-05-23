@@ -11,6 +11,8 @@
  */
 package com.arms.pdservicelog.controller;
 
+import com.arms.pdservice.model.PdServiceEntity;
+import com.arms.pdservicelog.model.PdServiceLogDTO;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.pdservicelog.service.PdServiceLog;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/pdServiceLog"})
-public class PdServiceLogController extends TreeAbstractController<PdServiceLog, PdServiceLogEntity> {
+public class PdServiceLogController extends TreeAbstractController<PdServiceLog, PdServiceLogDTO, PdServiceLogEntity> {
 
     @Autowired
     @Qualifier("pdServiceLog")
@@ -37,6 +39,7 @@ public class PdServiceLogController extends TreeAbstractController<PdServiceLog,
     @PostConstruct
     public void initialize() {
         setTreeService(pdServiceLog);
+        setTreeEntity(PdServiceLogEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

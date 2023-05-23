@@ -11,6 +11,8 @@
  */
 package com.arms.jiraserver.controller;
 
+import com.arms.jiraserver.model.JiraServerDTO;
+import com.arms.jiraserverlog.model.JiraServerLogEntity;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.jiraserver.service.JiraServer;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/jiraServer"})
-public class JiraServerController extends TreeAbstractController<JiraServer, JiraServerEntity> {
+public class JiraServerController extends TreeAbstractController<JiraServer, JiraServerDTO, JiraServerEntity> {
 
     @Autowired
     @Qualifier("jiraServer")
@@ -37,6 +39,7 @@ public class JiraServerController extends TreeAbstractController<JiraServer, Jir
     @PostConstruct
     public void initialize() {
         setTreeService(jiraServer);
+        setTreeEntity(JiraServerEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

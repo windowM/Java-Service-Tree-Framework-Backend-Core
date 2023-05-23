@@ -44,7 +44,7 @@ import java.util.Set;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = {"/arms/pdService"})
-public class PdServiceController extends TreeAbstractController<PdService, PdServiceEntity> {
+public class PdServiceController extends TreeAbstractController<PdService, PdServiceDTO, PdServiceEntity> {
 
     @Autowired
     @Qualifier("pdService")
@@ -53,6 +53,7 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
     @PostConstruct
     public void initialize() {
         setTreeService(pdService);
+        setTreeEntity(PdServiceEntity.class);
     }
 
     @ResponseBody

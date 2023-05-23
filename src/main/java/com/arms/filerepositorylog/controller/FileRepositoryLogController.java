@@ -11,6 +11,8 @@
  */
 package com.arms.filerepositorylog.controller;
 
+import com.arms.filerepositorylog.model.FileRepositoryLogDTO;
+import com.arms.jiraconnectinfo.model.JiraConnectInfoEntity;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import com.arms.filerepositorylog.service.FileRepositoryLog;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/fileRepositoryLog"})
-public class FileRepositoryLogController extends TreeAbstractController<FileRepositoryLog, FileRepositoryLogEntity> {
+public class FileRepositoryLogController extends TreeAbstractController<FileRepositoryLog, FileRepositoryLogDTO, FileRepositoryLogEntity> {
 
     @Autowired
     @Qualifier("fileRepositoryLog")
@@ -37,6 +39,7 @@ public class FileRepositoryLogController extends TreeAbstractController<FileRepo
     @PostConstruct
     public void initialize() {
         setTreeService(fileRepositoryLog);
+        setTreeEntity(FileRepositoryLogEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

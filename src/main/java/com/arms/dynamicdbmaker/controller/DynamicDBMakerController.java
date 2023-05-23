@@ -11,6 +11,8 @@
  */
 package com.arms.dynamicdbmaker.controller;
 
+import com.arms.dynamicdbmaker.model.DynamicDBMakerDTO;
+import com.arms.pdservice.model.PdServiceEntity;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -29,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/dynamicDBMaker"})
-public class DynamicDBMakerController extends TreeAbstractController<DynamicDBMaker, DynamicDBMakerEntity> {
+public class DynamicDBMakerController extends TreeAbstractController<DynamicDBMaker, DynamicDBMakerDTO, DynamicDBMakerEntity> {
 
     @Autowired
     @Qualifier("dynamicDBMaker")
@@ -38,6 +40,7 @@ public class DynamicDBMakerController extends TreeAbstractController<DynamicDBMa
     @PostConstruct
     public void initialize() {
         setTreeService(dynamicDBMaker);
+        setTreeEntity(DynamicDBMakerEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

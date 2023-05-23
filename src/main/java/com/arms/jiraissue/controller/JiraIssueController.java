@@ -11,6 +11,8 @@
  */
 package com.arms.jiraissue.controller;
 
+import com.arms.jiraissue.model.JiraIssueDTO;
+import com.arms.jiraissuelog.model.JiraIssueLogEntity;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
@@ -37,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @Controller
 @RequestMapping(value = {"/arms/jiraIssue"})
-public class JiraIssueController extends TreeAbstractController<JiraIssue, JiraIssueEntity> {
+public class JiraIssueController extends TreeAbstractController<JiraIssue, JiraIssueDTO, JiraIssueEntity> {
 
     @Autowired
     @Qualifier("jiraIssue")
@@ -46,6 +48,7 @@ public class JiraIssueController extends TreeAbstractController<JiraIssue, JiraI
     @PostConstruct
     public void initialize() {
         setTreeService(jiraIssue);
+        setTreeEntity(JiraIssueEntity.class);
     }
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
