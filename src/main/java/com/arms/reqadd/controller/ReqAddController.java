@@ -11,6 +11,7 @@
  */
 package com.arms.reqadd.controller;
 
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.arms.pdsreqjiraissuelog.model.PdsReqJiraIssueLogEntity;
 import com.arms.reqadd.model.ReqAddDTO;
 import com.arms.reqadd.model.ReqAddEntity;
@@ -67,7 +68,10 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, 
     )
     public ModelAndView getMonitor(
             @PathVariable(value ="changeReqTableName") String changeReqTableName,
-            ReqAddEntity reqAddEntity, ModelMap model, HttpServletRequest request) throws Exception {
+            ReqAddDTO reqAddDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("ReqAddController :: getMonitor");
+        ReqAddEntity reqAddEntity = modelMapper.map(reqAddDTO, ReqAddEntity.class);
 
         SessionUtil.setAttribute("getMonitor",changeReqTableName);
 
@@ -87,7 +91,11 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, 
             method = {RequestMethod.GET}
     )
     public ModelAndView getSwitchDBChildNode(@PathVariable(value ="changeReqTableName") String changeReqTableName,
-                         ReqAddEntity reqAddDTO, HttpServletRequest request) throws Exception {
+                                             ReqAddDTO reqAddDTO, HttpServletRequest request) throws Exception {
+
+        log.info("ReqAddController :: getMonitor");
+        ReqAddEntity reqAddEntity = modelMapper.map(reqAddDTO, ReqAddEntity.class);
+
         ParameterParser parser = new ParameterParser(request);
         if (parser.getInt("c_id") <= 0) {
             throw new RuntimeException();
@@ -95,8 +103,8 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, 
 
             SessionUtil.setAttribute("getChildNode",changeReqTableName);
 
-            reqAddDTO.setWhere("c_parentid", new Long(parser.get("c_id")));
-            List<ReqAddEntity> list = reqAdd.getChildNode(reqAddDTO);
+            reqAddEntity.setWhere("c_parentid", new Long(parser.get("c_id")));
+            List<ReqAddEntity> list = reqAdd.getChildNode(reqAddEntity);
 
             SessionUtil.removeAttribute("getChildNode");
 
@@ -115,9 +123,12 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, 
             value = {"/{changeReqTableName}/getNode.do"},
             method = {RequestMethod.GET}
     )
-    public <V extends ReqAddEntity> ModelAndView getSwitchDBNode(
+    public ModelAndView getSwitchDBNode(
             @PathVariable(value ="changeReqTableName") String changeReqTableName
-            ,V reqAddDTO, HttpServletRequest request) throws Exception {
+            ,ReqAddDTO reqAddDTO, HttpServletRequest request) throws Exception {
+
+        log.info("ReqAddController :: getSwitchDBNode");
+        ReqAddEntity reqAddEntity = modelMapper.map(reqAddDTO, ReqAddEntity.class);
 
         ParameterParser parser = new ParameterParser(request);
 
@@ -127,7 +138,7 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, 
 
             SessionUtil.setAttribute("getNode",changeReqTableName);
 
-            V returnVO = reqAdd.getNode(reqAddDTO);
+            ReqAddEntity returnVO = reqAdd.getNode(reqAddEntity);
 
             ReqPriorityEntity reqPriorityEntity = new ReqPriorityEntity();
             reqPriorityEntity.setC_id(3L);
@@ -149,8 +160,11 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, 
     )
     public ResponseEntity<?> addReqNode(
             @PathVariable(value ="changeReqTableName") String changeReqTableName,
-            @Validated({AddNode.class}) ReqAddEntity reqAddEntity,
+            @Validated({AddNode.class}) ReqAddDTO reqAddDTO,
             BindingResult bindingResult, ModelMap model) throws Exception {
+
+        log.info("ReqAddController :: addReqNode");
+        ReqAddEntity reqAddEntity = modelMapper.map(reqAddDTO, ReqAddEntity.class);
 
         if (bindingResult.hasErrors()) {
             throw new RuntimeException();

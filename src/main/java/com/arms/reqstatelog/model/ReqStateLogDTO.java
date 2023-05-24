@@ -10,4 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReqStateLogDTO extends TreeBaseDTO {
+
+    private String c_contents;
+
+    private String c_etc;
+
 }

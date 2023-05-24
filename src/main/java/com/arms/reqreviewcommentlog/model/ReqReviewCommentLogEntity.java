@@ -68,7 +68,7 @@ public class ReqReviewCommentLogEntity extends TreeSearchEntity implements Seria
 
     @Column(name = "c_req_review_comment_contents")
     @Type(type="text")
-    private String c_req_review_comment;
+    private String c_req_review_comment_contents;
 
     @Column(name = "c_req_review_comment_etc")
     @Type(type="text")

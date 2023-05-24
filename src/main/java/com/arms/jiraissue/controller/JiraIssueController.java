@@ -58,9 +58,12 @@ public class JiraIssueController extends TreeAbstractController<JiraIssue, JiraI
             value = {"/makeIssueForReqAdd.do"},
             method = {RequestMethod.POST}
     )
-    public ResponseEntity<?> makeIssueForReqAdd(@Validated({AddNode.class}) JiraIssueEntity jiraIssueEntity,
+    public ResponseEntity<?> makeIssueForReqAdd(@Validated({AddNode.class}) JiraIssueDTO jiraIssueDTO,
                                               BindingResult bindingResult, ModelMap model) throws Exception {
-        log.info("PdServiceController :: addPdServiceNode");
+
+        log.info("JiraIssueController :: makeIssueForReqAdd");
+        JiraIssueEntity jiraIssueEntity = modelMapper.map(jiraIssueDTO, JiraIssueEntity.class);
+
         return ResponseEntity.ok(CommonResponse.success(jiraIssue.makeIssueForReqAdd(jiraIssueEntity)));
     }
 

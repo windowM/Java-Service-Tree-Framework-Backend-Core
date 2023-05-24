@@ -11,6 +11,7 @@
  */
 package com.arms.pdserviceversion.controller;
 
+import com.arms.jiraissue.model.JiraIssueEntity;
 import com.arms.pdservice.service.PdService;
 import com.arms.pdservicelog.model.PdServiceLogEntity;
 import com.arms.pdserviceversion.model.PdServiceVersionDTO;
@@ -59,8 +60,11 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value="/getVersionListByCids.do",method= RequestMethod.GET)
-    public ModelAndView getVersionListByCids(PdServiceVersionEntity pdServiceVersionEntity, ModelMap model,
+    public ModelAndView getVersionListByCids(PdServiceVersionDTO pdServiceVersionDTO, ModelMap model,
                                              HttpServletRequest request) throws Exception {
+
+        log.info("PdServiceVersionController :: getVersionListByCids");
+        PdServiceVersionEntity pdServiceVersionEntity = modelMapper.map(pdServiceVersionDTO, PdServiceVersionEntity.class);
 
         ParameterParser parser = new ParameterParser(request);
         String parse_c_ids = parser.get("c_ids");
@@ -76,8 +80,12 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
     }
 
     @RequestMapping(value="/updateVersionNode.do", method= RequestMethod.POST)
-    public ModelAndView updateVersionNode(PdServiceVersionEntity pdServiceVersionEntity,
+    public ModelAndView updateVersionNode(PdServiceVersionDTO pdServiceVersionDTO,
                                           BindingResult bindingResult) throws Exception {
+
+        log.info("PdServiceVersionController :: updateVersionNode");
+        PdServiceVersionEntity pdServiceVersionEntity = modelMapper.map(pdServiceVersionDTO, PdServiceVersionEntity.class);
+
         if (bindingResult.hasErrors())
             throw new RuntimeException();
 

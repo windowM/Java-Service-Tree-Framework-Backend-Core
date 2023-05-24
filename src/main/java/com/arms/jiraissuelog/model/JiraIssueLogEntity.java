@@ -47,7 +47,6 @@ public class JiraIssueLogEntity extends TreeLogBaseEntity implements Serializabl
     }
 
     //@Getter @Setter
-
     @Column(name = "c_issue_id")
     @Type(type="text")
     private String c_issue_id;

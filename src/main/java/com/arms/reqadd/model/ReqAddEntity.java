@@ -51,6 +51,7 @@ public class ReqAddEntity extends TreeSearchEntity implements Serializable {
     public Long getC_id() {
         return super.getC_id();
     }
+
     //@Getter @Setter
 
     @Column(name = "c_req_reviewer01")
