@@ -1,13 +1,17 @@
 package com.egovframework.javaservice.treemap.controller;
 
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.util.ParameterParser;
 import com.egovframework.javaservice.treeframework.util.StringUtils;
+import com.egovframework.javaservice.treemap.model.GlobalTreeMapDTO;
 import com.egovframework.javaservice.treemap.model.GlobalTreeMapEntity;
 import com.egovframework.javaservice.treemap.service.GlobalTreeMapService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.NumberUtils;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
@@ -29,12 +33,18 @@ public class GlobalTreeMapController {
 
     private final GlobalTreeMapService globalTreeMapService;
 
+    @Autowired
+    protected ModelMapper modelMapper;
+
     @ResponseBody
     @RequestMapping(
             value = {"/getAllGlobalTreeMap.do"},
             method = {RequestMethod.GET}
     )
-    public ResponseEntity<?> getAllGlobalTreeMap(GlobalTreeMapEntity globalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> getAllGlobalTreeMap(GlobalTreeMapDTO globalTreeMapDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("GlobalTreeMapController :: getAllGlobalTreeMap");
+        GlobalTreeMapEntity globalTreeMapEntity = modelMapper.map(globalTreeMapDTO, GlobalTreeMapEntity.class);
 
         return ResponseEntity.ok(CommonResponse.success(globalTreeMapService.findAllBy(globalTreeMapEntity)));
 
@@ -45,7 +55,10 @@ public class GlobalTreeMapController {
             value = {"/addGlobalTreeMap.do"},
             method = {RequestMethod.POST}
     )
-    public ResponseEntity<?> addGlobalTreeMap(GlobalTreeMapEntity globalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> addGlobalTreeMap(GlobalTreeMapDTO globalTreeMapDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("GlobalTreeMapController :: addGlobalTreeMap");
+        GlobalTreeMapEntity globalTreeMapEntity = modelMapper.map(globalTreeMapDTO, GlobalTreeMapEntity.class);
 
         return ResponseEntity.ok(CommonResponse.success(globalTreeMapService.save(globalTreeMapEntity)));
 
@@ -56,9 +69,12 @@ public class GlobalTreeMapController {
             value = {"/alterGlobalTreeMap.do"},
             method = {RequestMethod.PUT}
     )
-    public ResponseEntity<?> alterGlobalTreeMap(GlobalTreeMapEntity reqGlobalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> alterGlobalTreeMap(GlobalTreeMapDTO globalTreeMapDTO, ModelMap model, HttpServletRequest request) throws Exception {
 
-        return ResponseEntity.ok(CommonResponse.success(globalTreeMapService.update(reqGlobalTreeMapEntity)));
+        log.info("GlobalTreeMapController :: alterGlobalTreeMap");
+        GlobalTreeMapEntity globalTreeMapEntity = modelMapper.map(globalTreeMapDTO, GlobalTreeMapEntity.class);
+
+        return ResponseEntity.ok(CommonResponse.success(globalTreeMapService.update(globalTreeMapEntity)));
 
     }
 
@@ -67,7 +83,10 @@ public class GlobalTreeMapController {
             value = {"/removeGlobalTreeMap.do"},
             method = {RequestMethod.DELETE}
     )
-    public ResponseEntity<?> removeGlobalTreeMap(GlobalTreeMapEntity globalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> removeGlobalTreeMap(GlobalTreeMapDTO globalTreeMapDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("GlobalTreeMapController :: removeGlobalTreeMap");
+        GlobalTreeMapEntity globalTreeMapEntity = modelMapper.map(globalTreeMapDTO, GlobalTreeMapEntity.class);
 
         List<GlobalTreeMapEntity> globalTreeMapEntityList = globalTreeMapService.findAllBy(globalTreeMapEntity);
 
@@ -86,7 +105,10 @@ public class GlobalTreeMapController {
             value = {"/getConnectInfo/pdService/pdServiceVersion/jiraProject.do"},
             method = {RequestMethod.GET}
     )
-    public ResponseEntity<?> getConnectInfo_pdService_pdServiceVersion_jiraProject(GlobalTreeMapEntity globalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> getConnectInfo_pdService_pdServiceVersion_jiraProject(GlobalTreeMapDTO globalTreeMapDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("GlobalTreeMapController :: getConnectInfo_pdService_pdServiceVersion_jiraProject");
+        GlobalTreeMapEntity globalTreeMapEntity = modelMapper.map(globalTreeMapDTO, GlobalTreeMapEntity.class);
 
         List<GlobalTreeMapEntity> savedList = globalTreeMapService.findAllBy(globalTreeMapEntity);
 
@@ -104,7 +126,10 @@ public class GlobalTreeMapController {
             value = {"/setConnectInfo/pdService/pdServiceVersion/jiraProject.do"},
             method = {RequestMethod.POST}
     )
-    public ResponseEntity<?> setConnectInfo_pdService_pdServiceVersion_jiraProject(GlobalTreeMapEntity globalTreeMapEntity, ModelMap model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> setConnectInfo_pdService_pdServiceVersion_jiraProject(GlobalTreeMapDTO globalTreeMapDTO, ModelMap model, HttpServletRequest request) throws Exception {
+
+        log.info("GlobalTreeMapController :: setConnectInfo_pdService_pdServiceVersion_jiraProject");
+        GlobalTreeMapEntity globalTreeMapEntity = modelMapper.map(globalTreeMapDTO, GlobalTreeMapEntity.class);
 
         ParameterParser parser = new ParameterParser(request);
         String[] paramList = StringUtils.jsonStringifyConvert(parser.get("c_pdservice_jira_ids"));

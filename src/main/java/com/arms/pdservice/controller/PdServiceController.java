@@ -15,6 +15,7 @@ import com.arms.filerepository.model.FileRepositoryEntity;
 import com.arms.pdservice.model.PdServiceDTO;
 import com.arms.pdservice.model.PdServiceEntity;
 import com.arms.pdservice.service.PdService;
+import com.arms.pdserviceversion.model.PdServiceVersionDTO;
 import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.javaservice.treeframework.controller.CommonResponse;
 import com.egovframework.javaservice.treeframework.controller.TreeAbstractController;
@@ -150,7 +151,10 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
     }
 
     @RequestMapping(value="/removeVersion.do", method= RequestMethod.DELETE)
-    public ModelAndView removeVersion(PdServiceVersionEntity pdServiceVersionEntity, HttpServletRequest request) throws Exception {
+    public ModelAndView removeVersion(PdServiceVersionDTO pdServiceVersionDTO, HttpServletRequest request) throws Exception {
+
+        log.info("PdServiceController :: removeVersion");
+        PdServiceVersionEntity pdServiceVersionEntity = modelMapper.map(pdServiceVersionDTO, PdServiceVersionEntity.class);
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", pdService.removeVersionNode(pdServiceVersionEntity));
