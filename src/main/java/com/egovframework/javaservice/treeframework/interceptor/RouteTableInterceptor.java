@@ -12,6 +12,7 @@
 package com.egovframework.javaservice.treeframework.interceptor;
 
 import com.egovframework.javaservice.treeframework.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 public class RouteTableInterceptor extends EmptyInterceptor{
 
     private static final Logger logger = LoggerFactory.getLogger(RouteTableInterceptor.class);
@@ -109,7 +111,7 @@ public class RouteTableInterceptor extends EmptyInterceptor{
             }
             logger.info("RouteTableInterceptor :: onPrepareStatement servletPath -> " + servletPath);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("RouteTableInterceptor :: onPrepareStatement :: Exception -> " + e.getMessage());
         }
 
 

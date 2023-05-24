@@ -14,11 +14,13 @@ import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+@Slf4j
 public abstract class ExcelUtilsBase {
 
     protected InputStream inputStream;
@@ -43,7 +45,7 @@ public abstract class ExcelUtilsBase {
 
             workbook.write(this.outputStream);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.info("ExcelUtilsBase :: create :: Exception -> " + ex.getMessage());
         } finally {
             close(workbook, this.outputStream);
         }

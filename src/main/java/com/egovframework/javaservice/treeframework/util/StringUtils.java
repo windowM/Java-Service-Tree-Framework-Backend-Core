@@ -1,5 +1,7 @@
 package com.egovframework.javaservice.treeframework.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+@Slf4j
 public class StringUtils extends org.apache.commons.lang.StringUtils {
     public static String getString(String text) {
         if (null == text) {
@@ -361,7 +364,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
             in.read(buf, 0, buf.length);
             str = new String(buf);
         } catch (Exception e){
-            e.printStackTrace();
+            log.info("StringUtils :: getSource :: Exception -> " + e.getMessage());
         }
         return str;
     }
@@ -463,7 +466,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
                 result = raw;
             }
         } catch(Exception e) {
-            e.printStackTrace();
+            log.info("StringUtils :: stringByteCut :: Exception -> " + e.getMessage());
         }
         return result;
     }
