@@ -11,6 +11,7 @@
  */
 package com.egovframework.javaservice.treeframework.service;
 
+import com.egovframework.javaservice.treeframework.TreeConstant;
 import com.egovframework.javaservice.treeframework.dao.TreeDao;
 import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.egovframework.javaservice.treeframework.interceptor.RouteTableInterceptor;
@@ -111,7 +112,7 @@ public class TreeServiceImpl implements TreeService {
         treeSearchEntity.setOrder(Order.desc("c_id"));
         Criterion criterion = Restrictions.not(
                 // replace "id" below with property name, depending on what you're filtering against
-                Restrictions.in("c_id", new Object[] {new Long(1), new Long(2)})
+                Restrictions.in("c_id", new Object[] {TreeConstant.ROOT_CID, TreeConstant.First_Node_CID})
         );
         treeSearchEntity.getCriterions().add(criterion);
         List<T> list = getChildNode(treeSearchEntity);

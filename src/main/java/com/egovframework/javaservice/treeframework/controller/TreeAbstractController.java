@@ -12,6 +12,7 @@
 package com.egovframework.javaservice.treeframework.controller;
 
 import com.arms.pdservice.model.PdServiceEntity;
+import com.egovframework.javaservice.treeframework.TreeConstant;
 import com.egovframework.javaservice.treeframework.model.TreeBaseDTO;
 import com.egovframework.javaservice.treeframework.model.TreeSearchEntity;
 import com.egovframework.javaservice.treeframework.service.TreeService;
@@ -63,7 +64,6 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
     public ModelAndView getNode(D treeBaseDTO, HttpServletRequest request) throws Exception {
 
         log.info("TreeAbstractController :: getNode");
-
         V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
         ParameterParser parser = new ParameterParser(request);
@@ -111,7 +111,7 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
         treeSearchEntity.setOrder(Order.desc("c_id"));
         Criterion criterion = Restrictions.not(
                 // replace "id" below with property name, depending on what you're filtering against
-                Restrictions.in("c_id", new Object[] {new Long(1), new Long(2)})
+                Restrictions.in("c_id", new Object[] {TreeConstant.ROOT_CID, TreeConstant.First_Node_CID})
         );
         treeSearchEntity.getCriterions().add(criterion);
         List<V> list = treeService.getChildNode(treeSearchEntity);
