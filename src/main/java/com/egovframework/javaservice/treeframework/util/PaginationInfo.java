@@ -76,8 +76,8 @@ public class PaginationInfo {
      */
 
     private int currentPageNo;
-    private int recordCountPerPage;
-    private int pageSize;
+    private int recordCountPerPage = 10;
+    private int pageSize = 10;
     private int totalRecordCount;
 
     public int getRecordCountPerPage() {
