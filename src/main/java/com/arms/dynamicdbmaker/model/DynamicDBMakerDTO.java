@@ -10,4 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DynamicDBMakerDTO extends TreeBaseDTO {
+
+    private String dummy;
 }

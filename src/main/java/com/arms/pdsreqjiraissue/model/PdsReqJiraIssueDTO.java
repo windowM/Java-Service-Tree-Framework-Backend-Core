@@ -10,4 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PdsReqJiraIssueDTO extends TreeBaseDTO {
+
+    private String dummy;
+    
 }

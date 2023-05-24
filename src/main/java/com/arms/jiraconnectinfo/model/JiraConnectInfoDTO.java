@@ -10,4 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JiraConnectInfoDTO extends TreeBaseDTO {
+
+    private String dummy;
+
 }
