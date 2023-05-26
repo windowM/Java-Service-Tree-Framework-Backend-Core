@@ -166,20 +166,15 @@ public class ReqAddController extends TreeAbstractController<ReqAdd, ReqAddDTO, 
         log.info("ReqAddController :: addReqNode");
         ReqAddEntity reqAddEntity = modelMapper.map(reqAddDTO, ReqAddEntity.class);
 
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
-        } else {
+        SessionUtil.setAttribute("addNode",changeReqTableName);
 
-            SessionUtil.setAttribute("addNode",changeReqTableName);
+        ReqAddEntity savedNode = reqAdd.addReqNode(reqAddEntity, changeReqTableName);
 
-            ReqAddEntity savedNode = reqAdd.addReqNode(reqAddEntity, changeReqTableName);
+        SessionUtil.removeAttribute("addNode");
 
-            SessionUtil.removeAttribute("addNode");
+        log.info("ReqAddController :: addReqNode");
+        return ResponseEntity.ok(CommonResponse.success(savedNode));
 
-            log.info("ReqAddController :: addReqNode");
-            return ResponseEntity.ok(CommonResponse.success(savedNode));
-
-        }
     }
 
 }

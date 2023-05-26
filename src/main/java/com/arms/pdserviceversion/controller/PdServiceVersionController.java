@@ -86,10 +86,6 @@ public class PdServiceVersionController extends TreeAbstractController<PdService
         log.info("PdServiceVersionController :: updateVersionNode");
         PdServiceVersionEntity pdServiceVersionEntity = modelMapper.map(pdServiceVersionDTO, PdServiceVersionEntity.class);
 
-        if (bindingResult.hasErrors())
-            throw new RuntimeException();
-
-
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", pdServiceVersion.updateNode(pdServiceVersionEntity));
 

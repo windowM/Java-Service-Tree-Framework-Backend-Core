@@ -176,9 +176,6 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
         log.info("TreeAbstractController :: addNode");
         V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
-        if (bindingResult.hasErrors())
-            throw new RuntimeException("binding error : " + bindingResult.toString());
-
         treeSearchEntity.setC_title(Util_TitleChecker.StringReplace(treeSearchEntity.getC_title()));
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
@@ -193,9 +190,6 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
 
         log.info("TreeAbstractController :: removeNode");
         V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
-
-        if (bindingResult.hasErrors())
-            throw new RuntimeException("binding error : " + bindingResult.toString());
 
         treeSearchEntity.setStatus(treeService.removeNode(treeSearchEntity));
         setJsonDefaultSetting(treeSearchEntity);
@@ -223,10 +217,6 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
         log.info("TreeAbstractController :: updateNode");
         V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("binding error : " + bindingResult.toString());
-        }
-
         ModelAndView modelAndView = new ModelAndView("jsonView");
         modelAndView.addObject("result", treeService.updateNode(treeSearchEntity));
         return modelAndView;
@@ -236,9 +226,6 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
     @RequestMapping(value = "/alterNode.do", method = RequestMethod.PUT)
     public ModelAndView alterNode(@Validated(value = AlterNode.class) D treeBaseDTO,
                                   BindingResult bindingResult, ModelMap model) throws Exception {
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("binding error : " + bindingResult.toString());
-        }
 
         log.info("TreeAbstractController :: alterNode");
         V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
@@ -259,10 +246,6 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
     public ModelAndView alterNodeType(@Validated(value = AlterNodeType.class) D treeBaseDTO,
                                       BindingResult bindingResult, ModelMap model) throws Exception {
 
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("binding error : " + bindingResult.toString());
-        }
-
         log.info("TreeAbstractController :: alterNodeType");
         V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
 
@@ -277,9 +260,6 @@ public abstract class TreeAbstractController<T extends TreeService, D extends Tr
     @RequestMapping(value = "/moveNode.do", method = RequestMethod.POST)
     public ModelAndView moveNode(@Validated(value = MoveNode.class) D treeBaseDTO,
                                  BindingResult bindingResult, ModelMap model, HttpServletRequest request) throws Exception {
-
-        if (bindingResult.hasErrors())
-            throw new RuntimeException("binding error : " + bindingResult.toString());
 
         log.info("TreeAbstractController :: moveNode");
         V treeSearchEntity = modelMapper.map(treeBaseDTO, treeEntity);
