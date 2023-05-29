@@ -13,11 +13,13 @@ package com.arms.reqadd.service;
 
 import com.arms.reqadd.model.ReqAddEntity;
 import com.egovframework.javaservice.treeframework.TreeConstant;
+import com.egovframework.javaservice.treeframework.interceptor.SessionUtil;
 import com.egovframework.javaservice.treeframework.service.TreeServiceImpl;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @AllArgsConstructor
@@ -27,12 +29,17 @@ public class ReqAddImpl extends TreeServiceImpl implements ReqAdd{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
+	@Transactional
 	public ReqAddEntity addReqNode(ReqAddEntity reqAddEntity, String changeReqTableName) throws Exception {
 
-		reqAddEntity.setRef(TreeConstant.First_Node_CID);
 		reqAddEntity.setC_type(TreeConstant.Leaf_Node_TYPE);
 
+		SessionUtil.setAttribute("addNode",changeReqTableName);
+
 		ReqAddEntity savedReqAddEntity = this.addNode(reqAddEntity);
+
+		SessionUtil.removeAttribute("addNode");
+
 
 		//이슈 등록하고
 		//등록된 이슈를 요구사항과 연결해 줘야 함.
