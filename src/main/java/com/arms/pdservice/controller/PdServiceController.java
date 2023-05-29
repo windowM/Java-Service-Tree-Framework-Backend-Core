@@ -151,13 +151,18 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
     }
 
     @RequestMapping(value="/removeVersion.do", method= RequestMethod.DELETE)
-    public ModelAndView removeVersion(PdServiceVersionDTO pdServiceVersionDTO, HttpServletRequest request) throws Exception {
+    public ModelAndView removeVersion(HttpServletRequest request) throws Exception {
 
         log.info("PdServiceController :: removeVersion");
-        PdServiceVersionEntity pdServiceVersionEntity = modelMapper.map(pdServiceVersionDTO, PdServiceVersionEntity.class);
+
+        ParameterParser parser = new ParameterParser(request);
+
+        long pdServiceID = parser.getLong("pdservice_c_id");
+        long versionID = parser.getLong("version_c_id");
+
 
         ModelAndView modelAndView = new ModelAndView("jsonView");
-        modelAndView.addObject("result", pdService.removeVersionNode(pdServiceVersionEntity));
+        modelAndView.addObject("result", pdService.removeVersionNode(pdServiceID, versionID));
         return modelAndView;
     }
 

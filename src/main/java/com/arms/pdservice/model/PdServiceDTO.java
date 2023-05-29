@@ -1,11 +1,14 @@
 package com.arms.pdservice.model;
 
+import com.arms.pdserviceversion.model.PdServiceVersionDTO;
+import com.arms.pdserviceversion.model.PdServiceVersionEntity;
 import com.egovframework.javaservice.treeframework.model.TreeBaseDTO;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,5 +36,7 @@ public class PdServiceDTO extends TreeBaseDTO {
     private String c_pdservice_reviewer05;
 
     private String c_pdservice_writer;
+
+    private Set<PdServiceVersionEntity> pdServiceVersionEntities;
 
 }

@@ -255,27 +255,22 @@ public class PdServiceImpl extends TreeServiceImpl implements PdService {
 
     @Override
     @Transactional
-    public PdServiceVersionEntity removeVersionNode(PdServiceVersionEntity pdServiceVersionEntity) throws Exception {
+    public PdServiceEntity removeVersionNode(Long pdServiceID, Long versionID) throws Exception {
 
-        PdServiceVersionEntity versionEntity = pdServiceVersion.getNode(pdServiceVersionEntity);
-        PdServiceEntity pdServiceNode = versionEntity.getPdServiceEntity();
-        Set<PdServiceVersionEntity> versionSet = pdServiceNode.getPdServiceVersionEntities();
+        PdServiceEntity pdService = new PdServiceEntity();
+        pdService.setC_id(pdServiceID);
+        PdServiceEntity savedPdServiceNode = this.getNode(pdService);
 
-        Set<PdServiceVersionEntity> updateSet = new HashSet<>();
-
-        for ( PdServiceVersionEntity verNode : versionSet){
-
-            if ( verNode.getC_id().equals(pdServiceVersionEntity.getC_id()) ) {
-                versionSet.remove(verNode);
+        Set<PdServiceVersionEntity> versionSet = savedPdServiceNode.getPdServiceVersionEntities();
+        for( PdServiceVersionEntity versionEntity : versionSet ){
+            if(versionEntity.getC_id().equals(versionID)){
+                versionSet.remove(versionEntity);
             }
         }
 
+        pdService.setPdServiceVersionEntities(versionSet);
 
-
-        pdServiceNode.setPdServiceVersionEntities(versionSet);
-        this.updateNode(pdServiceNode);
-
-        pdServiceVersion.removeNode(pdServiceVersionEntity);
-        return pdServiceVersionEntity;
+        this.updateNode(pdService);
+        return pdService;
     }
 }
