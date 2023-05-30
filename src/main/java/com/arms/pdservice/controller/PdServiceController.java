@@ -111,7 +111,6 @@ public class PdServiceController extends TreeAbstractController<PdService, PdSer
         ParameterParser parser = new ParameterParser(request);
         long pdservice_link = parser.getLong("pdservice_link");
 
-        //return ResponseEntity.ok(CommonResponse.success(pdService.uploadFileTo(param_c_id, multiRequest)));
         HashMap<String, Set<FileRepositoryEntity>> map = new HashMap();
 
         map.put("files", pdService.uploadFileForPdServiceNode(pdservice_link, multiRequest));
