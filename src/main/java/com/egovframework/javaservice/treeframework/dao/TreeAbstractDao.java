@@ -116,7 +116,7 @@ public abstract class TreeAbstractDao<T extends TreeSearchEntity, ID extends Ser
         if (template != null) {
             List<T> list = (List<T>) template.findByCriteria(detachedCriteria);
             if (list.isEmpty()) {
-                throw new RuntimeException("TreeAbstractDao :: getUnique - findByCriteria result is null");
+                return null;
             }
             return (T) list.get(0);
         } else {
