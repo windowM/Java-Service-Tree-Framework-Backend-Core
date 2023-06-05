@@ -217,6 +217,8 @@ dependencies {
     
     //jira
     implementation 'com.atlassian.jira:jira-rest-java-client-app:5.1.6'
+    implementation 'com.atlassian.jira:jira-rest-java-client-api:5.1.6'
+    implementation 'com.atlassian.jira:jira-rest-java-client-core:5.1.6'
 
     // poi
     implementation 'org.apache.poi:poi:5.1.0'
