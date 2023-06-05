@@ -8,5 +8,7 @@
         <create creator="new" javascript="Chat">
             <param name="class" value="com.egovframework.javaservice.treeframework.remote.Chat"/>
         </create>
+        <convert converter="bean" match="com.egovframework.javaservice.treeframework.remote.User">
+        </convert>
     </allow>
 </dwr>
