@@ -145,7 +145,6 @@ repositories {
         url 'http://www.313.co.kr/nexus/repository/ple-releases/'
         allowInsecureProtocol true
     }
-    maven { url "https://m2proxy.atlassian.com/repository/public" }
 }
 
 dependencyManagement {
@@ -217,7 +216,16 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     
     //jira
+    implementation 'com.atlassian.event:atlassian-event:3.0.0'
+    implementation 'com.atlassian.fugue:fugue:2.2.1'
+    implementation 'com.atlassian.httpclient:atlassian-httpclient-api:2.0.0'
+    implementation 'com.atlassian.httpclient:atlassian-httpclient-library:2.0.0'
+    implementation 'com.atlassian.sal:sal-api:3.0.7'
+
     implementation 'com.atlassian.jira:jira-rest-java-client-app:5.1.6'
+    implementation 'com.atlassian.jira:jira-rest-java-client-api:5.1.6'
+    implementation 'com.atlassian.jira:jira-rest-java-client-core:5.1.6'
+
 
     // poi
     implementation 'org.apache.poi:poi:5.1.0'
