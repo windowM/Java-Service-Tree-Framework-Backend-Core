@@ -13,6 +13,7 @@ package com.egovframework.javaservice.treeframework.remote;
 
 import org.directwebremoting.Browser;
 import org.directwebremoting.ScriptSessions;
+import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -21,9 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+
 @RemoteProxy(creator = SpringCreator.class, name = "Chat")
 @Service
 public class Chat {
@@ -33,64 +32,34 @@ public class Chat {
 	}
 
 	@RemoteMethod
-	public String sendMessage(final String message) {
-		final String username;
-		try {
-			username = (String) WebContextFactory.get().getScriptSession()
-					.getAttribute(Global.USERNAME);
-		} catch (Exception e) {
-			return Global.ERROR;
-		}
+	public String sendMessage(String message) {
 
-		if (null == username) {
-			return Global.ERROR;
-		}
-
-		final String time = time();
+		Object userId = WebContextFactory.get().getScriptSession().getAttribute(Global.USER_ID);
+		Object username = WebContextFactory.get().getScriptSession().getAttribute(Global.USERNAME);
 		Browser.withAllSessions(new Runnable() {
 			@Override
 			public void run() {
-				ScriptSessions.addFunctionCall("addMessage", username, time, message);
+				ScriptSessions.addFunctionCall("dwr_callback",userId,username, message,time());
 			}
 		});
 
 		return Global.SUCCESS;
 	}
-
 	@RemoteMethod
-	public static Set<User> getOnlineSet() {
-		return Global.onlineSet;
+	public String login(final String userId, final String username) {
+		Global.onlineSet.add(new User(userId,username, time()));
+		WebContext webContext = WebContextFactory.get();
+		webContext.getScriptSession().setAttribute(Global.USER_ID, userId);
+		webContext.getScriptSession().setAttribute(Global.USERNAME, username);
+		return Global.SUCCESS;
 	}
 
 	@RemoteMethod
-	public void updateOnlineList() {
-		Browser.withCurrentPage(new Runnable() {
-			@Override
-			public void run() {
-				ScriptSessions.addFunctionCall("updateOnlineList", Global.onlineSet);
-			}
-		});
-	}
-
-	@RemoteMethod
-	public String login(final String username) {
-		if (Global.onlineSet.contains(new User(username)) || "".equals(username)) {
+	public String logout(final String userId) {
+		if (!Global.onlineSet.contains(new User(userId))) {
 			return Global.ERROR;
 		} else {
-			Global.onlineSet.add(new User(username, time()));
-			updateOnlineList();
-			WebContextFactory.get().getScriptSession().setAttribute(Global.USERNAME, username);
-			return Global.SUCCESS;
-		}
-	}
-
-	@RemoteMethod
-	public String logout(final String username) {
-		if (!Global.onlineSet.contains(new User(username))) {
-			return Global.ERROR;
-		} else {
-			Global.onlineSet.remove(new User(username));
-			updateOnlineList();
+			Global.onlineSet.remove(new User(userId));
 			WebContextFactory.get().getScriptSession().invalidate();
 			return Global.SUCCESS;
 		}
@@ -99,14 +68,6 @@ public class Chat {
 	@RemoteMethod
 	private String time() {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-	}
-
-	@RemoteMethod
-	public List<String> getOptionList() {
-		List<String> option = new LinkedList<>();
-		for (int i = 0; i < 5; i++)
-			option.add("field_" + i);
-		return option;
 	}
 
 }

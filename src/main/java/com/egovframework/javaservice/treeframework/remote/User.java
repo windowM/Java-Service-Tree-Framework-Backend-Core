@@ -18,6 +18,7 @@ import java.io.Serializable;
 @DataTransferObject
 public class User implements Serializable{
 
+	private String id;
 	private String name;
 	private String time;
 
@@ -25,13 +26,14 @@ public class User implements Serializable{
 		super();
 	}
 
-	public User(String name) {
+	public User(String id) {
 		super();
-		this.name = name;
+		this.id = id;
 	}
 
-	public User(String name, String time) {
+	public User(String id, String name, String time) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.time = time;
 	}
