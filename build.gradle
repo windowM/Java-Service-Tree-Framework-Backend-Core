@@ -226,6 +226,9 @@ dependencies {
     implementation 'com.atlassian.jira:jira-rest-java-client-api:5.1.6'
     implementation 'com.atlassian.jira:jira-rest-java-client-core:5.1.6'
 
+    implementation 'io.atlassian.fugue:fugue:3.0.0'
+    implementation 'io.atlassian.util.concurrent:atlassian-util-concurrent:4.0.1'
+
 
     // poi
     implementation 'org.apache.poi:poi:5.1.0'
