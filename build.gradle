@@ -141,7 +141,6 @@ publishing {
 
 repositories {
     mavenCentral()
-    maven { url "https://m2proxy.atlassian.com/repository/public" }
     maven {
         url 'http://www.313.co.kr/nexus/repository/ple-releases/'
         allowInsecureProtocol true
