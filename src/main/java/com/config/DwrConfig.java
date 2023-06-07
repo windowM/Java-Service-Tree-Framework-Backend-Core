@@ -34,7 +34,7 @@ public class DwrConfig implements WebMvcConfigurer {
 
     @Bean
     public ServletRegistrationBean<DwrServlet> dwrServletRegistration() {
-        DwrSpringServlet servlet = new DwrSpringServlet();
+        DwrServlet servlet = new DwrServlet();
         ServletRegistrationBean<DwrServlet> registration = new ServletRegistrationBean<>(servlet, "/dwr/*");
         registration.setName("dwr");
         registration.addInitParameter("debug", "true");
