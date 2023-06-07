@@ -132,6 +132,14 @@ under the License.
         <email>313@313.co.kr</email>
       </configuration>
     </server>
+    <server>
+      <id>jstf-releases</id>
+      <username>admin</username>
+      <password>qwe123</password>
+      <configuration>
+        <email>313@313.co.kr</email>
+      </configuration>
+    </server>
 
   </servers>
 
