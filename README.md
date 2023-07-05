@@ -76,3 +76,4 @@ MVC패턴을 구현한 다양한 프레임워크를 대상으로 ( EgovFramework
 
 ### Those who support us! ###
 1. interceptor 에서 관리되는 동적 테이블은 onetoX 에 해당하는 릴레이션을 관리 할 수 없다.
+2. Entity 릴레이션 설정 시. 단방향 설정을 하려거든 (cascade = CascadeType.ALL) 을 삭제하라
