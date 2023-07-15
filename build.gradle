@@ -110,7 +110,7 @@ ext {
             executable "wget"
             args "-O", "${projectDir}/metadata.xml", "${metadataUrl}"
         }
-    }
+    }   //mac os의 경우 106~113까지 주석처리
     def metadataFile = new XmlSlurper().parse(new File("${projectDir}/metadata.xml"))
     String latest = metadataFile."versioning"."latest"
     String versionPrefix = latest.split("-")[0]
